@@ -70,11 +70,6 @@ public class Login extends ClientMessage {
         mUnk7 = buffer.read();
     }
 
-    @Override
-    public ServerMessage buildResponse() {
-        return new LoginOk(this);
-    }
-
     public long getAccountId() {
         return mAccountId;
     }

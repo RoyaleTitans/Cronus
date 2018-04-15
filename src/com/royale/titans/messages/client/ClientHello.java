@@ -2,8 +2,6 @@ package com.royale.titans.messages.client;
 
 import com.royale.titans.lib.Buffer;
 import com.royale.titans.messages.ClientMessage;
-import com.royale.titans.messages.ServerMessage;
-import com.royale.titans.messages.server.ServerHello;
 
 public class ClientHello extends ClientMessage {
     private final int mProtocol;
@@ -26,10 +24,5 @@ public class ClientHello extends ClientMessage {
         mFingerprint = buffer.readString();
         mAppStore = buffer.readInt();
         mDeviceType = buffer.readInt();
-    }
-
-    @Override
-    public ServerMessage buildResponse() {
-        return new ServerHello();
     }
 }

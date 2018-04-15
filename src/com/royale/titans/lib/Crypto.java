@@ -1,17 +1,15 @@
 package com.royale.titans.lib;
 
-import com.royale.titans.Utils;
 import com.royale.titans.messages.Configs;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Crypto {
-
-    private static final ConcurrentHashMap<String, Nonce> sSessions =
+    private static final byte[] NULL = new byte[32];
+    private static final ConcurrentHashMap<String, ClientInfo> sSessions =
             new ConcurrentHashMap<>();
 
     public static Buffer decryptLogin(Buffer buffer) {
@@ -21,7 +19,9 @@ public class Crypto {
                 Configs.MAGIC_KEY);
         byte[] sessionKey = Arrays.copyOfRange(loginDecrypted, 0, 24);
         byte[] sNonce = Arrays.copyOfRange(loginDecrypted, 24, 48);
-        sSessions.put(new String(sessionKey), new Nonce(sNonce));
+        sSessions.put(new String(sessionKey),
+                new ClientInfo(new Nonce(sNonce),
+                        new Nonce(new byte[24])));
         return Buffer.wrap(Arrays.copyOfRange(loginDecrypted, 48, loginDecrypted.length));
     }
 
@@ -34,18 +34,41 @@ public class Crypto {
             return buffer;
         } else if (messageId == 22280) {
             try {
-                Nonce nonce = new Nonce(new byte[32], Configs.PUBLIC_SERVER_KEY,
-                        sSessions.get(session).getBytes());
+                Nonce nonce = new Nonce(NULL, Configs.PUBLIC_SERVER_KEY,
+                        sSessions.get(session).sNonce().getBytes());
                 ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
                 byteArrayOutputStream.write(new byte[24]);
-                byteArrayOutputStream.write(new byte[32]);
+                byteArrayOutputStream.write(NULL);
                 byteArrayOutputStream.write(buffer.array());
                 byte[] p = byteArrayOutputStream.toByteArray();
                 return Buffer.wrap(TweetNaCl.crypto_box(p, nonce.getBytes(),
                         Configs.MAGIC_KEY));
-            } catch (IOException ignored) {}
+            } catch (IOException ignored) {
+                return null;
+            }
+        } else {
+            ClientInfo info = sSessions.get(session);
+            info.rNonce().increment();
+            return Buffer.wrap(TweetNaCl.crypto_box(buffer.array(),
+                    info.rNonce().getBytes(), NULL));
+        }
+    }
+
+    static class ClientInfo {
+        private final Nonce mS;
+        private final Nonce mR;
+
+        ClientInfo(Nonce s, Nonce r) {
+            mS = s;
+            mR = r;
         }
 
-        return null;
+        Nonce sNonce() {
+            return mS;
+        }
+
+        Nonce rNonce() {
+            return mR;
+        }
     }
 }

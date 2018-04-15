@@ -7,7 +7,6 @@ import com.royale.titans.messages.server.ServerHello;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousServerSocketChannel;
 import java.nio.channels.AsynchronousSocketChannel;
 import java.nio.channels.CompletionHandler;
@@ -52,7 +51,7 @@ class Server {
                             }
 
                             buf.flip();
-                            ClientMessage message = Router.route(headers, buf);
+                            ClientMessage message = ServerLogic.route(headers, buf);
 
                             if (message != null) {
                                 Buffer b = message.getBuffer();
@@ -61,30 +60,36 @@ class Server {
                                     System.out.println("[SERVER] [IN] msgId: " + Utils.b2h(b.array()));
                                 }
 
-                                ServerMessage response = message.buildResponse();
-                                if (response != null) {
-                                    if (response.getId() == 20100) {
-                                        sessionKey = ((ServerHello) response).getSessioneKey();
-                                    }
+                                ServerMessage[] handled = ServerLogic.handle(headers, message);
 
-                                    b = response.getBuffer();
-                                    b.rewind();
-
-                                    Buffer encrypted = Crypto.encrypt(sessionKey, response.getId(), b);
-                                    if (encrypted != null) {
-                                        headers = new Headers(response.getId(), encrypted.capacity(), response.getVersion());
-                                        channel.write(headers.toBuffer().getByteBuffer());
-
-                                        if (Configs.DEBUG) {
-                                            System.out.println("[SERVER] [OUT] msgId: " + headers.getId() + " - len: " + headers.getLength());
+                                if (handled != null) {
+                                    for (ServerMessage serverMessage : handled) {
+                                        if (serverMessage.getId() == 20100) {
+                                            sessionKey = ((ServerHello) serverMessage).getSessioneKey();
                                         }
 
-                                        channel.write(encrypted.getByteBuffer());
-                                        encrypted.clear();
+                                        b = serverMessage.getBuffer();
+                                        b.rewind();
 
-                                        if (Configs.DEBUG) {
-                                            b.rewind();
-                                            System.out.println("[SERVER] [OUT]: " + Utils.b2h(response.getBuffer().array()));
+                                        Buffer encrypted = Crypto.encrypt(sessionKey, serverMessage.getId(), b);
+                                        if (encrypted != null) {
+                                            headers = new Headers(serverMessage.getId(),
+                                                    encrypted.capacity(),
+                                                    serverMessage.getVersion());
+                                            channel.write(headers.toBuffer().getByteBuffer());
+
+                                            if (Configs.DEBUG) {
+                                                System.out.println("[SERVER] [OUT] msgId: " + headers.getId() + " - len: " + headers.getLength());
+                                            }
+
+                                            channel.write(encrypted.getByteBuffer());
+                                            encrypted.clear();
+
+                                            if (Configs.DEBUG) {
+                                                b.rewind();
+                                                System.out.println("[SERVER] [OUT]: " + Utils.b2h(
+                                                        serverMessage.getBuffer().array()));
+                                            }
                                         }
                                     }
                                 }
