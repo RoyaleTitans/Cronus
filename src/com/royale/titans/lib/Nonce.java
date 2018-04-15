@@ -7,16 +7,16 @@ import java.nio.ByteOrder;
 import java.security.SecureRandom;
 
 public class Nonce {
-    private byte[] bytes;
+    private byte[] mBytes;
 
     public Nonce() {
-        bytes = new byte[24];
+        mBytes = new byte[24];
         SecureRandom r = new SecureRandom();
-        r.nextBytes(bytes);
+        r.nextBytes(mBytes);
     }
 
     public Nonce(byte[] nonce) {
-        bytes = nonce;
+        mBytes = nonce;
     }
 
     public Nonce(byte[] clientKey, byte[] serverKey) {
@@ -32,22 +32,22 @@ public class Nonce {
         hash.update(clientKey);
         hash.update(serverKey);
 
-        bytes = hash.digest();
+        mBytes = hash.digest();
     }
 
     public void increment() {
-        ByteBuffer buffer = ByteBuffer.wrap(bytes, 0, 2);
+        ByteBuffer buffer = ByteBuffer.wrap(mBytes, 0, 2);
         buffer.order(ByteOrder.LITTLE_ENDIAN);
         short val = buffer.getShort(0);
         val += 2;
         buffer.putShort(0, val);
 
-        bytes[0] = buffer.get(0);
-        bytes[1] = buffer.get(1);
+        mBytes[0] = buffer.get(0);
+        mBytes[1] = buffer.get(1);
     }
 
     public byte[] getBytes() {
-        return bytes;
+        return mBytes;
     }
 }
 
