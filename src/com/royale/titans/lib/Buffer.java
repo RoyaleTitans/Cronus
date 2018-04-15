@@ -3,6 +3,7 @@ package com.royale.titans.lib;
 import java.nio.ByteBuffer;
 
 public class Buffer {
+    private static final int[] sShift = { 0, 7, 14, 21, 28 };
     private final ByteBuffer mBuffer;
 
     public static Buffer allocate(int size) {
@@ -19,6 +20,10 @@ public class Buffer {
         mBuffer = byteBuffer;
     }
 
+    public Buffer() {
+        mBuffer = ByteBuffer.allocate(4096);
+    }
+
     public byte[] array() {
         return mBuffer.array();
     }
@@ -29,6 +34,19 @@ public class Buffer {
 
     public void clear() {
         mBuffer.clear();
+    }
+
+    private int decodeVarInt() {
+        int out = 0;
+        for (int i = 0; i < mBuffer.limit(); ++i) {
+            byte b = mBuffer.get(i);
+            if (i + 1 != mBuffer.limit()) {
+                b = (byte) (0x80 ^ b);
+            }
+
+            out |= b << sShift[i];
+        }
+        return (out >>> 1) ^ -(out & 1);
     }
 
     public void flip() {
@@ -59,38 +77,6 @@ public class Buffer {
         return mBuffer.getInt();
     }
 
-    public int readShort() {
-        return mBuffer.getShort();
-    }
-
-    public long readLong() {
-        return mBuffer.getLong();
-    }
-
-    public String readString() {
-        int len = readInt();
-        byte[] b = new byte[len];
-        read(b, 0, len);
-        return new String(b);
-    }
-
-    public void rewind() {
-        mBuffer.rewind();
-    }
-
-    public void write(byte b) {
-        mBuffer.put(b);
-    }
-
-    public void writeShort(int value) {
-        mBuffer.putShort((short) value);
-    }
-
-    public void writeString(String value) {
-        mBuffer.putInt(value.length());
-        mBuffer.put(value.getBytes(), 0, value.length());
-    }
-
     public RrsInt readRrsInt() {
         int c = 0;
         int value = 0;
@@ -114,5 +100,80 @@ public class Buffer {
 
         value = ((value >>> 1) ^ -(value & 1));
         return new RrsInt(value, c);
+    }
+
+    public int readShort() {
+        return mBuffer.getShort();
+    }
+
+    public long readLong() {
+        return mBuffer.getLong();
+    }
+
+    public String readString() {
+        int len = readInt();
+        if (len < 0) {
+            return "";
+        }
+        byte[] b = new byte[len];
+        read(b, 0, len);
+        return new String(b);
+    }
+
+    public void rewind() {
+        mBuffer.rewind();
+    }
+
+    public void write(byte b) {
+        mBuffer.put(b);
+    }
+
+    public void writeInt(int value) {
+        mBuffer.putInt(value);
+    }
+
+    public void writeLong(long value) {
+        mBuffer.putLong(value);
+    }
+
+    public int writeRrsInt(int value) {
+        if (value == 0) {
+            write((byte) 0);
+            return 1;
+        }
+
+        int c = 0;
+        boolean rotate = true;
+        byte b;
+
+        value = (value << 1) ^ (value >> 31);
+        value >>>= 0;
+
+        while (value > 0) {
+            b = (byte) (value & 0x7f);
+            if (value >= 0x80)
+                b |= 0x80;
+            if (rotate) {
+                rotate = false;
+                var lsb = b & 0x1;
+                var msb = (b & 0x80) >> 7;
+                b = (byte) (b >> 1);
+                b = (byte) (b & ~(0xC0));
+                b = (byte) (b | (msb << 7) | (lsb << 6));
+            }
+            write(b);
+            value >>>= 7;
+            c++;
+        }
+        return c;
+    }
+
+    public void writeShort(int value) {
+        mBuffer.putShort((short) value);
+    }
+
+    public void writeString(String value) {
+        mBuffer.putInt(value.length());
+        mBuffer.put(value.getBytes(), 0, value.length());
     }
 }

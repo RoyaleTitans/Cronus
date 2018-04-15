@@ -1700,11 +1700,12 @@ public class TweetNaCl {
         return 0;
     }
 
-    public static int crypto_box_beforenm(byte[] k,byte[] y,byte[] x)
-    {
+    public static byte[] crypto_box_beforenm(byte[] y,byte[] x){
+        byte[] k = new byte[32];
         byte[] s = new byte[32];
         crypto_scalarmult(s, x, y);
-        return crypto_core_hsalsa20(k,_0,s,sigma);
+        crypto_core_hsalsa20(k,_0,s,sigma);
+        return k;
     }
 
     private static int crypto_box_afternm(byte[] c,byte[] m,long d,byte[] n,byte[] k)
@@ -1719,15 +1720,13 @@ public class TweetNaCl {
 
     private static int crypto_box(byte[] c,byte[] m,long d,byte[] nonce, byte[] theirPublicBoxingKey, byte[] ourSecretBoxingKey)
     {
-        byte[] k = new byte[32];
-        crypto_box_beforenm(k, theirPublicBoxingKey, ourSecretBoxingKey);
+        byte[] k = crypto_box_beforenm(theirPublicBoxingKey, ourSecretBoxingKey);
         return crypto_box_afternm(c, m, d, nonce, k);
     }
 
     private static int crypto_box_open(byte[] m,byte[] c,long d,byte[] n,byte[] y,byte[] x)
     {
-        byte[] k = new byte[32];
-        crypto_box_beforenm(k,y,x);
+        byte[] k = crypto_box_beforenm(y,x);
         return crypto_box_open_afternm(m, c, d, n, k);
     }
 

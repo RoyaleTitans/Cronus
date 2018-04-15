@@ -5,36 +5,36 @@ import com.royale.titans.lib.Buffer;
 import com.royale.titans.lib.RrsInt;
 import com.royale.titans.messages.ClientMessage;
 import com.royale.titans.messages.ServerMessage;
+import com.royale.titans.messages.server.LoginOk;
 
 public class Login extends ClientMessage {
     private final long mAccountId;
     private final String mToken;
-    private final RrsInt mUnk0;
-    private final RrsInt mUnk1;
-    private final RrsInt mUnk2;
+    private final RrsInt mClientMajor;
+    private final RrsInt mClientMinor;
+    private final RrsInt mClientBuild;
     private final String mFingerprint;
-    private final RrsInt mUnk3;
-    private final int mUnk4;
+    private final String mUdid;
+    private final String mOpenUdid;
+    private final String mMacAddress;
+    private final String mDevice;
+    private final String mAdvertisingGuid;
+    private final String mOsVersion;
+    private final byte mIsAndroid;
+    private final String mUnk2;
+    private final String mAndroidId;
+    private final String mLanguage;
+    private final byte mUnk3;
+    private final byte mUnk4;
+    private final String mFacebookId;
+    private final byte mAdveritisingEnabled;
+    private final String mAppleIFV;
+    private final RrsInt mAppStore;
+    private final String mKunlunSSO;
+    private final String mKunlunUID;
     private final String mUnk5;
     private final String mUnk6;
-    private final String mUnk24;
-    private final String mUnk7;
-    private final String mUnk8;
-    private final byte mUnk9;
-    private final int mUnk10;
-    private final String mUnk11;
-    private final String mUnk12;
-    private final byte mUnk13;
-    private final byte mUnk14;
-    private final int mUnk15;
-    private final byte mUnk16;
-    private final int mUnk17;
-    private final RrsInt mUnk18;
-    private final int mUnk19;
-    private final int mUnk20;
-    private final int mUnk21;
-    private final int mUnk22;
-    private final byte mUnk23;
+    private final byte mUnk7;
 
     public Login(Buffer buffer) {
         super(buffer);
@@ -43,36 +43,43 @@ public class Login extends ClientMessage {
 
         mAccountId = buffer.readLong();
         mToken = buffer.readString();
-        mUnk0 = buffer.readRrsInt();
-        mUnk1 = buffer.readRrsInt();
-        mUnk2 = buffer.readRrsInt();
+        mClientMajor = buffer.readRrsInt();
+        mClientMinor = buffer.readRrsInt();
+        mClientBuild = buffer.readRrsInt();
         mFingerprint = buffer.readString();
-        mUnk3 = buffer.readRrsInt();
-        mUnk4 = buffer.readInt();
+        mUdid = buffer.readString();
+        mOpenUdid = buffer.readString();
+        mMacAddress = buffer.readString();
+        mDevice = buffer.readString();
+        mAdvertisingGuid = buffer.readString();
+        mOsVersion = buffer.readString();
+        mIsAndroid = buffer.read();
+        mUnk2 = buffer.readString();
+        mAndroidId = buffer.readString();
+        mLanguage = buffer.readString();
+        mUnk3 = buffer.read();
+        mUnk4 = buffer.read();
+        mFacebookId = buffer.readString();
+        mAdveritisingEnabled = buffer.read();
+        mAppleIFV = buffer.readString();
+        mAppStore = buffer.readRrsInt();
+        mKunlunSSO = buffer.readString();
+        mKunlunUID = buffer.readString();
         mUnk5 = buffer.readString();
         mUnk6 = buffer.readString();
-        mUnk24 = buffer.readString();
-        mUnk7 = buffer.readString();
-        mUnk8 = buffer.readString();
-        mUnk9 = buffer.read();
-        mUnk10 = buffer.readInt();
-        mUnk11 = buffer.readString();
-        mUnk12 = buffer.readString();
-        mUnk13 = buffer.read();
-        mUnk14 = buffer.read();
-        mUnk15 = buffer.readInt();
-        mUnk16 = buffer.read();
-        mUnk17 = buffer.readInt();
-        mUnk18 = buffer.readRrsInt();
-        mUnk19 = buffer.readInt();
-        mUnk20 = buffer.readInt();
-        mUnk21 = buffer.readInt();
-        mUnk22 = buffer.readInt();
-        mUnk23 = buffer.read();
+        mUnk7 = buffer.read();
     }
 
     @Override
     public ServerMessage buildResponse() {
-        return null;
+        return new LoginOk(this);
+    }
+
+    public long getAccountId() {
+        return mAccountId;
+    }
+
+    public String getToken() {
+        return mToken;
     }
 }

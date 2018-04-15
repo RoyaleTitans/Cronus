@@ -28,4 +28,8 @@ public class ServerHello extends ServerMessage {
         buffer.writeString(mSessionKey);
         return buffer;
     }
+
+    public String getSessioneKey() {
+        return mSessionKey;
+    }
 }

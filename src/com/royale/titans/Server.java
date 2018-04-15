@@ -1,7 +1,9 @@
 package com.royale.titans;
 
 import com.royale.titans.lib.Buffer;
+import com.royale.titans.lib.Crypto;
 import com.royale.titans.messages.*;
+import com.royale.titans.messages.server.ServerHello;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -25,6 +27,7 @@ class Server {
             public void completed(AsynchronousSocketChannel channel, Object attachment) {
                 listener.accept(null, this);
 
+                String sessionKey = null;
                 boolean running = true;
 
                 try {
@@ -60,21 +63,29 @@ class Server {
 
                                 ServerMessage response = message.buildResponse();
                                 if (response != null) {
-                                    b = response.getBuffer();
-
-                                    headers = new Headers(response.getId(), b.capacity(), response.getVersion());
-                                    channel.write(headers.toBuffer().getByteBuffer());
-
-                                    if (Configs.DEBUG) {
-                                        System.out.println("[SERVER] [OUT] msgId: " + headers.getId() + " - len: " + headers.getLength());
+                                    if (response.getId() == 20100) {
+                                        sessionKey = ((ServerHello) response).getSessioneKey();
                                     }
 
+                                    b = response.getBuffer();
                                     b.rewind();
-                                    channel.write(b.getByteBuffer());
 
-                                    if (Configs.DEBUG) {
-                                        b.rewind();
-                                        System.out.println("[SERVER] [OUT]: " + Utils.b2h(response.getBuffer().array()));
+                                    Buffer encrypted = Crypto.encrypt(sessionKey, response.getId(), b);
+                                    if (encrypted != null) {
+                                        headers = new Headers(response.getId(), encrypted.capacity(), response.getVersion());
+                                        channel.write(headers.toBuffer().getByteBuffer());
+
+                                        if (Configs.DEBUG) {
+                                            System.out.println("[SERVER] [OUT] msgId: " + headers.getId() + " - len: " + headers.getLength());
+                                        }
+
+                                        channel.write(encrypted.getByteBuffer());
+                                        encrypted.clear();
+
+                                        if (Configs.DEBUG) {
+                                            b.rewind();
+                                            System.out.println("[SERVER] [OUT]: " + Utils.b2h(response.getBuffer().array()));
+                                        }
                                     }
                                 }
                             } else {
@@ -90,10 +101,9 @@ class Server {
                             running = false;
                         }
                     }
-                } catch (InterruptedException | ExecutionException e) {
+
+                } catch (TimeoutException | InterruptedException | ExecutionException e) {
                     e.printStackTrace();
-                } catch (TimeoutException e) {
-                    System.out.println("[SERVER] Connection timed out, closing connection");
                 }
 
                 System.out.println("[SERVER] End of connection");
@@ -103,6 +113,10 @@ class Server {
                     }
                 } catch (IOException e1) {
                     e1.printStackTrace();
+                }
+
+                if (sessionKey != null) {
+                    Crypto.invalidateSession(sessionKey);
                 }
             }
 
