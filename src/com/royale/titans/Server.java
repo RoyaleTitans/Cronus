@@ -23,7 +23,7 @@ class Server {
         listener.accept(null, new CompletionHandler<>() {
             @Override
             public void completed(AsynchronousSocketChannel channel, Object attachment) {
-                listener.accept( null, this );
+                listener.accept(null, this);
 
                 boolean running = true;
 
@@ -32,7 +32,6 @@ class Server {
                     int read = channel.read(buf.getByteBuffer()).get(5, TimeUnit.SECONDS);
 
                     while (read != -1 && running) {
-                        System.out.println("start read_ " + read);
                         if (buf.position() > 2) {
                             buf.flip();
 
@@ -86,9 +85,7 @@ class Server {
 
                             buf.clear();
                             buf = Buffer.allocate(7);
-                            System.out.println("start read2_ " + read);
                             read = channel.read(buf.getByteBuffer()).get(5, TimeUnit.SECONDS);
-                            System.out.println("start read_3 " + read);
                         } else {
                             running = false;
                         }
