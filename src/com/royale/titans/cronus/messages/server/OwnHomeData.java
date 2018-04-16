@@ -22,7 +22,7 @@ public class OwnHomeData extends ServerMessage {
 
     @Override
     public Buffer getBuffer() {
-        Buffer b = Buffer.allocate(9909);
+        Buffer b = Buffer.allocate(8987);
 
         b.writeLong(mClientId);
         b.writeRrsInt(0);
@@ -31,6 +31,7 @@ public class OwnHomeData extends ServerMessage {
         b.writeRrsInt(1705500);
         b.writeInt(1523840711);
         b.writeRrsInt(116);
+
         b.writeRrsInt(5);
 
         for (int i = 0; i < 5; i++) {
@@ -1537,8 +1538,6 @@ public class OwnHomeData extends ServerMessage {
         b.writeRrsInt(77054);
         b.writeRrsInt(1523827857);
         b.writeRrsInt(1852142);
-
-        System.out.println(b.position());
         return b;
     }
 }

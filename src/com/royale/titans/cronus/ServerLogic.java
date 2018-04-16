@@ -7,10 +7,7 @@ import com.royale.titans.cronus.messages.ClientMessage;
 import com.royale.titans.cronus.messages.Configs;
 import com.royale.titans.cronus.messages.Headers;
 import com.royale.titans.cronus.messages.ServerMessage;
-import com.royale.titans.cronus.messages.client.ClientHello;
-import com.royale.titans.cronus.messages.client.ClientKeepAlive;
-import com.royale.titans.cronus.messages.client.ClientStatus;
-import com.royale.titans.cronus.messages.client.Login;
+import com.royale.titans.cronus.messages.client.*;
 import com.royale.titans.cronus.messages.server.*;
 
 import java.security.SecureRandom;
@@ -47,7 +44,6 @@ public class ServerLogic {
     }
 
     public ClientInfo findSession(String sessionKey) {
-        System.out.println("find session plz " + sessionKey);
         return mSessions.get(sessionKey);
     }
 
@@ -67,6 +63,8 @@ public class ServerLogic {
                 return new ClientHello(buffer);
             case 10101:
                 return new Login(buffer);
+            case 10609:
+                return new GetClanInfo(buffer);
             case 11688:
                 return new ClientStatus(buffer);
             case 19911:
@@ -91,6 +89,10 @@ public class ServerLogic {
                 return new ServerMessage[] {
                         new LoginOk(clientInfo.getClientId()),
                         new OwnHomeData(clientInfo.getClientId())
+                };
+            case 10609:
+                return new ServerMessage[] {
+                        new CronusClanInfo()
                 };
             case 19911:
                 return new ServerMessage[] {
