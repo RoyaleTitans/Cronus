@@ -2,13 +2,12 @@ package com.royale.titans.cronus.messages.server;
 
 import com.royale.titans.cronus.lib.Buffer;
 import com.royale.titans.cronus.messages.ServerMessage;
-import com.royale.titans.cronus.messages.client.Login;
 
 public class OwnHomeData extends ServerMessage {
-    private final Login mLogin;
+    private final long mClientId;
 
-    public OwnHomeData(Login login) {
-        mLogin = login;
+    public OwnHomeData(long clientId) {
+        mClientId = clientId;
     }
 
     @Override
@@ -25,7 +24,7 @@ public class OwnHomeData extends ServerMessage {
     public Buffer getBuffer() {
         Buffer b = Buffer.allocate(9909);
 
-        b.writeLong(mLogin.getAccountId());
+        b.writeLong(mClientId);
         b.writeRrsInt(0);
         b.writeRrsInt(1501);
         b.writeRrsInt(257080);

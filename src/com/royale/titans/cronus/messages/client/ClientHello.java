@@ -25,4 +25,8 @@ public class ClientHello extends ClientMessage {
         mAppStore = buffer.readInt();
         mDeviceType = buffer.readInt();
     }
+
+    public String getFringerPrint() {
+        return mFingerprint;
+    }
 }

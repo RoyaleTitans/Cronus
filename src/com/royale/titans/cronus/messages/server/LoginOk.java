@@ -1,14 +1,14 @@
 package com.royale.titans.cronus.messages.server;
 
+import com.royale.titans.cronus.ServerLogic;
 import com.royale.titans.cronus.lib.Buffer;
 import com.royale.titans.cronus.messages.ServerMessage;
-import com.royale.titans.cronus.messages.client.Login;
 
 public class LoginOk extends ServerMessage {
-    private final Login mLogin;
+    private final long mClientId;
 
-    public LoginOk(Login login) {
-        mLogin = login;
+    public LoginOk(long clientId) {
+        mClientId = clientId;
     }
 
     @Override
@@ -24,9 +24,9 @@ public class LoginOk extends ServerMessage {
     @Override
     public Buffer getBuffer() {
         Buffer b = Buffer.allocate(404);
-        b.writeLong(mLogin.getAccountId());
-        b.writeLong(mLogin.getAccountId());
-        b.writeString(mLogin.getToken());
+        b.writeLong(mClientId);
+        b.writeLong(mClientId);
+        b.writeString("");
         b.writeString("");
         b.writeString("");
         b.writeRrsInt(3);

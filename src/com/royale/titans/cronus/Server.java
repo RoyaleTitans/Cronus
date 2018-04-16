@@ -18,15 +18,17 @@ class Server {
     private boolean mRunning = true;
 
     void connect() throws IOException {
+
+        ServerLogic.getInstance().initialize();
+
         final AsynchronousServerSocketChannel listener =
                 AsynchronousServerSocketChannel.open().bind(new InetSocketAddress(9339));
-
         listener.accept(null, new CompletionHandler<>() {
             @Override
             public void completed(AsynchronousSocketChannel channel, Object attachment) {
                 listener.accept(null, this);
 
-                String sessionKey = null;
+                ServerLogic.ClientInfo clientInfo = null;
                 boolean running = true;
 
                 try {
@@ -51,7 +53,7 @@ class Server {
                             }
 
                             buf.flip();
-                            ClientMessage message = ServerLogic.route(headers, buf);
+                            ClientMessage message = ServerLogic.getInstance().route(headers, buf);
 
                             if (message != null) {
                                 Buffer b = message.getBuffer();
@@ -60,18 +62,19 @@ class Server {
                                     System.out.println("[SERVER] [IN] msgId: " + Utils.b2h(b.array()));
                                 }
 
-                                ServerMessage[] handled = ServerLogic.handle(headers, message);
+                                ServerMessage[] handled = ServerLogic.getInstance().handle(clientInfo, headers, message);
 
                                 if (handled != null) {
                                     for (ServerMessage serverMessage : handled) {
                                         if (serverMessage.getId() == 20100) {
-                                            sessionKey = ((ServerHello) serverMessage).getSessioneKey();
+                                            clientInfo = ServerLogic.getInstance().openSession(
+                                                    ((ServerHello) serverMessage).getSessioneKey());
                                         }
 
                                         b = serverMessage.getBuffer();
                                         b.rewind();
 
-                                        Buffer encrypted = Crypto.encrypt(sessionKey, serverMessage.getId(), b);
+                                        Buffer encrypted = Crypto.encrypt(clientInfo, serverMessage.getId(), b);
                                         if (encrypted != null) {
                                             headers = new Headers(serverMessage.getId(),
                                                     encrypted.capacity(),
@@ -121,8 +124,8 @@ class Server {
                     e1.printStackTrace();
                 }
 
-                if (sessionKey != null) {
-                    Crypto.invalidateSession(sessionKey);
+                if (clientInfo != null) {
+                    ServerLogic.getInstance().closeSession(clientInfo.getSessionKey());
                 }
             }
 

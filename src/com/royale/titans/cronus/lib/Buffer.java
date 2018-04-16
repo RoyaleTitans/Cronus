@@ -69,6 +69,12 @@ public class Buffer {
         return mBuffer.get();
     }
 
+    public byte[] read(int len) {
+        byte[] b = new byte[len];
+        read(b, 0, len);
+        return b;
+    }
+
     public void read(byte[] dest, int offset, int len) {
         mBuffer.get(dest, offset, len);
     }

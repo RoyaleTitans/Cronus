@@ -5,6 +5,8 @@ import com.royale.titans.cronus.Utils;
 public class Configs {
     public static final boolean DEBUG = true;
 
+    public static final String FINGERPRINT = "bfc0f440c73556544ede89bfef2b1e5245190993";
+
     public static final byte[] MAGIC_NONCE =
             Utils.h2b("2EF30B5892E0AB07442EF1CFACDFECA015ACF827A7334C6A");
     public static final byte[] MAGIC_KEY =
