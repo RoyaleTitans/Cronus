@@ -175,6 +175,8 @@ public class Buffer {
 
     public void writeString(String value) {
         mBuffer.putInt(value.length());
-        mBuffer.put(value.getBytes(), 0, value.length());
+        if (value.length() > 0) {
+            mBuffer.put(value.getBytes(), 0, value.length());
+        }
     }
 }
