@@ -1,4 +1,4 @@
-package com.royale.titans;
+package com.royale.titans.cronus;
 
 import java.security.SecureRandom;
 

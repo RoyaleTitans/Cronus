@@ -1,4 +1,4 @@
-package com.royale.titans.lib;
+package com.royale.titans.cronus.lib;
 
 public class RrsInt {
     private final int mValue;

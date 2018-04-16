@@ -1,11 +1,9 @@
-package com.royale.titans.messages.client;
+package com.royale.titans.cronus.messages.client;
 
-import com.royale.titans.Utils;
-import com.royale.titans.lib.Buffer;
-import com.royale.titans.lib.RrsInt;
-import com.royale.titans.messages.ClientMessage;
-import com.royale.titans.messages.ServerMessage;
-import com.royale.titans.messages.server.LoginOk;
+import com.royale.titans.cronus.Utils;
+import com.royale.titans.cronus.lib.Buffer;
+import com.royale.titans.cronus.lib.RrsInt;
+import com.royale.titans.cronus.messages.ClientMessage;
 
 public class Login extends ClientMessage {
     private final long mAccountId;

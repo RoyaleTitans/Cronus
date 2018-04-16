@@ -1,6 +1,6 @@
-package com.royale.titans.messages;
+package com.royale.titans.cronus.messages;
 
-import com.royale.titans.Utils;
+import com.royale.titans.cronus.Utils;
 
 public class Configs {
     public static final boolean DEBUG = true;

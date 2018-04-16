@@ -1,4 +1,4 @@
-package com.royale.titans.lib;
+package com.royale.titans.cronus.lib;
 
 import java.nio.ByteBuffer;
 
@@ -124,8 +124,8 @@ public class Buffer {
         mBuffer.rewind();
     }
 
-    public void write(byte b) {
-        mBuffer.put(b);
+    public void write(byte ... bytes) {
+        mBuffer.put(bytes);
     }
 
     public void writeInt(int value) {
@@ -149,14 +149,15 @@ public class Buffer {
         value = (value << 1) ^ (value >> 31);
         value >>>= 0;
 
-        while (value > 0) {
+        while (value != 0) {
             b = (byte) (value & 0x7f);
-            if (value >= 0x80)
+            if (value < 0 || value >= 0x80)
                 b |= 0x80;
             if (rotate) {
                 rotate = false;
-                var lsb = b & 0x1;
-                var msb = (b & 0x80) >> 7;
+                byte lsb = (byte) (b & 0x1);
+                byte msb = (byte) ((b & 0x80) >> 7);
+
                 b = (byte) (b >> 1);
                 b = (byte) (b & ~(0xC0));
                 b = (byte) (b | (msb << 7) | (lsb << 6));

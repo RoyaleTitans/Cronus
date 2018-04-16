@@ -1,6 +1,6 @@
-package com.royale.titans.messages;
+package com.royale.titans.cronus.messages;
 
-import com.royale.titans.lib.Buffer;
+import com.royale.titans.cronus.lib.Buffer;
 
 public class ClientMessage {
     private final Buffer mBuffer;

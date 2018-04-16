@@ -1,6 +1,6 @@
-package com.royale.titans.lib;
+package com.royale.titans.cronus.lib;
 
-import com.royale.titans.messages.Configs;
+import com.royale.titans.cronus.messages.Configs;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

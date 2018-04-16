@@ -1,8 +1,8 @@
-package com.royale.titans.messages.server;
+package com.royale.titans.cronus.messages.server;
 
-import com.royale.titans.Utils;
-import com.royale.titans.lib.Buffer;
-import com.royale.titans.messages.ServerMessage;
+import com.royale.titans.cronus.Utils;
+import com.royale.titans.cronus.lib.Buffer;
+import com.royale.titans.cronus.messages.ServerMessage;
 
 public class ServerHello extends ServerMessage {
 

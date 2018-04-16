@@ -1,15 +1,15 @@
-package com.royale.titans;
+package com.royale.titans.cronus;
 
-import com.royale.titans.lib.Buffer;
-import com.royale.titans.lib.Crypto;
-import com.royale.titans.messages.ClientMessage;
-import com.royale.titans.messages.Headers;
-import com.royale.titans.messages.ServerMessage;
-import com.royale.titans.messages.client.ClientHello;
-import com.royale.titans.messages.client.Login;
-import com.royale.titans.messages.server.LoginOk;
-import com.royale.titans.messages.server.OwnHomeData;
-import com.royale.titans.messages.server.ServerHello;
+import com.royale.titans.cronus.lib.Buffer;
+import com.royale.titans.cronus.lib.Crypto;
+import com.royale.titans.cronus.messages.ClientMessage;
+import com.royale.titans.cronus.messages.Headers;
+import com.royale.titans.cronus.messages.ServerMessage;
+import com.royale.titans.cronus.messages.client.ClientHello;
+import com.royale.titans.cronus.messages.client.Login;
+import com.royale.titans.cronus.messages.server.LoginOk;
+import com.royale.titans.cronus.messages.server.OwnHomeData;
+import com.royale.titans.cronus.messages.server.ServerHello;
 
 public class ServerLogic {
 
@@ -37,7 +37,7 @@ public class ServerLogic {
             case 10101:
                 return new ServerMessage[] {
                         new LoginOk((Login) clientMessage),
-                        new OwnHomeData()
+                        new OwnHomeData((Login) clientMessage)
                 };
         }
 

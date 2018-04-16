@@ -1,4 +1,4 @@
-package com.royale.titans.lib;
+package com.royale.titans.cronus.lib;
 
 import ove.crypto.digest.Blake2b;
 

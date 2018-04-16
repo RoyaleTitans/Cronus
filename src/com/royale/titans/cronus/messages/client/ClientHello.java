@@ -1,7 +1,7 @@
-package com.royale.titans.messages.client;
+package com.royale.titans.cronus.messages.client;
 
-import com.royale.titans.lib.Buffer;
-import com.royale.titans.messages.ClientMessage;
+import com.royale.titans.cronus.lib.Buffer;
+import com.royale.titans.cronus.messages.ClientMessage;
 
 public class ClientHello extends ClientMessage {
     private final int mProtocol;

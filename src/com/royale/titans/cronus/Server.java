@@ -1,9 +1,9 @@
-package com.royale.titans;
+package com.royale.titans.cronus;
 
-import com.royale.titans.lib.Buffer;
-import com.royale.titans.lib.Crypto;
-import com.royale.titans.messages.*;
-import com.royale.titans.messages.server.ServerHello;
+import com.royale.titans.cronus.lib.Buffer;
+import com.royale.titans.cronus.lib.Crypto;
+import com.royale.titans.cronus.messages.*;
+import com.royale.titans.cronus.messages.server.ServerHello;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -106,9 +106,10 @@ class Server {
                             running = false;
                         }
                     }
-
-                } catch (TimeoutException | InterruptedException | ExecutionException e) {
+                } catch (InterruptedException | ExecutionException e) {
                     e.printStackTrace();
+                } catch (TimeoutException ignored) {
+                    // Client disconnected
                 }
 
                 System.out.println("[SERVER] End of connection");
