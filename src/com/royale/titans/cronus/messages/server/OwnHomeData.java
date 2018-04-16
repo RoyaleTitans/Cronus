@@ -1,12 +1,8 @@
 package com.royale.titans.cronus.messages.server;
 
-import com.royale.titans.cronus.Utils;
 import com.royale.titans.cronus.lib.Buffer;
 import com.royale.titans.cronus.messages.ServerMessage;
 import com.royale.titans.cronus.messages.client.Login;
-import jdk.jfr.Unsigned;
-
-import java.util.Arrays;
 
 public class OwnHomeData extends ServerMessage {
     private final Login mLogin;
