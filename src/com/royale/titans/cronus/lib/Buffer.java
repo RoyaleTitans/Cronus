@@ -3,7 +3,6 @@ package com.royale.titans.cronus.lib;
 import java.nio.ByteBuffer;
 
 public class Buffer {
-    private static final int[] sShift = { 0, 7, 14, 21, 28 };
     private final ByteBuffer mBuffer;
 
     public static Buffer allocate(int size) {
@@ -15,6 +14,12 @@ public class Buffer {
         ByteBuffer byteBuffer = ByteBuffer.wrap(bytes);
         return new Buffer(byteBuffer);
     }
+
+    public static Buffer newBuffer() {
+        ByteBuffer byteBuffer = ByteBuffer.allocate(4096);
+        return new Buffer(byteBuffer);
+    }
+
 
     public Buffer(ByteBuffer byteBuffer) {
         mBuffer = byteBuffer;
@@ -34,19 +39,6 @@ public class Buffer {
 
     public void clear() {
         mBuffer.clear();
-    }
-
-    private int decodeVarInt() {
-        int out = 0;
-        for (int i = 0; i < mBuffer.limit(); ++i) {
-            byte b = mBuffer.get(i);
-            if (i + 1 != mBuffer.limit()) {
-                b = (byte) (0x80 ^ b);
-            }
-
-            out |= b << sShift[i];
-        }
-        return (out >>> 1) ^ -(out & 1);
     }
 
     public void flip() {
@@ -128,6 +120,12 @@ public class Buffer {
 
     public void rewind() {
         mBuffer.rewind();
+    }
+
+    public Buffer strip() {
+        byte[] b = new byte[mBuffer.position()];
+        read(b, 0, b.length);
+        return wrap(b);
     }
 
     public void write(byte ... bytes) {

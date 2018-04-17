@@ -22,7 +22,7 @@ public class LoginOk extends ServerMessage {
 
     @Override
     public Buffer getBuffer() {
-        Buffer b = Buffer.allocate(307);
+        Buffer b = Buffer.newBuffer();
         b.writeLong(mClientId);
         b.writeLong(mClientId);
         b.writeString("");
