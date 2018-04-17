@@ -142,7 +142,7 @@ public class Buffer {
         mBuffer.putLong(value);
     }
 
-    public int writeRrsInt(int value) {
+    public int writeRrsInt(long value) {
         if (value == 0) {
             write((byte) 0);
             return 1;

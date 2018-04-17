@@ -8,6 +8,7 @@ import com.royale.titans.cronus.messages.Configs;
 import com.royale.titans.cronus.messages.Headers;
 import com.royale.titans.cronus.messages.ServerMessage;
 import com.royale.titans.cronus.messages.client.*;
+import com.royale.titans.cronus.messages.client.AskForAvatarStreamMessage;
 import com.royale.titans.cronus.messages.server.*;
 
 import java.security.SecureRandom;
@@ -18,7 +19,7 @@ public class ServerLogic {
 
     private final ConcurrentHashMap<String, ClientInfo> mSessions;
 
-    public static synchronized ServerLogic getInstance() {
+    static synchronized ServerLogic getInstance() {
         if (sInstance == null) {
             sInstance = new ServerLogic();
         }
@@ -47,15 +48,9 @@ public class ServerLogic {
         return mSessions.get(sessionKey);
     }
 
-    ClientMessage route(Headers headers, Buffer buffer) {
+    ClientMessage route(ClientInfo info, Headers headers, Buffer buffer) {
         if (headers.getId() != 10100) {
-            if (headers.getId() == 10101) {
-                buffer = Crypto.decryptLogin(buffer);
-
-                if (buffer == null) {
-                    return null;
-                }
-            }
+            buffer = Crypto.decrypt(info, headers.getId(),buffer);
         }
 
         switch (headers.getId()) {
@@ -67,6 +62,10 @@ public class ServerLogic {
                 return new GetClanInfo(buffer);
             case 11688:
                 return new ClientStatus(buffer);
+            case 15827:
+                return new AskForBattleReplayStream(buffer);
+            case 17101:
+                return new AskForAvatarStreamMessage(buffer);
             case 19911:
                 return new ClientKeepAlive(buffer);
         }
@@ -92,14 +91,14 @@ public class ServerLogic {
                 };
             case 10609:
                 return new ServerMessage[] {
-                        new CronusClanInfo()
+                        new CronusClanInfo(),
                 };
+            case 11688:
+                return new ServerMessage[0];
             case 19911:
                 return new ServerMessage[] {
                         new ServerKeepAlive()
                 };
-            case 11688:
-                return new ServerMessage[0];
         }
 
         return null;

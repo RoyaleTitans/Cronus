@@ -53,7 +53,7 @@ class Server {
                             }
 
                             buf.flip();
-                            ClientMessage message = ServerLogic.getInstance().route(headers, buf);
+                            ClientMessage message = ServerLogic.getInstance().route(clientInfo, headers, buf);
 
                             if (message != null) {
                                 Buffer b = message.getBuffer();
@@ -73,8 +73,8 @@ class Server {
 
                                         b = serverMessage.getBuffer();
                                         b.rewind();
-
                                         Buffer encrypted = Crypto.encrypt(clientInfo, serverMessage.getId(), b);
+
                                         if (encrypted != null) {
                                             headers = new Headers(serverMessage.getId(),
                                                     encrypted.capacity(),

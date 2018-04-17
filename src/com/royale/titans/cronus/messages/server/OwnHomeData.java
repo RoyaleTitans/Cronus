@@ -22,14 +22,14 @@ public class OwnHomeData extends ServerMessage {
 
     @Override
     public Buffer getBuffer() {
-        Buffer b = Buffer.allocate(8987);
+        Buffer b = Buffer.allocate(8988);
 
         b.writeLong(mClientId);
         b.writeRrsInt(0);
         b.writeRrsInt(1501);
         b.writeRrsInt(257080);
         b.writeRrsInt(1705500);
-        b.writeInt(1523840711);
+        b.writeRrsInt(System.currentTimeMillis() / 1000);
         b.writeRrsInt(116);
 
         b.writeRrsInt(5);

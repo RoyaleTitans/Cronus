@@ -39,7 +39,6 @@ public class CronusClanInfo extends ServerMessage {
         b.writeRrsInt(0);
         b.writeRrsInt(0);
 
-        System.out.println(b.position());
         return b;
     }
 }

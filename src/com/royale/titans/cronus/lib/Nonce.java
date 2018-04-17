@@ -4,26 +4,15 @@ import ove.crypto.digest.Blake2b;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import java.security.SecureRandom;
 
 public class Nonce {
     private byte[] mBytes;
-
-    public Nonce() {
-        mBytes = new byte[24];
-        SecureRandom r = new SecureRandom();
-        r.nextBytes(mBytes);
-    }
 
     public Nonce(byte[] nonce) {
         mBytes = nonce;
     }
 
-    public Nonce(byte[] clientKey, byte[] serverKey) {
-        this(clientKey, serverKey, null);
-    }
-
-    public Nonce(byte[] clientKey, byte[] serverKey, byte[] nonce) {
+    Nonce(byte[] clientKey, byte[] serverKey, byte[] nonce) {
         final Blake2b hash = Blake2b.Digest.newInstance(24);
         if (nonce != null) {
             hash.update(nonce);
@@ -35,7 +24,7 @@ public class Nonce {
         mBytes = hash.digest();
     }
 
-    public void increment() {
+    void increment() {
         ByteBuffer buffer = ByteBuffer.wrap(mBytes, 0, 2);
         buffer.order(ByteOrder.LITTLE_ENDIAN);
         short val = buffer.getShort(0);
@@ -46,8 +35,7 @@ public class Nonce {
         mBytes[1] = buffer.get(1);
     }
 
-    public byte[] getBytes() {
+    byte[] getBytes() {
         return mBytes;
     }
 }
-

@@ -10,29 +10,31 @@ import java.util.Arrays;
 public class Crypto {
     private static final byte[] NULL = new byte[32];
 
-    public static Buffer decryptLogin(Buffer buffer) {
-        Buffer loginDecrypted = Buffer.wrap(TweetNaCl.crypto_box_open(
-                Arrays.copyOfRange(buffer.array(), 32, buffer.capacity()),
-                Configs.MAGIC_NONCE,
-                Configs.MAGIC_KEY));
-        byte[] sessionKey = loginDecrypted.read(24);
-        byte[] sNonce = loginDecrypted.read(24);
-
-        ServerLogic.ClientInfo info = ServerLogic.getInstance().findSession(new String(sessionKey));
+    public static Buffer decrypt(ServerLogic.ClientInfo info, int id, Buffer buffer) {
         if (info == null) {
             return null;
         }
 
-        info.setNonce(new Nonce(sNonce));
-
-        return loginDecrypted;
+        if (id == 10101) {
+            Buffer loginDecrypted = Buffer.wrap(TweetNaCl.crypto_box_open(
+                    Arrays.copyOfRange(buffer.array(), 32, buffer.capacity()),
+                    Configs.MAGIC_NONCE,
+                    Configs.MAGIC_KEY));
+            loginDecrypted.read(24);
+            byte[] sNonce = loginDecrypted.read(24);
+            info.setNonce(new Nonce(sNonce));
+            return loginDecrypted;
+        } else {
+            info.sNonce().increment();
+            if (buffer.capacity() == 0) {
+                return buffer;
+            }
+            return Buffer.wrap(TweetNaCl.crypto_box(buffer.array(),
+                    info.sNonce().getBytes(), NULL));
+        }
     }
 
     public static Buffer encrypt(ServerLogic.ClientInfo info, int messageId, Buffer buffer) {
-        if (buffer.capacity() == 0) {
-            return buffer;
-        }
-
         if (messageId == 20100 || messageId == 20103) {
             return buffer;
         } else if (messageId == 22280) {
@@ -44,7 +46,8 @@ public class Crypto {
                 byteArrayOutputStream.write(NULL);
                 byteArrayOutputStream.write(buffer.array());
                 byte[] p = byteArrayOutputStream.toByteArray();
-                return Buffer.wrap(TweetNaCl.crypto_box(p, nonce.getBytes(),
+                return Buffer.wrap(TweetNaCl.crypto_box(p,
+                        nonce.getBytes(),
                         Configs.MAGIC_KEY));
             } catch (IOException ignored) {
                 return null;
