@@ -1,7 +1,10 @@
 package com.royale.titans.cronus.messages.server;
 
 import com.royale.titans.cronus.lib.Buffer;
+import com.royale.titans.cronus.CRUtils;
 import com.royale.titans.cronus.messages.ServerMessage;
+
+import java.util.Random;
 
 public class OwnHomeData extends ServerMessage {
     private final long mClientId;
@@ -22,7 +25,7 @@ public class OwnHomeData extends ServerMessage {
 
     @Override
     public Buffer getBuffer() {
-        Buffer b = Buffer.allocate(8988);
+        Buffer b = Buffer.allocate(12000);
 
         b.writeLong(mClientId);
         b.writeRrsInt(0);
@@ -32,19 +35,7 @@ public class OwnHomeData extends ServerMessage {
         b.writeRrsInt(System.currentTimeMillis() / 1000);
         b.writeRrsInt(116);
 
-        b.writeRrsInt(5);
-
-        for (int i = 0; i < 5; i++) {
-            b.writeRrsInt(8);
-            b.writeRrsInt(26000009);
-            b.writeRrsInt(27000007);
-            b.writeRrsInt(28000012);
-            b.writeRrsInt(28000006);
-            b.writeRrsInt(26000026);
-            b.writeRrsInt(26000027);
-            b.writeRrsInt(26000039);
-            b.writeRrsInt(26000032);
-        }
+        writeDecks(b);
 
         b.write((byte) -1);
 
@@ -179,7 +170,17 @@ public class OwnHomeData extends ServerMessage {
         b.writeString("");
         b.writeString("");
         b.writeString("Reddit Decks Challenge Practice");
-        b.writeString("{\"GameMode\":\"BlindDeck\",\"Casual\":true,\"Title\":\"Practice\",\"FreePass\":1,\"Rewards\":[{},{},{},{\"Milestone\":{\"Type\":\"Gold\",\"Amount\":250}},{},{},{\"Milestone\":{\"Type\":\"Gold\",\"Amount\":500}},{},{},{\"Milestone\":{\"IsHighlighted\":true,\"Type\":\"Gold\",\"Amount\":750}}],\"IconExportName\":\"icon_tournament_blind_deck\",\"WinIconExportName\":\"tournament_open_wins_badge_blind\",\"Arena\":\"All\",\"Subtitle\":\"This is how it works\",\"Subtitle_Short\":\"Play with decks created by the community\",\"Description\":\"Play in the Practice round with decks created and chosen by Clash Royale Reddit Community! Get 9 crowns to unlock the Challenge!\",\"UnlockedForXP\":\"Everyone\",\"Casual_CrownsInsteadOfWins\":true,\"IsChainedEvent\":true,\"IsDailyRefresh\":false,\"LocationOverride\":\"None\",\"Background\":{\"Path\":\"/ce07d77b-5b5b-4ae4-bcbc-173e6d48900e_reddit_challenge_1.png\",\"Checksum\":\"114cb1306a4e425c7b4d1ade4265e803\",\"File\":\"reddit_challenge_1.png\"},\"Background_Complete\":{\"Path\":\"/90e64a7f-d7b1-4ef6-8650-d5f60cd1b26b_reddit_challenge_complete_1.png\",\"Checksum\":\"5efe8bf3c7be20be41ec8994a303738c\",\"File\":\"reddit_challenge_complete_1.png\"}}");
+        b.writeString("{\"GameMode\":\"BlindDeck\",\"Casual\":true,\"Title\":\"Practice\",\"FreePass\":1,\"Rewards\":[{},{},{}," +
+                "{\"Milestone\":{\"Type\":\"Gold\",\"Amount\":250}},{},{},{\"Milestone\":{\"Type\":\"Gold\",\"Amount\":500}},{},{}," +
+                "{\"Milestone\":{\"IsHighlighted\":true,\"Type\":\"Gold\",\"Amount\":750}}]," +
+                "\"IconExportName\":\"icon_tournament_blind_deck\",\"WinIconExportName\":\"tournament_open_wins_badge_blind\"," +
+                "\"Arena\":\"All\",\"Subtitle\":\"This is how it works\",\"Subtitle_Short\":\"Play with decks created by the community\"," +
+                "\"Description\":\"Play in the Practice round with decks created and chosen by Clash Royale Reddit Community! Get 9 crowns to unlock the Challenge!\"," +
+                "\"UnlockedForXP\":\"Everyone\",\"Casual_CrownsInsteadOfWins\":true,\"IsChainedEvent\":true," +
+                "\"IsDailyRefresh\":false,\"LocationOverride\":\"None\"," +
+                "\"Background\":{\"Path\":\"/ce07d77b-5b5b-4ae4-bcbc-173e6d48900e_reddit_challenge_1.png\",\"Checksum\":\"114cb1306a4e425c7b4d1ade4265e803\"" +
+                ",\"File\":\"reddit_challenge_1.png\"},\"Background_Complete\":{\"Path\":\"/90e64a7f-d7b1-4ef6-8650-d5f60cd1b26b_reddit_challenge_complete_1.png\"" +
+                ",\"Checksum\":\"5efe8bf3c7be20be41ec8994a303738c\",\"File\":\"reddit_challenge_complete_1.png\"}}");
         b.write((byte) 0);
 
         b.writeRrsInt(1358);
@@ -191,7 +192,19 @@ public class OwnHomeData extends ServerMessage {
         b.writeString("");
         b.writeString("");
         b.writeString("Reddit Decks Challenge");
-        b.writeString("{\"GameMode\":\"BlindDeck\",\"Casual\":false,\"Title\":\"Challenge\",\"FreePass\":1,\"Rewards\":[{\"Gold\":130,\"Cards\":2},{\"Gold\":180,\"Cards\":3},{\"Gold\":240,\"Cards\":5},{\"Gold\":310,\"Milestone\":{\"Type\":\"Gold\",\"Amount\":1000},\"Cards\":8},{\"Gold\":390,\"Cards\":12},{\"Gold\":480,\"Cards\":17},{\"Gold\":590,\"Milestone\":{\"Type\":\"RandomSpell\",\"Amount\":3,\"RandomSpell\":\"Epic\"},\"Cards\":23},{\"Gold\":720,\"Cards\":30},{\"Gold\":880,\"Cards\":38},{\"Gold\":1100,\"Milestone\":{\"IsHighlighted\":true,\"Chest\":\"Magic_<max_arena>\",\"Type\":\"Chest\"},\"Cards\":50}],\"IconExportName\":\"icon_tournament_blind_deck\",\"WinIconExportName\":\"tournament_open_wins_badge_blind\",\"Arena\":\"All\",\"Subtitle\":\"This is how it works\",\"Subtitle_Short\":\"Play with decks created by the community\",\"Description\":\"Play with decks created and chosen by Clash Royale Reddit Community! Get 9 wins to complete the Reddit Decks Challenge!\",\"UnlockedForXP\":\"Experienced\",\"IsChainedEvent\":true,\"IsDailyRefresh\":false,\"LocationOverride\":\"None\",\"Background\":{\"Path\":\"/bd0b0603-b38d-4951-9576-ed384e26c222_reddit_challenge_2.png\",\"Checksum\":\"830945552646c95221750c65cef585f3\",\"File\":\"reddit_challenge_2.png\"},\"Background_Complete\":{\"Path\":\"/e4698e1e-ba72-4528-97ed-3f8d0ef3ac8e_reddit_challenge_complete_2.png\",\"Checksum\":\"64e3c1ad92a4903cc07a8fdf3723bb88\",\"File\":\"reddit_challenge_complete_2.png\"},\"JoinCost\":10,\"JoinCostResource\":\"Gems\",\"MaxLosses\":3}");
+        b.writeString("{\"GameMode\":\"BlindDeck\",\"Casual\":false,\"Title\":\"Challenge\",\"FreePass\":1,\"Rewards\":" +
+                "[{\"Gold\":130,\"Cards\":2},{\"Gold\":180,\"Cards\":3},{\"Gold\":240,\"Cards\":5},{\"Gold\":310,\"Milestone\":" +
+                "{\"Type\":\"Gold\",\"Amount\":1000},\"Cards\":8},{\"Gold\":390,\"Cards\":12},{\"Gold\":480,\"Cards\":17},{\"Gold\":590,\"Milestone\"" +
+                ":{\"Type\":\"RandomSpell\",\"Amount\":3,\"RandomSpell\":\"Epic\"},\"Cards\":23},{\"Gold\":720,\"Cards\":30},{\"Gold\":880,\"Cards\":38}," +
+                "{\"Gold\":1100,\"Milestone\":{\"IsHighlighted\":true,\"Chest\":\"Magic_<max_arena>\",\"Type\":\"Chest\"},\"Cards\":50}],\"IconExportName\"" +
+                ":\"icon_tournament_blind_deck\",\"WinIconExportName\":\"tournament_open_wins_badge_blind\",\"Arena\":\"All\",\"Subtitle\":\"This is how it works\"," +
+                "\"Subtitle_Short\":\"Play with decks created by the community\"," +
+                "\"Description\":\"Play with decks created and chosen by Clash Royale Reddit Community! Get 9 wins to complete the Reddit Decks Challenge!\"," +
+                "\"UnlockedForXP\":\"Experienced\",\"IsChainedEvent\":true,\"IsDailyRefresh\":false,\"LocationOverride\":\"None\"," +
+                "\"Background\":{\"Path\":\"/bd0b0603-b38d-4951-9576-ed384e26c222_reddit_challenge_2.png\",\"Checksum\":\"830945552646c95221750c65cef585f3\"," +
+                "\"File\":\"reddit_challenge_2.png\"},\"Background_Complete\":{\"Path\":\"/e4698e1e-ba72-4528-97ed-3f8d0ef3ac8e_reddit_challenge_complete_2.png\"," +
+                "\"Checksum\":\"64e3c1ad92a4903cc07a8fdf3723bb88\",\"File\":\"reddit_challenge_complete_2.png\"}," +
+                "\"JoinCost\":10,\"JoinCostResource\":\"Gems\",\"MaxLosses\":3}");
         b.write((byte) 0);
 
         b.writeRrsInt(1359);
@@ -215,7 +228,9 @@ public class OwnHomeData extends ServerMessage {
         b.writeString("");
         b.writeString("");
         b.writeString("Reddit Decks Challenge Quest");
-        b.writeString("{\"Title\":\"Reddit Decks Challenge Quest\",\"Info\":\"Get 9 Crowns in Reddit Decks Challenge\",\"Count\":9,\"Target_MinXPLevel\":8,\"Points\":20,\"ChronosQuestRewards\":[{\"Type\":\"Rare\",\"Count\":10}],\"QuestType\":\"Win\",\"Win\":{\"Type\":\"Crowns\",\"Events\":[1357,1358]}}");
+        b.writeString("{\"Title\":\"Reddit Decks Challenge Quest\",\"Info\":\"Get 9 Crowns in Reddit Decks Challenge\"," +
+                "\"Count\":9,\"Target_MinXPLevel\":8,\"Points\":20,\"ChronosQuestRewards\":[{\"Type\":\"Rare\",\"Count\":10}]," +
+                "\"QuestType\":\"Win\",\"Win\":{\"Type\":\"Crowns\",\"Events\":[1357,1358]}}");
         b.write((byte) 0);
 
         b.writeRrsInt(1361);
@@ -227,7 +242,9 @@ public class OwnHomeData extends ServerMessage {
         b.writeString("");
         b.writeString("");
         b.writeString("Reddit Decks Challenge Page");
-        b.writeString("{\"Image\":{\"Path\":\"/759c963f-1440-4a62-a553-d1cf7db80122_reddit_challenge_header.png\",\"Checksum\":\"9dd329cf5898a7b3cea7bacf99e30753\",\"File\":\"reddit_challenge_header.png\"},\"Title\":\"Special Events\",\"Icon\":\"icon_tournament_blind_deck\",\"TitleGlow\":true}");
+        b.writeString("{\"Image\":{\"Path\":\"/759c963f-1440-4a62-a553-d1cf7db80122_reddit_challenge_header.png\"," +
+                "\"Checksum\":\"9dd329cf5898a7b3cea7bacf99e30753\",\"File\":\"reddit_challenge_header.png\"}," +
+                "\"Title\":\"Special Events\",\"Icon\":\"icon_tournament_blind_deck\",\"TitleGlow\":true}");
         b.write((byte) 0);
 
         b.writeRrsInt(1362);
@@ -239,7 +256,23 @@ public class OwnHomeData extends ServerMessage {
         b.writeString("");
         b.writeString("");
         b.writeString("2v2 Touchdown Challenge");
-        b.writeString("{\"GameMode\":\"TeamVsTeam_Touchdown_Draft\",\"JoinCost\":50,\"Title\":\"2v2 Touchdown Challenge\",\"FreePass\":1,\"JoinCostResource\":\"Gems\",\"MaxLosses\":3,\"Rewards\":[{\"Gold\":350,\"Cards\":5},{\"Gold\":475,\"Cards\":8},{\"Gold\":625,\"Cards\":13},{\"Gold\":800,\"Milestone\":{\"Type\":\"Gold\",\"Amount\":2000},\"Cards\":21},{\"Gold\":1000,\"Cards\":32},{\"Gold\":1250,\"Milestone\":{\"Type\":\"Gold\",\"Amount\":4000},\"Cards\":46},{\"Gold\":1550,\"Cards\":63},{\"Gold\":1900,\"Milestone\":{\"Chest\":\"Giant_<max_arena>\",\"Type\":\"Chest\"},\"Cards\":83},{\"Gold\":2350,\"Cards\":108},{\"Gold\":3000,\"Milestone\":{\"IsHighlighted\":true,\"Type\":\"Gold\",\"Amount\":20000},\"Cards\":150}],\"IconExportName\":\"icon_tournament_touchdown\",\"WinIconExportName\":\"tournament_open_wins_badge_bronze\",\"Arena\":\"Arena_TouchdownTest\",\"Description\":\"Get a troop into your opponents end zone to score a Crown. Win by getting three Crowns! Collect all rewards at 9 wins. 3 losses and you are out.\",\"EndNotification\":\"2v2 Touchdown Challenge ends in two hours!\",\"Background\":{\"Path\":\"/d581bea7-2761-456a-b01e-a8e9f18fa507_touchdown_challenge_02_6666_alpha_premul.png\",\"Checksum\":\"95abfeb72f54176a55d411b20215843f\",\"File\":\"touchdown_challenge_02_6666_alpha_premul.png\"},\"Background_Complete\":{\"Path\":\"/375cede0-ce6c-407e-885b-dd0dde0993d3_touchdown_challenge_02_6666_alpha_premul.png\",\"Checksum\":\"95abfeb72f54176a55d411b20215843f\",\"File\":\"touchdown_challenge_02_6666_alpha_premul.png\"},\"UnlockedForXP\":\"Experienced\",\"DraftDeck\":\"Draft_Touchdown_v1\",\"Subtitle\":\"This is how it works\",\"StartNotification\":\"2v2 Touchdown Challenge has started! Play with your Friend or a random person!\",\"Subtitle_Short\":\"Get 9 Wins to Unlock All the Rewards!\"}");
+        b.writeString("{\"GameMode\":\"TeamVsTeam_Touchdown_Draft\",\"JoinCost\":50,\"Title\":\"2v2 Touchdown Challenge\"," +
+                "\"FreePass\":1,\"JoinCostResource\":\"Gems\",\"MaxLosses\":3,\"Rewards\":[{\"Gold\":350,\"Cards\":5}," +
+                "{\"Gold\":475,\"Cards\":8},{\"Gold\":625,\"Cards\":13},{\"Gold\":800,\"Milestone\":{" +
+                "\"Type\":\"Gold\",\"Amount\":2000},\"Cards\":21},{\"Gold\":1000,\"Cards\":32},{\"Gold\":1250,\"Milestone\":{" +
+                "\"Type\":\"Gold\",\"Amount\":4000},\"Cards\":46},{\"Gold\":1550,\"Cards\":63},{\"Gold\":1900,\"Milestone\":{" +
+                "\"Chest\":\"Giant_<max_arena>\",\"Type\":\"Chest\"},\"Cards\":83},{\"Gold\":2350,\"Cards\":108},{\"Gold\":3000," +
+                "\"Milestone\":{\"IsHighlighted\":true,\"Type\":\"Gold\",\"Amount\":20000},\"Cards\":150}],\"IconExportName\":\"icon_tournament_touchdown\"," +
+                "\"WinIconExportName\":\"tournament_open_wins_badge_bronze\",\"Arena\":\"Arena_TouchdownTest\",\"Description\":" +
+                "\"Get a troop into your opponents end zone to score a Crown. Win by getting three Crowns! Collect all rewards at 9 wins. 3 losses and you are out.\"," +
+                "\"EndNotification\":\"2v2 Touchdown Challenge ends in two hours!\",\"Background\":{\"Path\":" +
+                "\"/d581bea7-2761-456a-b01e-a8e9f18fa507_touchdown_challenge_02_6666_alpha_premul.png\",\"Checksum\":\"95abfeb72f54176a55d411b20215843f\"," +
+                "\"File\":\"touchdown_challenge_02_6666_alpha_premul.png\"},\"Background_Complete\":{\"Path\":\"" +
+                "/375cede0-ce6c-407e-885b-dd0dde0993d3_touchdown_challenge_02_6666_alpha_premul.png\",\"Checksum\":\"95abfeb72f54176a55d411b20215843f\"," +
+                "\"File\":\"touchdown_challenge_02_6666_alpha_premul.png\"},\"UnlockedForXP\":\"Experienced\"," +
+                "\"DraftDeck\":\"Draft_Touchdown_v1\",\"Subtitle\":\"This is how it works\"," +
+                "\"StartNotification\":\"2v2 Touchdown Challenge has started! Play with your Friend or a random person!\"," +
+                "\"Subtitle_Short\":\"Get 9 Wins to Unlock All the Rewards!\"}");
         b.write((byte) 0);
 
         b.writeRrsInt(1363);
@@ -251,7 +284,9 @@ public class OwnHomeData extends ServerMessage {
         b.writeString("");
         b.writeString("");
         b.writeString("2v2 Touchdown Event Icon and Header");
-        b.writeString("{\"Title\":\"Touchdown Weekend!\",\"TitleGlow\":true,\"Icon\":\"icon_tournament_touchdown\",\"Image\":{\"Path\":\"/0469b4db-5951-4ae3-b72a-64317e82eb06_touchdown_header_iphonex.png\",\"Checksum\":\"6b876ef81d673e56ebdb32b2345558b5\",\"File\":\"touchdown_header_iphonex.png\"}}");
+        b.writeString("{\"Title\":\"Touchdown Weekend!\",\"TitleGlow\":true,\"Icon\":\"icon_tournament_touchdown\"," +
+                "\"Image\":{\"Path\":\"/0469b4db-5951-4ae3-b72a-64317e82eb06_touchdown_header_iphonex.png\"," +
+                "\"Checksum\":\"6b876ef81d673e56ebdb32b2345558b5\",\"File\":\"touchdown_header_iphonex.png\"}}");
         b.write((byte) 0);
 
         b.write((byte) 0);
@@ -1539,5 +1574,21 @@ public class OwnHomeData extends ServerMessage {
         b.writeRrsInt(1523827857);
         b.writeRrsInt(1852142);
         return b;
+    }
+
+    private void writeDecks(Buffer b) {
+        Random r = new Random();
+        b.writeRrsInt(5);
+        for (int i = 0; i < 5; i++) {
+            b.writeRrsInt(8);
+            b.writeRrsInt(CRUtils.randomCard());
+            b.writeRrsInt(CRUtils.randomCard());
+            b.writeRrsInt(CRUtils.randomCard());
+            b.writeRrsInt(CRUtils.randomCard());
+            b.writeRrsInt(CRUtils.randomCard());
+            b.writeRrsInt(CRUtils.randomCard());
+            b.writeRrsInt(CRUtils.randomCard());
+            b.writeRrsInt(CRUtils.randomCard());
+        }
     }
 }
