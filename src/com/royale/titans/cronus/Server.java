@@ -49,7 +49,7 @@ class Server {
                             buf = Buffer.allocate(headers.getLength());
                             read = 0;
                             while (read != headers.getLength()) {
-                                read = channel.read(buf.getByteBuffer()).get(5, TimeUnit.SECONDS);
+                                read = channel.read(buf.getByteBuffer()).get(10, TimeUnit.SECONDS);
                             }
 
                             buf.flip();
@@ -104,7 +104,7 @@ class Server {
 
                             buf.clear();
                             buf = Buffer.allocate(7);
-                            read = channel.read(buf.getByteBuffer()).get(5, TimeUnit.SECONDS);
+                            read = channel.read(buf.getByteBuffer()).get(10, TimeUnit.SECONDS);
                         } else {
                             running = false;
                         }

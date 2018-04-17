@@ -76,11 +76,11 @@ public class ServerLogic {
         switch (headers.getId()) {
             case 10100:
                 if (!((ClientHello) clientMessage).getFringerPrint().equals(Configs.FINGERPRINT)) {
-                    return new ServerMessage[]{
+                    return new ServerMessage[] {
                             new LoginFailed(7)
                     };
                 } else {
-                    return new ServerMessage[]{
+                    return new ServerMessage[] {
                             new ServerHello()
                     };
                 }
@@ -91,9 +91,10 @@ public class ServerLogic {
                 };
             case 10609:
                 return new ServerMessage[] {
-                        new CronusClanInfo(),
+                        new CronusClanInfo()
                 };
             case 11688:
+            case 17101:
                 return new ServerMessage[0];
             case 19911:
                 return new ServerMessage[] {
