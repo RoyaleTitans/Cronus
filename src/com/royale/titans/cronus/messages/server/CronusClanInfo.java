@@ -17,7 +17,7 @@ public class CronusClanInfo extends ServerMessage {
 
     @Override
     public Buffer getBuffer() {
-        Buffer b = Buffer.allocate(4024);
+        Buffer b = Buffer.newBuffer();
         b.writeLong(0);
         b.writeString("Cronus");
 
@@ -38,7 +38,7 @@ public class CronusClanInfo extends ServerMessage {
         b.writeRrsInt(57);
         b.writeRrsInt(120);
         b.writeRrsInt(0);
-        b.writeString("stiamo reclutando! poche regole, 20 corone e donare! forza! scalata top clan 200 \uD83D\uDE0E\uD83D\uDCAA\uD83C\uDFFB\uD83D\uDCAA\uD83C\uDFFB\uD83D\uDD1D");
+        b.writeString("Cronus OS Server");
 
         b.writeRrsInt(0);
 

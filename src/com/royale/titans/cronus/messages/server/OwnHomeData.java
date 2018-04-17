@@ -37,7 +37,7 @@ public class OwnHomeData extends ServerMessage {
 
         writeDecks(b);
 
-        b.write((byte) -1);
+            b.write((byte) -1);
 
         b.writeRrsInt(16);
         b.writeRrsInt(5);
@@ -1577,18 +1577,17 @@ public class OwnHomeData extends ServerMessage {
     }
 
     private void writeDecks(Buffer b) {
-        Random r = new Random();
         b.writeRrsInt(5);
         for (int i = 0; i < 5; i++) {
             b.writeRrsInt(8);
-            b.writeRrsInt(CRUtils.randomCard());
-            b.writeRrsInt(CRUtils.randomCard());
-            b.writeRrsInt(CRUtils.randomCard());
-            b.writeRrsInt(CRUtils.randomCard());
-            b.writeRrsInt(CRUtils.randomCard());
-            b.writeRrsInt(CRUtils.randomCard());
-            b.writeRrsInt(CRUtils.randomCard());
-            b.writeRrsInt(CRUtils.randomCard());
+            b.writeRrsInt(CRUtils.randomCard().getScId());
+            b.writeRrsInt(CRUtils.randomCard().getScId());
+            b.writeRrsInt(CRUtils.randomCard().getScId());
+            b.writeRrsInt(CRUtils.randomCard().getScId());
+            b.writeRrsInt(CRUtils.randomCard().getScId());
+            b.writeRrsInt(CRUtils.randomCard().getScId());
+            b.writeRrsInt(CRUtils.randomCard().getScId());
+            b.writeRrsInt(CRUtils.randomCard().getScId());
         }
     }
 }

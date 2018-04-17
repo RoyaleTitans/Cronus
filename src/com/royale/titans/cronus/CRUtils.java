@@ -3,64 +3,39 @@ package com.royale.titans.cronus;
 import java.util.Random;
 
 public class CRUtils {
-    public static final int[] CARDS = new int[] {
-            26000003,
-            26000004,
-            26000006,
-            26000007,
-            26000009,
-            26000011,
-            26000012,
-            26000014,
-            26000015,
-            26000016,
-            26000017,
-            26000018,
-            26000020,
-            26000021,
-            26000023,
-            26000025,
-            26000026,
-            26000027,
-            26000028,
-            26000029,
-            26000032,
-            26000033,
-            26000034,
-            26000035,
-            26000037,
-            26000036,
-            26000038,
-            26000039,
-            26000040,
-            26000042,
-            26000045,
-            26000046,
-            26000048,
-            27000001,
-            27000003,
-            27000004,
-            27000005,
-            27000007,
-            27000008,
-            27000009,
-            27000010,
-            28000000,
-            28000002,
-            28000003,
-            28000004,
-            28000005,
-            28000006,
-            28000007,
-            28000009,
-            28000010,
-            28000011,
-            28000012,
-            28000013,
-            28000016
+    public static final CardInfo[] CARDS = new CardInfo[] {
+            new CardInfo("Knight", 1, 26000000),
+            new CardInfo("Archers", 2, 26000001),
     };
 
-    public static int randomCard() {
+    public static CardInfo randomCard() {
         return CARDS[new Random().nextInt(CARDS.length)];
+    }
+
+    public static class CardInfo {
+        // Knight
+        private final String mName;
+        // 1
+        private final int mId;
+        // 26000000
+        private final int mScId;
+
+        CardInfo(String name, int id, int scId) {
+            mName = name;
+            mId = id;
+            mScId = scId;
+        }
+
+        public String getName() {
+            return mName;
+        }
+
+        public int getId() {
+            return mId;
+        }
+
+        public int getScId() {
+            return mScId;
+        }
     }
 }
