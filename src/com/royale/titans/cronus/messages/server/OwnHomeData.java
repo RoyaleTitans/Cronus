@@ -4,8 +4,6 @@ import com.royale.titans.cronus.lib.Buffer;
 import com.royale.titans.cronus.CRUtils;
 import com.royale.titans.cronus.messages.ServerMessage;
 
-import java.util.Random;
-
 public class OwnHomeData extends ServerMessage {
     private final long mClientId;
 
@@ -37,7 +35,7 @@ public class OwnHomeData extends ServerMessage {
 
         writeDecks(b);
 
-            b.write((byte) -1);
+        b.write((byte) -1);
 
         b.writeRrsInt(16);
         b.writeRrsInt(5);
