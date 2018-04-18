@@ -66,6 +66,8 @@ public class ServerLogic {
                 return new AskForBattleReplayStream(buffer);
             case 17101:
                 return new AskForAvatarStreamMessage(buffer);
+            case 18688:
+                return new AskForGameRoom(buffer);
             case 19911:
                 return new ClientKeepAlive(buffer);
         }
@@ -96,6 +98,10 @@ public class ServerLogic {
             case 11688:
             case 17101:
                 return new ServerMessage[0];
+            case 18688:
+                return new ServerMessage[] {
+                        new SectorState()
+                };
             case 19911:
                 return new ServerMessage[] {
                         new ServerKeepAlive()
