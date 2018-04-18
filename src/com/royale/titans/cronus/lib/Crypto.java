@@ -29,7 +29,7 @@ public class Crypto {
             if (buffer.capacity() == 0) {
                 return buffer;
             }
-            return Buffer.wrap(TweetNaCl.crypto_box(buffer.array(),
+            return Buffer.wrap(TweetNaCl.crypto_box_open(buffer.array(),
                     info.sNonce().getBytes(), NULL));
         }
     }
