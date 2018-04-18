@@ -2,6 +2,7 @@ package com.royale.titans.cronus.messages.server;
 
 import com.royale.titans.cronus.lib.Buffer;
 import com.royale.titans.cronus.CRUtils;
+import com.royale.titans.cronus.lib.OutBuffer;
 import com.royale.titans.cronus.messages.ServerMessage;
 
 public class OwnHomeData extends ServerMessage {
@@ -23,7 +24,7 @@ public class OwnHomeData extends ServerMessage {
 
     @Override
     public Buffer getBuffer() {
-        Buffer b = Buffer.allocate(12000);
+        OutBuffer b = OutBuffer.newBuffer();
 
         b.writeLong(mClientId);
         b.writeRrsInt(0);
@@ -1571,10 +1572,10 @@ public class OwnHomeData extends ServerMessage {
         b.writeRrsInt(77054);
         b.writeRrsInt(1523827857);
         b.writeRrsInt(1852142);
-        return b;
+        return b.obtain();
     }
 
-    private void writeDecks(Buffer b) {
+    private void writeDecks(OutBuffer b) {
         b.writeRrsInt(5);
         for (int i = 0; i < 5; i++) {
             b.writeRrsInt(8);

@@ -1,6 +1,7 @@
 package com.royale.titans.cronus.messages.server;
 
 import com.royale.titans.cronus.lib.Buffer;
+import com.royale.titans.cronus.lib.OutBuffer;
 import com.royale.titans.cronus.messages.ServerMessage;
 
 public class LoginOk extends ServerMessage {
@@ -22,7 +23,7 @@ public class LoginOk extends ServerMessage {
 
     @Override
     public Buffer getBuffer() {
-        Buffer b = Buffer.newBuffer();
+        OutBuffer b = OutBuffer.newBuffer();
         b.writeLong(mClientId);
         b.writeLong(mClientId);
         b.writeString("");
@@ -52,6 +53,6 @@ public class LoginOk extends ServerMessage {
         b.writeString("https://99faf1e355c749a9a049-2a63f4436c967aa7d355061bd0d924a1.ssl.cf1.rackcdn.com");
         b.writeRrsInt(1);
         b.writeString("https://event-assets.clashroyale.com");
-        return b;
+        return b.obtain();
     }
 }

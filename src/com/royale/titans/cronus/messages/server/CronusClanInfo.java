@@ -2,6 +2,7 @@ package com.royale.titans.cronus.messages.server;
 
 import com.royale.titans.cronus.Utils;
 import com.royale.titans.cronus.lib.Buffer;
+import com.royale.titans.cronus.lib.OutBuffer;
 import com.royale.titans.cronus.messages.ServerMessage;
 
 public class CronusClanInfo extends ServerMessage {
@@ -17,7 +18,7 @@ public class CronusClanInfo extends ServerMessage {
 
     @Override
     public Buffer getBuffer() {
-        Buffer b = Buffer.newBuffer();
+        OutBuffer b = OutBuffer.newBuffer();
         b.writeLong(0);
         b.writeString("Cronus");
 
@@ -52,6 +53,6 @@ public class CronusClanInfo extends ServerMessage {
         b.write((byte) 0);
         b.write((byte) 0);
 
-        return b;
+        return b.obtain();
     }
 }

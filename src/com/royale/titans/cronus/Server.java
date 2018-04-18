@@ -72,7 +72,6 @@ class Server {
                                         }
 
                                         b = serverMessage.getBuffer();
-                                        b = b.strip();
 
                                         Buffer encrypted = Crypto.encrypt(clientInfo, serverMessage.getId(), b);
 
@@ -92,7 +91,7 @@ class Server {
                                             if (Configs.DEBUG) {
                                                 b.rewind();
                                                 System.out.println("[SERVER] [OUT]: " + Utils.b2h(
-                                                        serverMessage.getBuffer().strip().array()));
+                                                        serverMessage.getBuffer().array()));
                                             }
                                         }
                                     }

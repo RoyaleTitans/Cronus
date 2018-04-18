@@ -2,6 +2,7 @@ package com.royale.titans.cronus.messages.server;
 
 import com.royale.titans.cronus.Utils;
 import com.royale.titans.cronus.lib.Buffer;
+import com.royale.titans.cronus.lib.OutBuffer;
 import com.royale.titans.cronus.messages.ServerMessage;
 
 public class ServerHello extends ServerMessage {
@@ -24,9 +25,9 @@ public class ServerHello extends ServerMessage {
 
     @Override
     public Buffer getBuffer() {
-        Buffer buffer = Buffer.allocate(28);
-        buffer.writeString(mSessionKey);
-        return buffer;
+        OutBuffer b = OutBuffer.newBuffer();
+        b.writeString(mSessionKey);
+        return b.obtain();
     }
 
     public String getSessioneKey() {

@@ -1,6 +1,7 @@
 package com.royale.titans.cronus.messages;
 
 import com.royale.titans.cronus.lib.Buffer;
+import com.royale.titans.cronus.lib.OutBuffer;
 
 public class Headers {
     private final int mId;
@@ -32,13 +33,12 @@ public class Headers {
     }
 
     public Buffer toBuffer() {
-        Buffer buffer = Buffer.allocate(7);
-        buffer.writeShort(mId);
-        buffer.write((byte) (mLength >>> 16));
-        buffer.write((byte) (mLength >>> 8));
-        buffer.write((byte) mLength);
-        buffer.writeShort(mVersion);
-        buffer.rewind();
-        return buffer;
+        OutBuffer outBuffer = OutBuffer.newBuffer();
+        outBuffer.writeShort(mId);
+        outBuffer.write((byte) (mLength >>> 16));
+        outBuffer.write((byte) (mLength >>> 8));
+        outBuffer.write((byte) mLength);
+        outBuffer.writeShort(mVersion);
+        return outBuffer.obtain();
     }
 }
