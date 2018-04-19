@@ -58,7 +58,6 @@ class Server {
                             if (message != null) {
                                 Buffer b = message.getBuffer();
                                 if (Configs.DEBUG) {
-                                    b.rewind();
                                     System.out.println("[SERVER] [IN] msgId: " + Utils.b2h(b.array()));
                                 }
 

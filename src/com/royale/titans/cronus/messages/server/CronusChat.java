@@ -33,7 +33,7 @@ public class CronusChat extends ServerMessage {
             outBuffer.write((byte) 0);
             outBuffer.write((byte) 0);
             outBuffer.write((byte) 0);
-            outBuffer.writeString(chatEvent.getPlayerName());
+            outBuffer.writeString(chatEvent.getClientInfo().getPlayerName());
             outBuffer.write((byte) 0);
             outBuffer.write((byte) 0);
             outBuffer.write((byte) 0);

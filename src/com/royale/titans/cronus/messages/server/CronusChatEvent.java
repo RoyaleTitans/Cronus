@@ -9,16 +9,23 @@ public class CronusChatEvent extends ServerMessage {
     public static final int CHAT_EVENT_JOIN = 0;
     public static final int CHAT_EVENT_LEAVE = 1;
     public static final int CHAT_EVENT_MESSAGE = 2;
+    public static final int CHAT_EVENT_GAME_QUEUE_START = 3;
 
     private final int mUId;
     private final int mEventId;
-    private final String mPlayerName;
-    private final String mContent;
 
-    public CronusChatEvent(int eventId, String playerName, String content) {
+    // Player involved in the event
+    private final ServerLogic.ClientInfo mInfo;
+
+    private String mContent;
+
+    /**
+     * chat messages
+     */
+    public CronusChatEvent(ServerLogic.ClientInfo info, int eventId, String content) {
         mUId = ServerLogic.getInstance().getRandom().nextInt();
         mEventId = eventId;
-        mPlayerName = playerName;
+        mInfo = info;
         mContent = content;
     }
 
@@ -38,11 +45,11 @@ public class CronusChatEvent extends ServerMessage {
 
         byte crEvent;
         switch (mEventId) {
-            case 0:
-            case 1:
+            case CHAT_EVENT_JOIN:
+            case CHAT_EVENT_LEAVE:
                 crEvent = 4;
                 break;
-            case 2:
+            case CHAT_EVENT_MESSAGE:
                 crEvent = 2;
                 break;
             default:
@@ -50,16 +57,21 @@ public class CronusChatEvent extends ServerMessage {
         }
 
         b.write((byte) crEvent);
-        b.write((byte) 0);
 
+        writeStandardChatEvent(b);
+
+        return b.obtain();
+    }
+
+    private void writeStandardChatEvent(OutBuffer b) {
+        b.write((byte) 0);
         b.writeRrsInt(mUId);
+        b.writeRrsInt(mInfo.getClientIdHigh());
+        b.writeRrsInt(mInfo.getClientIdLow());
+        b.writeRrsInt(mInfo.getClientIdHigh());
+        b.writeRrsInt(mInfo.getClientIdLow());
 
-        b.write((byte) 0);
-        b.write((byte) 0);
-        b.write((byte) 0);
-        b.write((byte) 0);
-
-        b.writeString(mPlayerName);
+        b.writeString(mInfo.getPlayerName());
         b.writeRrsInt(10);
         b.write((byte) 0);
         b.write((byte) 0);
@@ -69,25 +81,23 @@ public class CronusChatEvent extends ServerMessage {
             b.write((byte) 4);
             b.write((byte) 0);
             b.write((byte) 0);
-            b.writeString(mPlayerName);
+            b.writeString(mInfo.getPlayerName());
         } else if (mEventId == CHAT_EVENT_LEAVE) {
             b.write((byte) 3);
             b.write((byte) 0);
             b.write((byte) 0);
-            b.writeString(mPlayerName);
+            b.writeString(mInfo.getPlayerName());
         } else if (mEventId == CHAT_EVENT_MESSAGE) {
             b.writeString(mContent);
         }
-
-        return b.obtain();
     }
 
     int getUId() {
         return mUId;
     }
 
-    String getPlayerName() {
-        return mPlayerName;
+    ServerLogic.ClientInfo getClientInfo() {
+        return mInfo;
     }
 
     String getContent() {
