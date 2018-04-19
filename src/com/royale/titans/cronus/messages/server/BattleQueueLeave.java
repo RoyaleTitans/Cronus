@@ -4,7 +4,14 @@ import com.royale.titans.cronus.lib.Buffer;
 import com.royale.titans.cronus.lib.OutBuffer;
 import com.royale.titans.cronus.messages.ServerMessage;
 
-public class BatlleQueueLeaveAccepted extends ServerMessage {
+public class BattleQueueLeave extends ServerMessage {
+
+    private final int mCode;
+
+    public BattleQueueLeave(boolean joinMatch) {
+        mCode = joinMatch ? 0 : 1;
+    }
+
     @Override
     public int getId() {
         return 24696;
@@ -18,7 +25,7 @@ public class BatlleQueueLeaveAccepted extends ServerMessage {
     @Override
     public Buffer getBuffer() {
         OutBuffer outBuffer = OutBuffer.newBuffer();
-        outBuffer.writeInt(1);
+        outBuffer.writeInt(mCode);
         return outBuffer.obtain();
     }
 }

@@ -160,14 +160,16 @@ public class ServerLogic {
                 return new ServerMessage[0];
             case 12269:
                 return new ServerMessage[] {
-                        new BatlleQueueLeaveAccepted(),
+                        new BattleQueueLeave(false),
                         new BattleQueueLeaveConfirm()
                 };
             case 17101:
                 return new ServerMessage[0];
             case 18688:
+                // Disable normal battle. Send back leave queue
                 return new ServerMessage[] {
-                        //new SectorState()
+                        new BattleQueueLeave(false),
+                        new BattleQueueLeaveConfirm()
                 };
             case 19911:
                 return new ServerMessage[] {
