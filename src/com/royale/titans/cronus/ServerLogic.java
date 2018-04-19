@@ -4,7 +4,6 @@ import com.royale.titans.cronus.lib.Buffer;
 import com.royale.titans.cronus.lib.Crypto;
 import com.royale.titans.cronus.lib.Nonce;
 import com.royale.titans.cronus.messages.ClientMessage;
-import com.royale.titans.cronus.messages.Configs;
 import com.royale.titans.cronus.messages.Headers;
 import com.royale.titans.cronus.messages.ServerMessage;
 import com.royale.titans.cronus.messages.client.*;
@@ -115,6 +114,29 @@ public class ServerLogic {
         }
     }
 
+    public void postMessage(AsynchronousSocketChannel socket, ServerMessage serverMessage) {
+        Buffer b = serverMessage.getBuffer();
+        if (b != null) {
+            Headers headers = new Headers(serverMessage.getId(),
+                    b.capacity(),
+                    serverMessage.getVersion());
+            socket.write(headers.toBuffer().getByteBuffer());
+
+            if (Configs.DEBUG) {
+                System.out.println("[SERVER] [OUT] msgId: " + headers.getId() + " - len: " + headers.getLength());
+            }
+
+            socket.write(b.getByteBuffer());
+            b.clear();
+
+            if (Configs.DEBUG) {
+                b.rewind();
+                System.out.println("[SERVER] [OUT]: " + Utils.b2h(
+                        serverMessage.getBuffer().array()));
+            }
+        }
+    }
+
     ClientMessage route(ClientInfo info, Headers headers, Buffer buffer) {
         if (headers.getId() != 10100) {
             buffer = Crypto.decrypt(info, headers.getId(),buffer);
@@ -151,7 +173,7 @@ public class ServerLogic {
     ServerMessage[] handle(ClientInfo clientInfo, Headers headers, ClientMessage clientMessage) {
         switch (headers.getId()) {
             case 10100:
-                if (!((ClientHello) clientMessage).getFringerPrint().equals(Configs.FINGERPRINT)) {
+                if (!((ClientHello) clientMessage).getFingerprint().equals(Configs.FINGERPRINT)) {
                     return new ServerMessage[] {
                             new LoginFailed(7)
                     };

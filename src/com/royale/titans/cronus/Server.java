@@ -1,7 +1,6 @@
 package com.royale.titans.cronus;
 
 import com.royale.titans.cronus.lib.Buffer;
-import com.royale.titans.cronus.lib.Crypto;
 import com.royale.titans.cronus.messages.*;
 import com.royale.titans.cronus.messages.server.ServerHello;
 
@@ -68,6 +67,11 @@ class Server {
                                         if (serverMessage.getId() == 20100) {
                                             clientInfo = ServerLogic.getInstance().openSession(channel,
                                                     ((ServerHello) serverMessage).getSessioneKey());
+                                        }
+
+                                        if (serverMessage.getId() == 20103) {
+                                            ServerLogic.getInstance().postMessage(channel, serverMessage);
+                                            continue;
                                         }
 
                                         ServerLogic.getInstance().postMessage(clientInfo, serverMessage);

@@ -1,7 +1,7 @@
 package com.royale.titans.cronus.lib;
 
 import com.royale.titans.cronus.ServerLogic;
-import com.royale.titans.cronus.messages.Configs;
+import com.royale.titans.cronus.Configs;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
