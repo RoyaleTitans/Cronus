@@ -10,6 +10,7 @@ import com.royale.titans.cronus.messages.client.*;
 import com.royale.titans.cronus.messages.client.AskForAvatarStreamMessage;
 import com.royale.titans.cronus.messages.server.*;
 
+import java.net.Socket;
 import java.nio.channels.AsynchronousSocketChannel;
 import java.security.SecureRandom;
 import java.util.ArrayList;
@@ -94,46 +95,34 @@ public class ServerLogic {
         Buffer b = serverMessage.getBuffer();
         Buffer encrypted = Crypto.encrypt(clientInfo, serverMessage.getId(), b);
         if (encrypted != null) {
-            Headers headers = new Headers(serverMessage.getId(),
-                    encrypted.capacity(),
-                    serverMessage.getVersion());
-            clientInfo.getSocket().write(headers.toBuffer().getByteBuffer());
-
-            if (Configs.DEBUG) {
-                System.out.println("[SERVER] [OUT] msgId: " + headers.getId() + " - len: " + headers.getLength());
-            }
-
-            clientInfo.getSocket().write(encrypted.getByteBuffer());
-            encrypted.clear();
-
-            if (Configs.DEBUG) {
-                b.rewind();
-                System.out.println("[SERVER] [OUT]: " + Utils.b2h(
-                        serverMessage.getBuffer().array()));
-            }
+            post(clientInfo.getSocket(), serverMessage.getId(), serverMessage.getVersion(),
+                    serverMessage.getBuffer());
         }
     }
 
     public void postMessage(AsynchronousSocketChannel socket, ServerMessage serverMessage) {
         Buffer b = serverMessage.getBuffer();
         if (b != null) {
-            Headers headers = new Headers(serverMessage.getId(),
-                    b.capacity(),
-                    serverMessage.getVersion());
-            socket.write(headers.toBuffer().getByteBuffer());
+            post(socket, serverMessage.getId(), serverMessage.getVersion(),
+                    serverMessage.getBuffer());
+        }
+    }
 
-            if (Configs.DEBUG) {
-                System.out.println("[SERVER] [OUT] msgId: " + headers.getId() + " - len: " + headers.getLength());
-            }
+    private void post(AsynchronousSocketChannel socket, int id, int version, Buffer b) {
+        Headers headers = new Headers(id, b.capacity(),
+                version);
+        socket.write(headers.toBuffer().getByteBuffer());
 
-            socket.write(b.getByteBuffer());
-            b.clear();
+        if (Configs.DEBUG) {
+            System.out.println("[SERVER] [OUT] msgId: " + headers.getId() + " - len: " + headers.getLength());
+        }
 
-            if (Configs.DEBUG) {
-                b.rewind();
-                System.out.println("[SERVER] [OUT]: " + Utils.b2h(
-                        serverMessage.getBuffer().array()));
-            }
+        socket.write(b.getByteBuffer());
+        b.clear();
+
+        if (Configs.DEBUG) {
+            System.out.println("[SERVER] [OUT]: " + Utils.b2h(
+                    b.array()));
         }
     }
 
