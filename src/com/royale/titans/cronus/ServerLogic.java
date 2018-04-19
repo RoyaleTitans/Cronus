@@ -96,7 +96,7 @@ public class ServerLogic {
         Buffer encrypted = Crypto.encrypt(clientInfo, serverMessage.getId(), b);
         if (encrypted != null) {
             post(clientInfo.getSocket(), serverMessage.getId(), serverMessage.getVersion(),
-                    serverMessage.getBuffer());
+                    encrypted);
         }
     }
 
