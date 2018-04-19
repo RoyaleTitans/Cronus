@@ -67,33 +67,11 @@ class Server {
                                 if (handled != null) {
                                     for (ServerMessage serverMessage : handled) {
                                         if (serverMessage.getId() == 20100) {
-                                            clientInfo = ServerLogic.getInstance().openSession(
+                                            clientInfo = ServerLogic.getInstance().openSession(channel,
                                                     ((ServerHello) serverMessage).getSessioneKey());
                                         }
 
-                                        b = serverMessage.getBuffer();
-
-                                        Buffer encrypted = Crypto.encrypt(clientInfo, serverMessage.getId(), b);
-
-                                        if (encrypted != null) {
-                                            headers = new Headers(serverMessage.getId(),
-                                                    encrypted.capacity(),
-                                                    serverMessage.getVersion());
-                                            channel.write(headers.toBuffer().getByteBuffer());
-
-                                            if (Configs.DEBUG) {
-                                                System.out.println("[SERVER] [OUT] msgId: " + headers.getId() + " - len: " + headers.getLength());
-                                            }
-
-                                            channel.write(encrypted.getByteBuffer());
-                                            encrypted.clear();
-
-                                            if (Configs.DEBUG) {
-                                                b.rewind();
-                                                System.out.println("[SERVER] [OUT]: " + Utils.b2h(
-                                                        serverMessage.getBuffer().array()));
-                                            }
-                                        }
+                                        ServerLogic.getInstance().postMessage(clientInfo, serverMessage);
                                     }
                                 }
                             } else {

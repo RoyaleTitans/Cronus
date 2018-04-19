@@ -1,10 +1,7 @@
 package com.royale.titans.cronus;
 
-import java.security.SecureRandom;
-
 public class Utils {
     private static final String sRandomChars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-    private static final SecureRandom sRandom = new SecureRandom();
     private static final char[] sHexArray = "0123456789ABCDEF".toCharArray();
 
     public static String b2h(byte[] bytes) {
@@ -30,7 +27,9 @@ public class Utils {
     public static String randomString(int len) {
         StringBuilder sb = new StringBuilder(len);
         for (int i = 0; i < len; i++) {
-            sb.append(sRandomChars.charAt(sRandom.nextInt(sRandomChars.length())));
+            sb.append(sRandomChars.charAt(
+                    ServerLogic.getInstance().getRandom()
+                            .nextInt(sRandomChars.length())));
         }
         return sb.toString();
     }
