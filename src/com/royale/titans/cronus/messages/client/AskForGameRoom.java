@@ -29,7 +29,7 @@ public class AskForGameRoom extends ClientMessage {
     @Override
     public ServerMessage[] handle(ServerLogic.ClientInfo clientInfo) {
         if (mClanFriendlyMatch) {
-            ServerLogic.getInstance().scheduleJob(new ServerLogic.ServerWorker.WorkerTask(
+            ServerLogic.getInstance().scheduleTask(new ServerLogic.ServerWorker.WorkerTask(
                     ServerLogic.ServerWorker.TASK.POST_CRONUS_CHAT_GAME_QUEUE_START,
                     clientInfo));
         } else {

@@ -10,7 +10,6 @@ import com.royale.titans.cronus.messages.client.*;
 import com.royale.titans.cronus.messages.client.AskForAvatarStreamMessage;
 import com.royale.titans.cronus.messages.server.*;
 
-import java.net.Socket;
 import java.nio.channels.AsynchronousSocketChannel;
 import java.security.SecureRandom;
 import java.util.ArrayList;
@@ -68,7 +67,7 @@ public class ServerLogic {
 
         // Check for pending matches
         if (mBattleChatEventsSessionMap.get(sessionKey) != null) {
-            mWorker.scheduleJob(new ServerWorker.WorkerTask(
+            mWorker.scheduleTask(new ServerWorker.WorkerTask(
                     ServerWorker.TASK.POST_CRONUS_CHAT_GAME_QUEUE_CANCELLED,
                     info));
         }
@@ -163,15 +162,16 @@ public class ServerLogic {
         return null;
     }
 
-    public void scheduleJob(ServerWorker.WorkerTask workerTask) {
-        mWorker.scheduleJob(workerTask);
+    public void scheduleTask(ServerWorker.WorkerTask workerTask) {
+        mWorker.scheduleTask(workerTask);
     }
 
     public static class ServerWorker extends Thread {
         public enum TASK {
             POST_CRONUS_CHAT_MESSAGE,
             POST_CRONUS_CHAT_GAME_QUEUE_START,
-            POST_CRONUS_CHAT_GAME_QUEUE_CANCELLED
+            POST_CRONUS_CHAT_GAME_QUEUE_CANCELLED,
+            POST_CRONUS_CHAT_GAME_START,
         }
 
         private final BlockingQueue<WorkerTask> mWorkerTasks = new LinkedTransferQueue<>();
@@ -245,6 +245,15 @@ public class ServerLogic {
                             }
                         }
                         break;
+                        case POST_CRONUS_CHAT_GAME_START: {
+                            CronusChatBattleEvent battleEvent = (CronusChatBattleEvent) workerTask.getData()[0];
+                            if (battleEvent != null) {
+                                for (ClientInfo clientInfo : ServerLogic.getInstance().getSessions()) {
+                                    ServerLogic.getInstance().postMessage(clientInfo, battleEvent);
+                                }
+                            }
+                        }
+                        break;
                     }
                 }
                 try {
@@ -255,7 +264,7 @@ public class ServerLogic {
             }
         }
 
-        void scheduleJob(WorkerTask workerTask) {
+        void scheduleTask(WorkerTask workerTask) {
             try {
                 mWorkerTasks.put(workerTask);
             } catch (InterruptedException e) {

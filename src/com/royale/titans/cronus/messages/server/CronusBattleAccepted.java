@@ -21,15 +21,17 @@ public class CronusBattleAccepted extends ClientMessage {
         BattleLogic.BattleInfo battleInfo = BattleLogic.getInstance().getBattleInfo(mSlotId);
         if (battleInfo != null) {
             CronusChatBattleEvent cronusChatBattleEvent = ServerLogic.getInstance().getBattleChatEventsSessionMap()
-                    .get(battleInfo.getHostPlayerInfo().getSessionKey());
+                    .get(battleInfo.getHostSessionKey());
             if (cronusChatBattleEvent != null) {
                 cronusChatBattleEvent.setOpponentInfo(clientInfo);
-                return new ServerMessage[]{
-                        cronusChatBattleEvent
-                };
+                battleInfo.getPlayers().add(clientInfo);
+                BattleLogic.getInstance().startBattle(battleInfo);
+
+                ServerLogic.getInstance().scheduleTask(new ServerLogic.ServerWorker.WorkerTask(
+                        ServerLogic.ServerWorker.TASK.POST_CRONUS_CHAT_GAME_START,
+                        cronusChatBattleEvent));
             }
         }
-
         return new ServerMessage[0];
     }
 }

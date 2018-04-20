@@ -15,7 +15,7 @@ public class SendChatMessageEvent extends ClientMessage {
 
     @Override
     public ServerMessage[] handle(ServerLogic.ClientInfo clientInfo) {
-        ServerLogic.getInstance().scheduleJob(new ServerLogic.ServerWorker.WorkerTask(
+        ServerLogic.getInstance().scheduleTask(new ServerLogic.ServerWorker.WorkerTask(
                 ServerLogic.ServerWorker.TASK.POST_CRONUS_CHAT_MESSAGE, this));
         return new ServerMessage[0];
     }

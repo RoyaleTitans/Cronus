@@ -13,7 +13,7 @@ public class AskCronusBattleQueueLeave extends ClientMessage {
 
     @Override
     public ServerMessage[] handle(ServerLogic.ClientInfo clientInfo) {
-        ServerLogic.getInstance().scheduleJob(new ServerLogic.ServerWorker.WorkerTask(
+        ServerLogic.getInstance().scheduleTask(new ServerLogic.ServerWorker.WorkerTask(
                 ServerLogic.ServerWorker.TASK.POST_CRONUS_CHAT_GAME_QUEUE_CANCELLED,
                 clientInfo));
         return new ServerMessage[] {
