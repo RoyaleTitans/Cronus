@@ -257,6 +257,7 @@ public class ServerLogic {
                                 ServerLogic.getInstance().postMessage(clientInfo, chatEvent);
                             }
                         }
+                        break;
                         case POST_CRONUS_CHAT_GAME_QUEUE_START: {
                             ClientInfo info = (ClientInfo) workerTask.getData()[0];
                             int roomSlotId = BattleLogic.getInstance().queueBattle(info);
@@ -274,6 +275,7 @@ public class ServerLogic {
                                 ServerLogic.getInstance().postMessage(clientInfo, gameQueueEvent);
                             }
                         }
+                        break;
                         case POST_CRONUS_CHAT_GAME_QUEUE_CANCELLED: {
                             ClientInfo info = (ClientInfo) workerTask.getData()[0];
 
@@ -293,6 +295,7 @@ public class ServerLogic {
                                 }
                             }
                         }
+                        break;
                     }
                 }
                 try {

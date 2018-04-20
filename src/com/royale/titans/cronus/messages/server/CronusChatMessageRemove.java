@@ -2,6 +2,7 @@ package com.royale.titans.cronus.messages.server;
 
 import com.royale.titans.cronus.Utils;
 import com.royale.titans.cronus.lib.Buffer;
+import com.royale.titans.cronus.lib.OutBuffer;
 import com.royale.titans.cronus.messages.ServerMessage;
 
 public class CronusChatMessageRemove extends ServerMessage {
@@ -23,6 +24,15 @@ public class CronusChatMessageRemove extends ServerMessage {
 
     @Override
     public Buffer getBuffer() {
-        return Buffer.wrap(Utils.h2b("20000000000000"));
+        OutBuffer outBuffer = OutBuffer.newBuffer();
+        outBuffer.write((byte) 32);
+        outBuffer.write((byte) 0);
+        outBuffer.write((byte) 0);
+        outBuffer.write((byte) 0);
+        outBuffer.write((byte) 0);
+        outBuffer.write((byte) 0);
+        outBuffer.write((byte) 0);
+        outBuffer.write((byte) mSlotId);
+        return outBuffer.obtain();
     }
 }
