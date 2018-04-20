@@ -60,7 +60,7 @@ class Server {
                                     System.out.println("[SERVER] [IN] msgId: " + Utils.b2h(b.array()));
                                 }
 
-                                ServerMessage[] handled = ServerLogic.getInstance().handle(clientInfo, headers, message);
+                                ServerMessage[] handled = message.handle(clientInfo);
 
                                 if (handled != null) {
                                     for (ServerMessage serverMessage : handled) {

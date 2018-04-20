@@ -3,7 +3,7 @@ package com.royale.titans.cronus.messages;
 import com.royale.titans.cronus.ServerLogic;
 import com.royale.titans.cronus.lib.Buffer;
 
-public class ClientMessage {
+public abstract class ClientMessage {
     private final ServerLogic.ClientInfo mSenderInfo;
     private final Buffer mBuffer;
 
@@ -19,4 +19,6 @@ public class ClientMessage {
     public Buffer getBuffer() {
         return mBuffer;
     }
+
+    public abstract ServerMessage[] handle(ServerLogic.ClientInfo clientInfo);
 }

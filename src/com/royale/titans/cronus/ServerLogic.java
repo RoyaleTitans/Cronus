@@ -69,7 +69,7 @@ public class ServerLogic {
         // Check for pending matches
         if (mBattleChatEventsSessionMap.get(sessionKey) != null) {
             mWorker.scheduleJob(new ServerWorker.WorkerTask(
-                    ServerWorker.WorkerTask.TASK.POST_CRONUS_CHAT_GAME_QUEUE_CANCELLED,
+                    ServerWorker.TASK.POST_CRONUS_CHAT_GAME_QUEUE_CANCELLED,
                     info));
         }
     }
@@ -163,92 +163,17 @@ public class ServerLogic {
         return null;
     }
 
-    ServerMessage[] handle(ClientInfo clientInfo, Headers headers, ClientMessage clientMessage) {
-        switch (headers.getId()) {
-            case 10100:
-                if (false && !((ClientHello) clientMessage).getFingerprint().equals(Configs.FINGERPRINT)) {
-                    return new ServerMessage[] {
-                            new LoginFailed(7)
-                    };
-                } else {
-                    return new ServerMessage[] {
-                            new ServerHello()
-                    };
-                }
-            case 10101:
-                return new ServerMessage[] {
-                        new LoginOk(clientInfo.getClientId()),
-                        new OwnHomeData(clientInfo.getClientId()),
-                        new CronusChat()
-                };
-            case 10554:
-                mWorker.scheduleJob(new ServerWorker.WorkerTask(
-                        ServerWorker.WorkerTask.TASK.POST_CRONUS_CHAT_MESSAGE, clientMessage));
-                return new ServerMessage[0];
-            case 10609:
-                return new ServerMessage[] {
-                        new CronusClanInfo()
-                };
-            case 11688:
-                return new ServerMessage[0];
-            case 11339:
-                CronusBattleAccepted battleAccepted = (CronusBattleAccepted) clientMessage;
-                BattleLogic.BattleInfo battleInfo = BattleLogic.getInstance().getBattleInfo(battleAccepted.getSlotId());
-                if (battleInfo != null) {
-                    CronusChatBattleEvent cronusChatBattleEvent = mBattleChatEventsSessionMap.get(
-                            battleInfo.getHostPlayerInfo().getSessionKey());
-                    if (cronusChatBattleEvent != null) {
-                        cronusChatBattleEvent.setOpponentInfo(clientInfo);
-                        return new ServerMessage[]{
-                                cronusChatBattleEvent
-                        };
-                    }
-                }
-                return new ServerMessage[0];
-            case 12269:
-                return new ServerMessage[] {
-                        new BattleQueueLeave(false),
-                        new BattleQueueLeaveConfirm()
-                };
-            case 15689:
-                return new ServerMessage[] {
-                        new EmptyMessage(20073, 1)
-                };
-            case 15860:
-                mWorker.scheduleJob(new ServerWorker.WorkerTask(
-                        ServerWorker.WorkerTask.TASK.POST_CRONUS_CHAT_GAME_QUEUE_CANCELLED,
-                        clientInfo));
-                return new ServerMessage[] {
-                        new CronusBattleLeaveConfirm()
-                };
-            case 17101:
-                return new ServerMessage[] {
-                        new EmptyMessage(29567, 4)
-                };
-            case 18688:
-                AskForGameRoom askForGameRoom = (AskForGameRoom) clientMessage;
-                if (askForGameRoom.isClanFriendlyMatch()) {
-                    mWorker.scheduleJob(new ServerWorker.WorkerTask(
-                            ServerWorker.WorkerTask.TASK.POST_CRONUS_CHAT_GAME_QUEUE_START,
-                            clientInfo));
-                } else {
-                    if (askForGameRoom.haveCommand()) {
-                        return new ServerMessage[] {
-                                new BattleQueueLeave(false),
-                                new BattleQueueLeaveConfirm()
-                        };
-                    }
-                }
-            case 19911:
-                return new ServerMessage[] {
-                        new ServerKeepAlive()
-                };
-        }
-
-        return null;
+    public void scheduleJob(ServerWorker.WorkerTask workerTask) {
+        mWorker.scheduleJob(workerTask);
     }
 
-    private static class ServerWorker extends Thread {
+    public static class ServerWorker extends Thread {
+        public enum TASK {
+            POST_CRONUS_CHAT_MESSAGE,
+            POST_CRONUS_CHAT_GAME_QUEUE_START,
+            POST_CRONUS_CHAT_GAME_QUEUE_CANCELLED
+        }
+
         private final BlockingQueue<WorkerTask> mWorkerTasks = new LinkedTransferQueue<>();
 
         ServerWorker() {
@@ -338,17 +263,11 @@ public class ServerLogic {
             }
         }
 
-        static class WorkerTask {
-            enum TASK {
-                POST_CRONUS_CHAT_MESSAGE,
-                POST_CRONUS_CHAT_GAME_QUEUE_START,
-                POST_CRONUS_CHAT_GAME_QUEUE_CANCELLED
-            }
-
+        public static class WorkerTask {
             final TASK mTask;
             final Object[] mData;
 
-            WorkerTask(TASK task, Object... data) {
+            public WorkerTask(TASK task, Object... data) {
                 mTask = task;
                 mData = data;
             }
@@ -384,7 +303,7 @@ public class ServerLogic {
             return mSocket;
         }
 
-        String getSessionKey() {
+        public String getSessionKey() {
             return mSessionKey;
         }
 
