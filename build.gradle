@@ -1,0 +1,21 @@
+plugins {
+  id 'com.github.johnrengelman.shadow' version '2.0.3'
+  id 'java'
+}
+
+sourceCompatibility = 1.8
+
+repositories {
+  jcenter()
+  maven { url 'https://jitpack.io' }
+}
+
+dependencies {
+  compile 'com.github.alphazero:Blake2b:release-SNAPSHOT'
+}
+
+jar {
+   manifest {
+      attributes 'Main-Class': 'com.royale.titans.cronus.Main'
+   }
+}
