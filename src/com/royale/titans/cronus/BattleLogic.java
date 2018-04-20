@@ -1,7 +1,7 @@
 package com.royale.titans.cronus;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class BattleLogic {
 
@@ -24,7 +24,7 @@ public class BattleLogic {
         int slotId = 1;
         while (true) {
             if (mBattleInfos.get(slotId) == null) {
-                BattleInfo battleInfo = new BattleInfo(slotId);
+                BattleInfo battleInfo = new BattleInfo(slotId, clientInfo);
                 mBattleInfos.put(slotId, battleInfo);
                 mBattleInfosSessionMap.put(clientInfo.getSessionKey(), slotId);
                 return slotId;
@@ -41,11 +41,26 @@ public class BattleLogic {
         }
     }
 
+    public BattleInfo getBattleInfo(int mSlotId) {
+        return mBattleInfos.get(mSlotId);
+    }
+
     public static class BattleInfo {
         private final int mSlotId;
 
-        public BattleInfo(int slotId) {
+        private final ArrayList<ServerLogic.ClientInfo> mPlayersInfo = new ArrayList<>();
+
+        public BattleInfo(int slotId, ServerLogic.ClientInfo clientInfo) {
             mSlotId = slotId;
+            mPlayersInfo.add(clientInfo);
+        }
+
+        public int getSlotId() {
+            return mSlotId;
+        }
+
+        public ServerLogic.ClientInfo getHostPlayerInfo() {
+            return mPlayersInfo.get(0);
         }
     }
 }

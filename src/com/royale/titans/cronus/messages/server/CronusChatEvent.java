@@ -9,15 +9,19 @@ public class CronusChatEvent extends ServerMessage {
     public static final int CHAT_EVENT_JOIN = 0;
     public static final int CHAT_EVENT_LEAVE = 1;
     public static final int CHAT_EVENT_MESSAGE = 2;
-    public static final int CHAT_EVENT_GAME_QUEUE_START = 3;
+    public static final int CHAT_EVENT_BATTLE_MESSAGE = 3;
 
     private final int mUId;
     private final int mEventId;
+
+    protected final byte mCrEventId;
 
     // Player involved in the event
     private final ServerLogic.ClientInfo mInfo;
 
     private String mContent;
+
+    private final long mTimestamp;
 
     /**
      * chat messages
@@ -25,8 +29,27 @@ public class CronusChatEvent extends ServerMessage {
     public CronusChatEvent(ServerLogic.ClientInfo info, int eventId, String content) {
         mUId = ServerLogic.getInstance().getRandom().nextInt();
         mEventId = eventId;
+
+        switch (mEventId) {
+            case CHAT_EVENT_MESSAGE:
+                mCrEventId = 2;
+                break;
+            case CHAT_EVENT_JOIN:
+            case CHAT_EVENT_LEAVE:
+                mCrEventId = 4;
+                break;
+            case CHAT_EVENT_BATTLE_MESSAGE:
+                mCrEventId = 10;
+                break;
+            default:
+                mCrEventId = 0;
+                break;
+        }
+
         mInfo = info;
         mContent = content;
+
+        mTimestamp = System.currentTimeMillis();
     }
 
     @Override
@@ -42,24 +65,8 @@ public class CronusChatEvent extends ServerMessage {
     @Override
     public Buffer getBuffer() {
         OutBuffer b = OutBuffer.newBuffer();
-
-        byte crEvent;
-        switch (mEventId) {
-            case CHAT_EVENT_JOIN:
-            case CHAT_EVENT_LEAVE:
-                crEvent = 4;
-                break;
-            case CHAT_EVENT_MESSAGE:
-                crEvent = 2;
-                break;
-            default:
-                return b.obtain();
-        }
-
-        b.write((byte) crEvent);
-
+        b.write(mCrEventId);
         writeStandardChatEvent(b);
-
         return b.obtain();
     }
 
@@ -102,5 +109,9 @@ public class CronusChatEvent extends ServerMessage {
 
     String getContent() {
         return mContent;
+    }
+
+    long getTimestamp() {
+        return mTimestamp;
     }
 }

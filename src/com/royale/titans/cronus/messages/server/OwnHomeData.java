@@ -1548,7 +1548,7 @@ public class OwnHomeData extends ServerMessage {
         b.writeRrsInt(9);
         b.writeRrsInt(0);
         b.writeRrsInt(0);
-        b.writeString("Cronos");
+        b.writeString("Cronus");
         b.writeRrsInt(153);
         b.writeRrsInt(4);
         b.writeRrsInt(8381);

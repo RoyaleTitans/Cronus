@@ -64,7 +64,14 @@ public class ServerLogic {
     }
 
     void closeSession(String sessionKey) {
-        mSessions.remove(sessionKey);
+        ClientInfo info = mSessions.remove(sessionKey);
+
+        // Check for pending matches
+        if (mBattleChatEventsSessionMap.get(sessionKey) != null) {
+            mWorker.scheduleJob(new ServerWorker.WorkerTask(
+                    ServerWorker.WorkerTask.TASK.POST_CRONUS_CHAT_GAME_QUEUE_CANCELLED,
+                    info));
+        }
     }
 
     public ClientInfo findSession(String sessionKey) {
@@ -119,11 +126,6 @@ public class ServerLogic {
 
         socket.write(b.getByteBuffer());
         b.clear();
-
-        if (Configs.DEBUG) {
-            System.out.println("[SERVER] [OUT]: " + Utils.b2h(
-                    b.array()));
-        }
     }
 
     ClientMessage route(ClientInfo info, Headers headers, Buffer buffer) {
@@ -144,6 +146,8 @@ public class ServerLogic {
                 return new ClientStatus(info, buffer);
             case 12269:
                 return new AskBattleQueueLeave(info, buffer);
+            case 11339:
+                return new CronusBattleAccepted(info, buffer);
             case 15827:
                 return new AskForBattleReplayStream(info, buffer);
             case 15860:
@@ -162,7 +166,7 @@ public class ServerLogic {
     ServerMessage[] handle(ClientInfo clientInfo, Headers headers, ClientMessage clientMessage) {
         switch (headers.getId()) {
             case 10100:
-                if (!((ClientHello) clientMessage).getFingerprint().equals(Configs.FINGERPRINT)) {
+                if (false && !((ClientHello) clientMessage).getFingerprint().equals(Configs.FINGERPRINT)) {
                     return new ServerMessage[] {
                             new LoginFailed(7)
                     };
@@ -187,19 +191,39 @@ public class ServerLogic {
                 };
             case 11688:
                 return new ServerMessage[0];
+            case 11339:
+                CronusBattleAccepted battleAccepted = (CronusBattleAccepted) clientMessage;
+                BattleLogic.BattleInfo battleInfo = BattleLogic.getInstance().getBattleInfo(battleAccepted.getSlotId());
+                if (battleInfo != null) {
+                    CronusChatBattleEvent cronusChatBattleEvent = mBattleChatEventsSessionMap.get(
+                            battleInfo.getHostPlayerInfo().getSessionKey());
+                    if (cronusChatBattleEvent != null) {
+                        cronusChatBattleEvent.setOpponentInfo(clientInfo);
+                        return new ServerMessage[]{
+                                cronusChatBattleEvent
+                        };
+                    }
+                }
+                return new ServerMessage[0];
             case 12269:
                 return new ServerMessage[] {
                         new BattleQueueLeave(false),
                         new BattleQueueLeaveConfirm()
                 };
-            case 17101:
-                return new ServerMessage[0];
+            case 15689:
+                return new ServerMessage[] {
+                        new EmptyMessage(20073, 1)
+                };
             case 15860:
                 mWorker.scheduleJob(new ServerWorker.WorkerTask(
                         ServerWorker.WorkerTask.TASK.POST_CRONUS_CHAT_GAME_QUEUE_CANCELLED,
                         clientInfo));
                 return new ServerMessage[] {
                         new CronusBattleLeaveConfirm()
+                };
+            case 17101:
+                return new ServerMessage[] {
+                        new EmptyMessage(29567, 4)
                 };
             case 18688:
                 AskForGameRoom askForGameRoom = (AskForGameRoom) clientMessage;
