@@ -4,17 +4,16 @@ import com.royale.titans.cronus.lib.Buffer;
 import com.royale.titans.cronus.lib.OutBuffer;
 import com.royale.titans.cronus.messages.ServerMessage;
 
-public class BattleEvent extends ServerMessage {
-
+public class ServerBattleEvent extends ServerMessage {
     private final int mSequence;
     private final int mEventId;
 
-    public BattleEvent(int sequence) {
+    public ServerBattleEvent(int sequence) {
         mSequence = sequence;
         mEventId = 0;
     }
 
-    public BattleEvent(int sequence, int eventId) {
+    public ServerBattleEvent(int sequence, int eventId) {
         mSequence = sequence;
         mEventId = eventId;
     }

@@ -149,6 +149,8 @@ public class ServerLogic {
                 return new ClientHello(info, buffer);
             case 10101:
                 return new Login(info, buffer);
+            case 10541:
+                return new ClientBattleEvent(info, buffer);
             case 10554:
                 return new SendChatMessageEvent(info, buffer);
             case 10609:
@@ -246,7 +248,7 @@ public class ServerLogic {
                             if (battleChatEvent != null) {
                                 ServerLogic.getInstance().getBattleChatEvents().remove(battleChatEvent);
 
-                                BattleLogic.getInstance().cancelBattle(info.getSessionKey());
+                                BattleLogic.getInstance().cancelBattle(info.getClientId().toString());
 
                                 CronusChatMessageRemove cronusChatMessageRemove =
                                         new CronusChatMessageRemove(battleChatEvent.getSlotId());

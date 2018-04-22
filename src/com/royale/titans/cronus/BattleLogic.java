@@ -1,8 +1,7 @@
 package com.royale.titans.cronus;
 
-import com.royale.titans.cronus.lib.Buffer;
-import com.royale.titans.cronus.messages.server.BattleEvent;
-import com.royale.titans.cronus.messages.server.CustomBufferMessage;
+import com.royale.titans.cronus.messages.client.ClientBattleEvent;
+import com.royale.titans.cronus.messages.server.ServerBattleEvent;
 import com.royale.titans.cronus.messages.server.SectorState;
 
 import java.util.ArrayList;
@@ -37,7 +36,7 @@ public class BattleLogic {
             if (mBattleInfos.get(slotId) == null) {
                 BattleInfo battleInfo = new BattleInfo(slotId, clientInfo);
                 mBattleInfos.put(slotId, battleInfo);
-                mBattleInfosSessionMap.put(clientInfo.getSessionKey(), slotId);
+                mBattleInfosSessionMap.put(clientInfo.getClientId().toString(), slotId);
                 return slotId;
             }
 
@@ -45,8 +44,8 @@ public class BattleLogic {
         }
     }
 
-    public void cancelBattle(String sessionKey) {
-        Integer slot = mBattleInfosSessionMap.remove(sessionKey);
+    public void cancelBattle(String hashTag) {
+        Integer slot = mBattleInfosSessionMap.remove(hashTag);
         if (slot != null && slot > 0) {
             mBattleInfos.remove(slot);
         }
@@ -57,7 +56,15 @@ public class BattleLogic {
     }
 
     public void startBattle(BattleInfo battleInfo) {
+        for (ServerLogic.ClientInfo clientInfo : battleInfo.getPlayers()) {
+            mBattleInfosSessionMap.put(clientInfo.getClientId().toString(), battleInfo.getSlotId());
+        }
+
         scheduleTask(new BattleTask(BattleTask.TASK.START_BATTLE, battleInfo));
+    }
+
+    public void onClientBattleEvent(ClientBattleEvent clientBattleEvent, ServerLogic.ClientInfo clientInfo) {
+        // wip this
     }
 
     public void scheduleTask(BattleTask task) {
@@ -95,9 +102,9 @@ public class BattleLogic {
 
                     int i = 1;
                     while (true) {
-                        BattleEvent battleEvent;
+                        ServerBattleEvent battleEvent;
 
-                        battleEvent = new BattleEvent(i);
+                        battleEvent = new ServerBattleEvent(i);
 
                         for (ServerLogic.ClientInfo clientInfo : battleInfo.getPlayers()) {
                             ServerLogic.getInstance().postMessage(clientInfo, battleEvent);
@@ -133,8 +140,8 @@ public class BattleLogic {
             return mSlotId;
         }
 
-        public String getHostSessionKey() {
-            return mPlayersInfo.get(0).getSessionKey();
+        public String getHostTag() {
+            return mPlayersInfo.get(0).getClientId().toString();
         }
 
         public ArrayList<ServerLogic.ClientInfo> getPlayers() {

@@ -34,11 +34,11 @@ public class SectorState extends ServerMessage  {
 
         outBuffer.write((byte) 1);
         outBuffer.writeRrsInt(42);
-        outBuffer.writeRrsInt(2);
 
         outBuffer.writeRrsInt(2);
-
+        outBuffer.writeRrsInt(2);
         outBuffer.writeRrsInt(1);
+
         outBuffer.writeRrsInt(2);
         outBuffer.writeRrsInt(2);
         outBuffer.writeRrsInt(261);
@@ -50,8 +50,8 @@ public class SectorState extends ServerMessage  {
         outBuffer.writeRrsInt(1);
         outBuffer.writeRrsInt(1);
         outBuffer.write((byte) 0);
-        outBuffer.writeRrsInt(1);
 
+        outBuffer.writeRrsInt(1);
         outBuffer.writeRrsInt(2);
         outBuffer.writeRrsInt(0);
         outBuffer.writeRrsInt(4);
@@ -71,12 +71,12 @@ public class SectorState extends ServerMessage  {
         outBuffer.write((byte) 0);
         outBuffer.writeRrsInt(1);
 
-        writePlayerInfo(outBuffer, mThisPlayer, 0);
         for (ServerLogic.ClientInfo player : mBattleInfo.getPlayers()) {
             if (!player.getClientId().equals(mThisPlayer.getClientId())) {
-                writePlayerInfo(outBuffer, player, 1);
+                writePlayerInfo(outBuffer, player, 0);
             }
         }
+        writePlayerInfo(outBuffer, mThisPlayer, 1);
 
         outBuffer.writeRrsInt(43);
         outBuffer.write((byte) 0);
@@ -93,9 +93,6 @@ public class SectorState extends ServerMessage  {
         outBuffer.writeRrsInt(0);
         outBuffer.writeRrsInt(25);
 
-        outBuffer.writeRrsInt(mThisPlayer.getClientId().high());
-        outBuffer.writeRrsInt(mThisPlayer.getClientId().low());
-        outBuffer.write((byte) 0);
         for (ServerLogic.ClientInfo player : mBattleInfo.getPlayers()) {
             if (!player.getClientId().equals(mThisPlayer.getClientId())) {
                 outBuffer.writeRrsInt(player.getClientId().high());
@@ -103,6 +100,9 @@ public class SectorState extends ServerMessage  {
                 outBuffer.write((byte) 0);
             }
         }
+        outBuffer.writeRrsInt(mThisPlayer.getClientId().high());
+        outBuffer.writeRrsInt(mThisPlayer.getClientId().low());
+        outBuffer.write((byte) 0);
 
         outBuffer.write((byte) 0);
         outBuffer.write((byte) 0);
@@ -510,7 +510,6 @@ public class SectorState extends ServerMessage  {
         outBuffer.writeRrsInt(-1014896741);
         outBuffer.write((byte) 0);
 
-        System.out.println(Utils.b2h(outBuffer.obtain().array()));
         return outBuffer.obtain();
     }
 
@@ -523,317 +522,69 @@ public class SectorState extends ServerMessage  {
         outBuffer.writeRrsInt(clientInfo.getClientId().low());
         outBuffer.writeString(clientInfo.getPlayerName());
 
-        if (playerNum == 0) {
-            outBuffer.writeRrsInt(13);
-            outBuffer.writeRrsInt(3689);
-            outBuffer.writeRrsInt(30);
-            outBuffer.writeRrsInt(2238);
-            outBuffer.write((byte) 0);
-            outBuffer.write((byte) 0);
-            outBuffer.write((byte) 0);
-            outBuffer.write((byte) 0);
-            outBuffer.write((byte) 0);
+        outBuffer.writeRrsInt(13);
+        outBuffer.writeRrsInt(3689);
+        outBuffer.writeRrsInt(30);
+        outBuffer.writeRrsInt(2238);
 
-            outBuffer.write((byte) 42);
+        outBuffer.write((byte) 0);
+        outBuffer.write((byte) 0);
+        outBuffer.write((byte) 0);
+        outBuffer.write((byte) 0);
+        outBuffer.write((byte) 0);
 
-            outBuffer.write((byte) 0);
-            outBuffer.write((byte) 0);
-            outBuffer.write((byte) 0);
-            outBuffer.write((byte) 0);
-            outBuffer.write((byte) 0);
-            outBuffer.write((byte) 8);
+        outBuffer.write((byte) 42);
 
-            outBuffer.writeRrsInt(19);
+        outBuffer.write((byte) 0);
+        outBuffer.write((byte) 0);
+        outBuffer.write((byte) 0);
+        outBuffer.write((byte) 0);
+        outBuffer.write((byte) 0);
+        outBuffer.write((byte) 8);
 
-            outBuffer.writeRrsInt(5);
-            outBuffer.writeRrsInt(1);
-            outBuffer.writeRrsInt(8124);
+        outBuffer.write((byte) 2);
+        outBuffer.write((byte) 5);
+        outBuffer.write((byte) 1);
+        outBuffer.write((byte) 0);
+        outBuffer.write((byte) 5);
+        outBuffer.write((byte) 14);
+        outBuffer.write((byte) 20);
 
-            outBuffer.writeRrsInt(5);
-            outBuffer.writeRrsInt(2);
-            outBuffer.writeRrsInt(1032);
+        outBuffer.write((byte) 0);
+        outBuffer.write((byte) 0);
+        outBuffer.write((byte) 0);
+        outBuffer.write((byte) 0);
+        outBuffer.write((byte) 0);
 
-            outBuffer.writeRrsInt(5);
-            outBuffer.writeRrsInt(3);
-            outBuffer.writeRrsInt(0);
+        outBuffer.write((byte) 0);
+        outBuffer.write((byte) 0);
 
-            outBuffer.writeRrsInt(5);
-            outBuffer.writeRrsInt(4);
-            outBuffer.writeRrsInt(0);
+        outBuffer.writeRrsInt(13);
+        outBuffer.writeRrsInt(2);
 
-            outBuffer.writeRrsInt(5);
-            outBuffer.writeRrsInt(12);
-            outBuffer.writeRrsInt(1098);
+        outBuffer.writeRrsInt(1);
+        outBuffer.writeRrsInt(1);
+        outBuffer.writeString("Cronus");
 
-            outBuffer.writeRrsInt(5);
-            outBuffer.writeRrsInt(13);
-            outBuffer.writeRrsInt(0);
+        outBuffer.writeRrsInt(153);
 
-            outBuffer.writeRrsInt(5);
-            outBuffer.writeRrsInt(14);
-            outBuffer.writeRrsInt(1);
+        outBuffer.write((byte) 0);
+        outBuffer.write((byte) 0);
+        outBuffer.write((byte) 0);
+        outBuffer.write((byte) 0);
+        outBuffer.write((byte) 0);
 
-            outBuffer.writeRrsInt(5);
-            outBuffer.writeRrsInt(15);
-            outBuffer.writeRrsInt(1170);
+        outBuffer.writeRrsInt(2);
+        outBuffer.write((byte) 0);
 
-            outBuffer.writeRrsInt(5);
-            outBuffer.writeRrsInt(22);
-            outBuffer.writeRrsInt(1188);
+        outBuffer.write((byte) 0);
+        outBuffer.write((byte) 0);
+        outBuffer.write((byte) 0);
+        outBuffer.write((byte) 0);
 
-            outBuffer.writeRrsInt(5);
-            outBuffer.writeRrsInt(25);
-            outBuffer.writeRrsInt(285998745);
-
-            outBuffer.writeRrsInt(5);
-            outBuffer.writeRrsInt(26);
-            outBuffer.writeRrsInt(9);
-
-            outBuffer.writeRrsInt(5);
-            outBuffer.writeRrsInt(28);
-            outBuffer.writeRrsInt(0);
-
-            outBuffer.writeRrsInt(5);
-            outBuffer.writeRrsInt(29);
-            outBuffer.writeRrsInt(72000006);
-
-            outBuffer.writeRrsInt(5);
-            outBuffer.writeRrsInt(33);
-            outBuffer.writeRrsInt(0);
-
-            outBuffer.writeRrsInt(5);
-            outBuffer.writeRrsInt(34);
-            outBuffer.writeRrsInt(0);
-
-            outBuffer.writeRrsInt(5);
-            outBuffer.writeRrsInt(35);
-            outBuffer.writeRrsInt(0);
-
-            outBuffer.writeRrsInt(5);
-            outBuffer.writeRrsInt(36);
-            outBuffer.writeRrsInt(0);
-
-            outBuffer.writeRrsInt(5);
-            outBuffer.writeRrsInt(38);
-            outBuffer.writeRrsInt(0);
-
-            outBuffer.writeRrsInt(5);
-            outBuffer.writeRrsInt(37);
-            outBuffer.writeRrsInt(0);
-
-            outBuffer.writeInt(5);
-
-            outBuffer.writeRrsInt(5);
-            outBuffer.writeRrsInt(6);
-            outBuffer.writeRrsInt(3905);
-
-            outBuffer.writeRrsInt(5);
-            outBuffer.writeRrsInt(7);
-            outBuffer.writeRrsInt(675);
-
-            outBuffer.writeRrsInt(5);
-            outBuffer.writeRrsInt(11);
-            outBuffer.writeRrsInt(42);
-
-            outBuffer.writeRrsInt(5);
-            outBuffer.writeRrsInt(20);
-            outBuffer.writeRrsInt(10);
-
-            outBuffer.writeRrsInt(5);
-            outBuffer.writeRrsInt(27);
-            outBuffer.writeRrsInt(12);
-
-            outBuffer.writeRrsInt(2);
-
-            outBuffer.writeRrsInt(26);
-            outBuffer.writeRrsInt(62);
-            outBuffer.writeRrsInt(52);
-
-            outBuffer.writeRrsInt(28);
-            outBuffer.writeRrsInt(15);
-            outBuffer.writeRrsInt(6);
-
-            outBuffer.write((byte) 0);
-            outBuffer.write((byte) 0);
-
-            outBuffer.writeRrsInt(10);
-            outBuffer.writeRrsInt(2);
-
-            outBuffer.writeRrsInt(ServerLogic.getInstance().getCronusClanInfo().getHashTag().high());
-            outBuffer.writeRrsInt(ServerLogic.getInstance().getCronusClanInfo().getHashTag().low());
-            outBuffer.writeString(ServerLogic.getInstance().getCronusClanInfo().getName());
-
-            outBuffer.writeRrsInt(153);
-            outBuffer.writeRrsInt(3461);
-            outBuffer.writeRrsInt(2);
-
-            outBuffer.write((byte) 0);
-
-            outBuffer.writeRrsInt(1168);
-            outBuffer.writeRrsInt(1086);
-
-            outBuffer.writeRrsInt(2);
-            outBuffer.writeRrsInt(7);
-
-            outBuffer.write((byte) 0);
-            outBuffer.write((byte) 0);
-            outBuffer.write((byte) 0);
-            outBuffer.write((byte) 0);
-
+        if (!clientInfo.getClientId().equals(mThisPlayer.getClientId())) {
             outBuffer.writeRrsInt(2);
         } else {
-            outBuffer.writeRrsInt(13);
-            outBuffer.writeRrsInt(4204);
-            outBuffer.writeRrsInt(328);
-            outBuffer.writeRrsInt(2431);
-            outBuffer.writeRrsInt(4399);
-            outBuffer.writeRrsInt(40);
-            outBuffer.write((byte) 0);
-            outBuffer.writeRrsInt(4443);
-            outBuffer.writeRrsInt(14);
-
-            outBuffer.write((byte) 42);
-
-            outBuffer.write((byte) 0);
-            outBuffer.writeRrsInt(4358);
-            outBuffer.writeRrsInt(4416);
-            outBuffer.write((byte) 0);
-            outBuffer.writeRrsInt(14);
-            outBuffer.write((byte) 8);
-
-            outBuffer.writeRrsInt(19);
-
-            outBuffer.writeRrsInt(5);
-            outBuffer.writeRrsInt(1);
-            outBuffer.writeRrsInt(10118);
-
-            outBuffer.writeRrsInt(5);
-            outBuffer.writeRrsInt(2);
-            outBuffer.writeRrsInt(1475);
-
-            outBuffer.writeRrsInt(5);
-            outBuffer.writeRrsInt(3);
-            outBuffer.writeRrsInt(4);
-
-            outBuffer.writeRrsInt(5);
-            outBuffer.writeRrsInt(4);
-            outBuffer.writeRrsInt(0);
-
-            outBuffer.writeRrsInt(5);
-            outBuffer.writeRrsInt(12);
-            outBuffer.writeRrsInt(1969);
-
-            outBuffer.writeRrsInt(5);
-            outBuffer.writeRrsInt(13);
-            outBuffer.writeRrsInt(0);
-
-            outBuffer.writeRrsInt(5);
-            outBuffer.writeRrsInt(14);
-            outBuffer.writeRrsInt(2);
-
-            outBuffer.writeRrsInt(5);
-            outBuffer.writeRrsInt(15);
-            outBuffer.writeRrsInt(1511);
-
-            outBuffer.writeRrsInt(5);
-            outBuffer.writeRrsInt(22);
-            outBuffer.writeRrsInt(1997);
-
-            outBuffer.writeRrsInt(5);
-            outBuffer.writeRrsInt(25);
-            outBuffer.writeRrsInt(542525556);
-
-            outBuffer.writeRrsInt(5);
-            outBuffer.writeRrsInt(26);
-            outBuffer.writeRrsInt(4);
-
-            outBuffer.writeRrsInt(5);
-            outBuffer.writeRrsInt(28);
-            outBuffer.writeRrsInt(0);
-
-            outBuffer.writeRrsInt(5);
-            outBuffer.writeRrsInt(29);
-            outBuffer.writeRrsInt(72000006);
-
-            outBuffer.writeRrsInt(5);
-            outBuffer.writeRrsInt(33);
-            outBuffer.writeRrsInt(0);
-
-            outBuffer.writeRrsInt(5);
-            outBuffer.writeRrsInt(34);
-            outBuffer.writeRrsInt(0);
-
-            outBuffer.writeRrsInt(5);
-            outBuffer.writeRrsInt(35);
-            outBuffer.writeRrsInt(0);
-
-            outBuffer.writeRrsInt(5);
-            outBuffer.writeRrsInt(36);
-            outBuffer.writeRrsInt(0);
-
-            outBuffer.writeRrsInt(5);
-            outBuffer.writeRrsInt(38);
-            outBuffer.writeRrsInt(0);
-
-            outBuffer.writeRrsInt(5);
-            outBuffer.writeRrsInt(37);
-            outBuffer.writeRrsInt(0);
-
-            outBuffer.writeInt(5);
-
-            outBuffer.writeRrsInt(5);
-            outBuffer.writeRrsInt(6);
-            outBuffer.writeRrsInt(4473);
-
-            outBuffer.writeRrsInt(5);
-            outBuffer.writeRrsInt(7);
-            outBuffer.writeRrsInt(1421);
-
-            outBuffer.writeRrsInt(5);
-            outBuffer.writeRrsInt(11);
-            outBuffer.writeRrsInt(31);
-
-            outBuffer.writeRrsInt(5);
-            outBuffer.writeRrsInt(20);
-            outBuffer.writeRrsInt(12);
-
-            outBuffer.writeRrsInt(5);
-            outBuffer.writeRrsInt(27);
-            outBuffer.writeRrsInt(14);
-
-            outBuffer.writeRrsInt(1);
-
-            outBuffer.writeRrsInt(28);
-            outBuffer.writeRrsInt(15);
-            outBuffer.writeRrsInt(65);
-
-            outBuffer.write((byte) 0);
-            outBuffer.write((byte) 0);
-
-            outBuffer.writeRrsInt(12);
-            outBuffer.writeRrsInt(2);
-
-            outBuffer.writeRrsInt(ServerLogic.getInstance().getCronusClanInfo().getHashTag().high());
-            outBuffer.writeRrsInt(ServerLogic.getInstance().getCronusClanInfo().getHashTag().low());
-            outBuffer.writeString(ServerLogic.getInstance().getCronusClanInfo().getName());
-
-            outBuffer.writeRrsInt(153);
-            outBuffer.writeRrsInt(8418);
-            outBuffer.writeRrsInt(33);
-
-            outBuffer.write((byte) 0);
-
-            outBuffer.writeRrsInt(3635);
-            outBuffer.writeRrsInt(3430);
-
-            outBuffer.writeRrsInt(2);
-            outBuffer.writeRrsInt(14);
-
-            outBuffer.write((byte) 0);
-            outBuffer.write((byte) 0);
-            outBuffer.write((byte) 0);
-            outBuffer.write((byte) 0);
-
             outBuffer.write((byte) 0);
         }
     }

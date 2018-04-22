@@ -3,6 +3,7 @@ package com.royale.titans.cronus.lib;
 import com.royale.titans.cronus.ServerLogic;
 
 import java.nio.ByteBuffer;
+import java.security.SecureRandom;
 
 public class HashTag {
     private static final String TAG_CHARS = "0289PYLQGRJCUV";
@@ -16,8 +17,8 @@ public class HashTag {
     public static HashTag randomHashTag() {
         StringBuilder s = new StringBuilder();
         String[] p = TAG_CHARS.split("");
-        for (int i=0;i<7;i++) {
-            s.append(p[ServerLogic.getInstance().getRandom().nextInt(i == 0 ? 4 : TAG_CHARS_LEN)]);
+        for (int i=0;i<5;i++) {
+            s.append(p[new SecureRandom().nextInt(i == 0 ? 4 : TAG_CHARS_LEN)]);
         }
 
         return new HashTag(s.toString());
@@ -75,7 +76,7 @@ public class HashTag {
     @Override
     public boolean equals(Object o) {
         if (o instanceof HashTag) {
-            return toString().equals(o.toString());
+            return ((HashTag) o).lon() == lon();
         }
         return super.equals(o);
     }
