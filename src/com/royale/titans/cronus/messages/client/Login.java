@@ -11,13 +11,16 @@ import com.royale.titans.cronus.messages.server.OwnHomeData;
 public class Login extends ClientMessage {
     public Login(ServerLogic.ClientInfo clientInfo, Buffer buffer) {
         super(clientInfo, buffer);
+
+        clientInfo.setClientId(buffer.readInt(), buffer.readInt());
+        System.out.println(clientInfo.getClientId());
     }
 
     @Override
     public ServerMessage[] handle(ServerLogic.ClientInfo clientInfo) {
         return new ServerMessage[] {
-                new LoginOk(clientInfo.getClientId()),
-                new OwnHomeData(clientInfo.getClientId()),
+                new LoginOk(clientInfo.getClientId().lon()),
+                new OwnHomeData(clientInfo),
                 new CronusChat()
         };
     }

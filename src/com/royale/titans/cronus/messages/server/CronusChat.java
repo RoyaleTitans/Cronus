@@ -38,10 +38,10 @@ public class CronusChat extends ServerMessage {
 
                 outBuffer.writeRrsInt(((CronusChatBattleEvent) chatEvent).getSlotId());
 
-                outBuffer.writeRrsInt(chatEvent.getClientInfo().getClientIdHigh());
-                outBuffer.writeRrsInt(chatEvent.getClientInfo().getClientIdLow());
-                outBuffer.writeRrsInt(chatEvent.getClientInfo().getClientIdHigh());
-                outBuffer.writeRrsInt(chatEvent.getClientInfo().getClientIdLow());
+                outBuffer.writeRrsInt(chatEvent.getClientInfo().getClientId().high());
+                outBuffer.writeRrsInt(chatEvent.getClientInfo().getClientId().low());
+                outBuffer.writeRrsInt(chatEvent.getClientInfo().getClientId().high());
+                outBuffer.writeRrsInt(chatEvent.getClientInfo().getClientId().low());
                 outBuffer.writeString(chatEvent.getClientInfo().getPlayerName());
 
                 outBuffer.writeRrsInt(10);
@@ -60,10 +60,10 @@ public class CronusChat extends ServerMessage {
                 outBuffer.write((byte) 0);
                 outBuffer.writeRrsInt(chatEvent.getUId());
 
-                outBuffer.writeRrsInt(chatEvent.getClientInfo().getClientIdHigh());
-                outBuffer.writeRrsInt(chatEvent.getClientInfo().getClientIdLow());
-                outBuffer.writeRrsInt(chatEvent.getClientInfo().getClientIdHigh());
-                outBuffer.writeRrsInt(chatEvent.getClientInfo().getClientIdLow());
+                outBuffer.writeRrsInt(chatEvent.getClientInfo().getClientId().high());
+                outBuffer.writeRrsInt(chatEvent.getClientInfo().getClientId().low());
+                outBuffer.writeRrsInt(chatEvent.getClientInfo().getClientId().high());
+                outBuffer.writeRrsInt(chatEvent.getClientInfo().getClientId().low());
                 outBuffer.writeString(chatEvent.getClientInfo().getPlayerName());
 
                 outBuffer.write((byte) 0);

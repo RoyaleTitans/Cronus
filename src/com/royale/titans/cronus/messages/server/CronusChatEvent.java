@@ -73,10 +73,10 @@ public class CronusChatEvent extends ServerMessage {
     private void writeStandardChatEvent(OutBuffer b) {
         b.write((byte) 0);
         b.writeRrsInt(mUId);
-        b.writeRrsInt(mInfo.getClientIdHigh());
-        b.writeRrsInt(mInfo.getClientIdLow());
-        b.writeRrsInt(mInfo.getClientIdHigh());
-        b.writeRrsInt(mInfo.getClientIdLow());
+        b.writeRrsInt(mInfo.getClientId().high());
+        b.writeRrsInt(mInfo.getClientId().low());
+        b.writeRrsInt(mInfo.getClientId().high());
+        b.writeRrsInt(mInfo.getClientId().low());
 
         b.writeString(mInfo.getPlayerName());
         b.writeRrsInt(10);

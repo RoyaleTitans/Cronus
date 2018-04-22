@@ -1,15 +1,20 @@
 package com.royale.titans.cronus.messages.server;
 
+import com.royale.titans.cronus.ServerLogic;
 import com.royale.titans.cronus.lib.Buffer;
 import com.royale.titans.cronus.CRUtils;
 import com.royale.titans.cronus.lib.OutBuffer;
 import com.royale.titans.cronus.messages.ServerMessage;
 
-public class OwnHomeData extends ServerMessage {
-    private final long mClientId;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
-    public OwnHomeData(long clientId) {
-        mClientId = clientId;
+public class OwnHomeData extends ServerMessage {
+    private final ServerLogic.ClientInfo mInfo;
+
+    public OwnHomeData(ServerLogic.ClientInfo info) {
+        mInfo = info;
     }
 
     @Override
@@ -26,7 +31,7 @@ public class OwnHomeData extends ServerMessage {
     public Buffer getBuffer() {
         OutBuffer b = OutBuffer.newBuffer();
 
-        b.writeLong(mClientId);
+        b.writeLong(mInfo.getClientId().lon());
         b.writeRrsInt(0);
         b.writeRrsInt(1501);
         b.writeRrsInt(257080);
@@ -34,83 +39,25 @@ public class OwnHomeData extends ServerMessage {
         b.writeRrsInt(System.currentTimeMillis() / 1000);
         b.writeRrsInt(116);
 
-        writeDecks(b);
+        ArrayList<CRUtils.CardInfo> selectedDeck = writeDecks(b);
+
+        mInfo.setCurrentDeck(selectedDeck);
 
         b.write((byte) -1);
 
-        b.writeRrsInt(16);
-        b.writeRrsInt(5);
-        b.writeRrsInt(0);
-        b.writeRrsInt(51);
-        b.writeRrsInt(0);
-        b.writeRrsInt(0);
-        b.writeRrsInt(0);
-        b.writeRrsInt(0);
+        writeCard(b, selectedDeck.get(0));
+        writeCard(b, selectedDeck.get(1));
+        writeCard(b, selectedDeck.get(2));
+        writeCard(b, selectedDeck.get(3));
+        writeCard(b, selectedDeck.get(4));
+        writeCard(b, selectedDeck.get(5));
+        writeCard(b, selectedDeck.get(6));
+        writeCard(b, selectedDeck.get(7));
 
-        b.writeRrsInt(27);
-        b.writeRrsInt(2);
-        b.writeRrsInt(0);
-        b.writeRrsInt(1);
-        b.writeRrsInt(0);
-        b.writeRrsInt(0);
-        b.writeRrsInt(0);
-        b.writeRrsInt(0);
-
-        b.writeRrsInt(28);
-        b.writeRrsInt(5);
-        b.writeRrsInt(0);
-        b.writeRrsInt(11);
-        b.writeRrsInt(0);
-        b.writeRrsInt(0);
-        b.writeRrsInt(0);
-        b.writeRrsInt(0);
-
-        b.writeRrsInt(82);
-        b.writeRrsInt(4);
-        b.writeRrsInt(0);
-        b.writeRrsInt(52);
-        b.writeRrsInt(0);
-        b.writeRrsInt(0);
-        b.writeRrsInt(0);
-        b.writeRrsInt(0);
-
-        b.writeRrsInt(40);
-        b.writeRrsInt(10);
-        b.writeRrsInt(0);
-        b.writeRrsInt(3);
-        b.writeRrsInt(0);
-        b.writeRrsInt(0);
-        b.writeRrsInt(0);
-        b.writeRrsInt(0);
-
-        b.writeRrsInt(31);
-        b.writeRrsInt(11);
-        b.writeRrsInt(0);
-        b.writeRrsInt(1794);
-        b.writeRrsInt(13);
-        b.writeRrsInt(0);
-        b.writeRrsInt(0);
-        b.writeRrsInt(0);
-
-        b.writeRrsInt(86);
-        b.writeRrsInt(11);
-        b.writeRrsInt(0);
-        b.writeRrsInt(1160);
-        b.writeRrsInt(0);
-        b.writeRrsInt(0);
-        b.writeRrsInt(0);
-        b.writeRrsInt(0);
-
-        b.writeRrsInt(87);
-        b.writeRrsInt(5);
-        b.writeRrsInt(0);
-        b.writeRrsInt(37);
-        b.writeRrsInt(3);
-        b.writeRrsInt(0);
-        b.writeRrsInt(0);
-        b.writeRrsInt(0);
-
-        b.writeRrsInt(0);
+        b.writeRrsInt(CRUtils.CARDS.length);
+        for (int i=0;i<CRUtils.CARDS.length;i++) {
+            writeCard(b, CRUtils.CARDS[i]);
+        }
 
         b.writeRrsInt(0);
         b.write((byte) -1);
@@ -397,7 +344,7 @@ public class OwnHomeData extends ServerMessage {
         b.write((byte) 1);
         b.writeString("{\"ID\":\"SHOP_CYCLE_MANAGEMENT\",\"Params\":{\"LegendaryChestCycleDuration\":14}}");
         b.write((byte) 1);
-        b.writeString("{\"ID\":\"CARD_RELEASE_V2\",\"Params\":{\"Cards\":[{\"ShowAsSoon\":false,\"Spell\":\"Ghost\",\"Date\":\"20180104\"},{\"ShowAsSoon\":false,\"Spell\":\"EliteArcher\",\"Date\":\"20180302\"},{\"ShowAsSoon\":false,\"Spell\":\"BarbLog\",\"Date\":\"20180406\"}");
+        b.writeString("{\"ID\":\"CARD_RELEASE_V2\",\"Params\":{\"Cards\":[{\"ShowAsSoon\":true,\"Spell\":\"Ghost\",\"Date\":\"20180504\"},{\"ShowAsSoon\":true,\"Spell\":\"EliteArcher\",\"Date\":\"20180204\"},{\"ShowAsSoon\":true,\"Spell\":\"BarbLog\",\"Date\":\"20180204\"}]}}");
         b.write((byte) 4);
         b.writeString("{\"ID\":\"CLAN_CHEST\",\"Params\":{\"StartTime\":\"20170317T070000.000Z\",\"ActiveDuration\":\"P3dT0h\",\"InactiveDuration\":\"P4dT0h\",\"ChestType\":[\"ClanCrowns\"]}}");
         b.write((byte) 1);
@@ -986,14 +933,14 @@ public class OwnHomeData extends ServerMessage {
         b.writeRrsInt(1109);
         b.writeRrsInt(0);
         b.writeRrsInt(0);
-        b.writeRrsInt(13);
-        b.writeRrsInt(8032449);
-        b.writeRrsInt(13);
-        b.writeRrsInt(8032449);
-        b.writeRrsInt(13);
-        b.writeRrsInt(8032449);
+        b.writeRrsInt(mInfo.getClientId().high());
+        b.writeRrsInt(mInfo.getClientId().low());
+        b.writeRrsInt(mInfo.getClientId().high());
+        b.writeRrsInt(mInfo.getClientId().low());
+        b.writeRrsInt(mInfo.getClientId().high());
+        b.writeRrsInt(mInfo.getClientId().low());
 
-        b.writeString("G-");
+        b.writeString(mInfo.getPlayerName());
 
         b.writeRrsInt(1);
         b.writeRrsInt(13);
@@ -1546,9 +1493,11 @@ public class OwnHomeData extends ServerMessage {
         b.writeRrsInt(12);
         b.writeRrsInt(52540);
         b.writeRrsInt(9);
+
         b.writeRrsInt(0);
         b.writeRrsInt(0);
         b.writeString("Cronus");
+
         b.writeRrsInt(153);
         b.writeRrsInt(4);
         b.writeRrsInt(8381);
@@ -1575,18 +1524,37 @@ public class OwnHomeData extends ServerMessage {
         return b.obtain();
     }
 
-    private void writeDecks(OutBuffer b) {
+    // Write all decks and return first
+    private ArrayList<CRUtils.CardInfo> writeDecks(OutBuffer b) {
+        ArrayList<CRUtils.CardInfo> selectedDeck = null;
         b.writeRrsInt(5);
         for (int i = 0; i < 5; i++) {
             b.writeRrsInt(8);
-            b.writeRrsInt(CRUtils.randomCard().getScId());
-            b.writeRrsInt(CRUtils.randomCard().getScId());
-            b.writeRrsInt(CRUtils.randomCard().getScId());
-            b.writeRrsInt(CRUtils.randomCard().getScId());
-            b.writeRrsInt(CRUtils.randomCard().getScId());
-            b.writeRrsInt(CRUtils.randomCard().getScId());
-            b.writeRrsInt(CRUtils.randomCard().getScId());
-            b.writeRrsInt(CRUtils.randomCard().getScId());
+            Map<CRUtils.CardInfo, String> cards = new HashMap<>();
+
+            while (cards.size() != 8) {
+                CRUtils.CardInfo c = CRUtils.randomCard();
+                if (cards.get(c) == null) {
+                    cards.put(c, "");
+                    b.writeRrsInt(c.getScId());
+                }
+            }
+            if (selectedDeck == null) {
+                selectedDeck = new ArrayList<>(cards.keySet());
+            }
         }
+
+        return selectedDeck;
+    }
+
+    private void writeCard(OutBuffer b, CRUtils.CardInfo cardInfo) {
+        b.writeRrsInt(cardInfo.getId());
+        b.writeRrsInt(cardInfo.getMaxLevel() - 1);
+        b.writeRrsInt(0);
+        b.writeRrsInt(0);
+        b.writeRrsInt(0);
+        b.writeRrsInt(0);
+        b.writeRrsInt(0);
+        b.writeRrsInt(0);
     }
 }

@@ -1,9 +1,11 @@
 package com.royale.titans.cronus;
 
+import com.royale.titans.cronus.lib.Buffer;
+import com.royale.titans.cronus.messages.server.BattleEvent;
+import com.royale.titans.cronus.messages.server.CustomBufferMessage;
 import com.royale.titans.cronus.messages.server.SectorState;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -81,10 +83,37 @@ public class BattleLogic {
                 case START_BATTLE: {
                     BattleInfo battleInfo = (BattleInfo) mData[0];
                     for (ServerLogic.ClientInfo clientInfo : battleInfo.getPlayers()) {
-                        ServerLogic.getInstance().postMessage(clientInfo,
-                                new SectorState());
+                        SectorState sectorState = new SectorState(battleInfo, clientInfo);
+                        ServerLogic.getInstance().postMessage(clientInfo, sectorState);
+                    }
+
+                    try {
+                        Thread.sleep(600);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                    int i = 1;
+                    while (true) {
+                        BattleEvent battleEvent;
+
+                        battleEvent = new BattleEvent(i);
+
+                        for (ServerLogic.ClientInfo clientInfo : battleInfo.getPlayers()) {
+                            ServerLogic.getInstance().postMessage(clientInfo, battleEvent);
+                        }
+
+                        try {
+                            Thread.sleep(600);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                            break;
+                        }
+
+                        i++;
                     }
                 }
+
                 break;
             }
         }

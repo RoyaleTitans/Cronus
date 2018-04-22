@@ -35,10 +35,10 @@ public class CronusChatBattleEvent extends CronusChatEvent {
 
         b.writeRrsInt(mSlotId);
 
-        b.writeRrsInt(getClientInfo().getClientIdHigh());
-        b.writeRrsInt(getClientInfo().getClientIdLow());
-        b.writeRrsInt(getClientInfo().getClientIdHigh());
-        b.writeRrsInt(getClientInfo().getClientIdLow());
+        b.writeRrsInt(getClientInfo().getClientId().high());
+        b.writeRrsInt(getClientInfo().getClientId().low());
+        b.writeRrsInt(getClientInfo().getClientId().high());
+        b.writeRrsInt(getClientInfo().getClientId().low());
         b.writeString(getClientInfo().getPlayerName());
 
         b.writeRrsInt(10);
@@ -54,7 +54,7 @@ public class CronusChatBattleEvent extends CronusChatEvent {
             b.write((byte) 1);
             b.write((byte) 0);
             b.write((byte) 2);
-            b.writeLong(mOpponentInfo.getClientId());
+            b.writeLong(mOpponentInfo.getClientId().lon());
             b.write((byte) -120);
         } else {
             b.write((byte) 0);

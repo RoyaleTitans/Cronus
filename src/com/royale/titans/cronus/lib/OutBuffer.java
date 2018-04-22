@@ -15,28 +15,36 @@ public class OutBuffer {
         return Buffer.wrap(mOutStream.toByteArray());
     }
 
-    public void write(byte ... bytes) {
+    public OutBuffer write(byte ... bytes) {
         try {
             mOutStream.write(bytes);
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return this;
     }
 
-    public void writeInt(int value) {
+    public OutBuffer write(byte[] bytes, int off, int len) {
+        mOutStream.write(bytes, off, len);
+        return this;
+    }
+
+    public OutBuffer writeInt(int value) {
         try {
             mOutStream.write(ByteBuffer.allocate(4).putInt(value).array());
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return this;
     }
 
-    public void writeLong(long value) {
+    public OutBuffer writeLong(long value) {
         try {
             mOutStream.write(ByteBuffer.allocate(8).putLong(value).array());
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return this;
     }
 
     public int writeRrsInt(long value) {
@@ -72,15 +80,16 @@ public class OutBuffer {
         return c;
     }
 
-    public void writeShort(int value) {
+    public OutBuffer writeShort(int value) {
         try {
             mOutStream.write(ByteBuffer.allocate(2).putShort((short) value).array());
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return this;
     }
 
-    public void writeString(String value) {
+    public OutBuffer writeString(String value) {
         writeInt(value.length());
         if (value.length() > 0) {
             try {
@@ -89,5 +98,6 @@ public class OutBuffer {
                 e.printStackTrace();
             }
         }
+        return this;
     }
 }

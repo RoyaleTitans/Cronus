@@ -54,7 +54,9 @@ public class ServerLogic {
         System.out.println("[SERVER-LOGIC] Cronus logic initialized");
     }
 
-    void initialize() {}
+    void initialize() {
+
+    }
 
     ClientInfo openSession(AsynchronousSocketChannel socket, String sessionKey) {
         ClientInfo clientInfo = new ClientInfo(socket, sessionKey);
@@ -120,7 +122,7 @@ public class ServerLogic {
         socket.write(headers.toBuffer().getByteBuffer());
 
         if (Configs.DEBUG) {
-            System.out.println("[SERVER] [OUT] msgId: " + headers.getId() + " - len: " + headers.getLength());
+            //System.out.println("[SERVER] [OUT] msgId: " + headers.getId() + " - len: " + headers.getLength());
         }
 
         socket.write(b.getByteBuffer());
@@ -294,18 +296,41 @@ public class ServerLogic {
     public static class ClientInfo {
         private final AsynchronousSocketChannel mSocket;
         private final String mSessionKey;
-        private final String mPlayerName;
-        private final long mClientId;
         private final Nonce mR;
 
         private Nonce mS;
 
+        private CRUtils.HashTag mClientId;
+        private String mPlayerName;
+
+        private ArrayList<CRUtils.CardInfo> mCurrentDeck;
+
         ClientInfo(AsynchronousSocketChannel socket, String sessionKey) {
             mSocket = socket;
             mSessionKey = sessionKey;
-            mClientId = ServerLogic.getInstance().getRandom().nextLong();
-            mPlayerName = String.valueOf(mClientId);
             mR = new Nonce(new byte[24]);
+        }
+
+        public void setClientId(int high, int low) {
+            if (high == 0 && low == 0) {
+                mClientId = CRUtils.randomHashTag();
+            } else {
+                mClientId = new CRUtils.HashTag(high, low);
+            }
+
+            mPlayerName = mClientId.toString();
+        }
+
+        public void setPlayerName(String playerName) {
+            mPlayerName = playerName;
+        }
+
+        public void setCurrentDeck(ArrayList<CRUtils.CardInfo> currentDeck) {
+            mCurrentDeck = currentDeck;
+        }
+
+        public void setNonce(Nonce sNonce) {
+            mS = sNonce;
         }
 
         AsynchronousSocketChannel getSocket() {
@@ -320,20 +345,12 @@ public class ServerLogic {
             return mPlayerName;
         }
 
-        public long getClientId() {
+        public CRUtils.HashTag getClientId() {
             return mClientId;
         }
 
-        public int getClientIdHigh() {
-            return (int) (mClientId >> 32);
-        }
-
-        public int getClientIdLow() {
-            return (int) (mClientId);
-        }
-
-        public void setNonce(Nonce sNonce) {
-            mS = sNonce;
+        public ArrayList<CRUtils.CardInfo> getCurrentDeck() {
+            return mCurrentDeck;
         }
 
         public Nonce sNonce() {
