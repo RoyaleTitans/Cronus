@@ -34,11 +34,11 @@ public class SectorState extends ServerMessage  {
 
         outBuffer.write((byte) 1);
         outBuffer.writeRrsInt(42);
+        outBuffer.writeRrsInt(2);
 
         outBuffer.writeRrsInt(2);
-        outBuffer.writeRrsInt(2);
+
         outBuffer.writeRrsInt(1);
-
         outBuffer.writeRrsInt(2);
         outBuffer.writeRrsInt(2);
         outBuffer.writeRrsInt(261);
@@ -50,8 +50,8 @@ public class SectorState extends ServerMessage  {
         outBuffer.writeRrsInt(1);
         outBuffer.writeRrsInt(1);
         outBuffer.write((byte) 0);
-
         outBuffer.writeRrsInt(1);
+
         outBuffer.writeRrsInt(2);
         outBuffer.writeRrsInt(0);
         outBuffer.writeRrsInt(4);
@@ -659,9 +659,9 @@ public class SectorState extends ServerMessage  {
             outBuffer.writeRrsInt(10);
             outBuffer.writeRrsInt(2);
 
-            outBuffer.writeRrsInt(1);
-            outBuffer.writeRrsInt(1);
-            outBuffer.writeString("Cronus");
+            outBuffer.writeRrsInt(ServerLogic.getInstance().getCronusClanInfo().getHashTag().high());
+            outBuffer.writeRrsInt(ServerLogic.getInstance().getCronusClanInfo().getHashTag().low());
+            outBuffer.writeString(ServerLogic.getInstance().getCronusClanInfo().getName());
 
             outBuffer.writeRrsInt(153);
             outBuffer.writeRrsInt(3461);
@@ -813,9 +813,9 @@ public class SectorState extends ServerMessage  {
             outBuffer.writeRrsInt(12);
             outBuffer.writeRrsInt(2);
 
-            outBuffer.writeRrsInt(1);
-            outBuffer.writeRrsInt(1);
-            outBuffer.writeString("Cronus");
+            outBuffer.writeRrsInt(ServerLogic.getInstance().getCronusClanInfo().getHashTag().high());
+            outBuffer.writeRrsInt(ServerLogic.getInstance().getCronusClanInfo().getHashTag().low());
+            outBuffer.writeString(ServerLogic.getInstance().getCronusClanInfo().getName());
 
             outBuffer.writeRrsInt(153);
             outBuffer.writeRrsInt(8418);

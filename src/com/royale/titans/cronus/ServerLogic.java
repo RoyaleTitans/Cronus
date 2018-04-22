@@ -1,7 +1,9 @@
 package com.royale.titans.cronus;
 
 import com.royale.titans.cronus.lib.Buffer;
+import com.royale.titans.cronus.lib.CronusClanInfo;
 import com.royale.titans.cronus.lib.Crypto;
+import com.royale.titans.cronus.lib.HashTag;
 import com.royale.titans.cronus.lib.Nonce;
 import com.royale.titans.cronus.messages.ClientMessage;
 import com.royale.titans.cronus.messages.Headers;
@@ -32,6 +34,8 @@ public class ServerLogic {
 
     private final SecureRandom mSecureRandom;
 
+    private final CronusClanInfo mCronusClanInfo;
+
     public static synchronized ServerLogic getInstance() {
         if (sInstance == null) {
             sInstance = new ServerLogic();
@@ -48,6 +52,8 @@ public class ServerLogic {
 
         mBattleChatEvents = new ArrayList<>();
         mBattleChatEventsSessionMap = new LinkedHashMap<>();
+
+        mCronusClanInfo = new CronusClanInfo(HashTag.randomHashTag());
 
         mWorker = new ServerWorker();
 
@@ -97,6 +103,10 @@ public class ServerLogic {
 
     public LinkedHashMap<String, CronusChatBattleEvent> getBattleChatEventsSessionMap() {
         return mBattleChatEventsSessionMap;
+    }
+
+    public CronusClanInfo getCronusClanInfo() {
+        return mCronusClanInfo;
     }
 
     public void postMessage(ClientInfo clientInfo, ServerMessage serverMessage) {
@@ -300,7 +310,7 @@ public class ServerLogic {
 
         private Nonce mS;
 
-        private CRUtils.HashTag mClientId;
+        private HashTag mClientId;
         private String mPlayerName;
 
         private ArrayList<CRUtils.CardInfo> mCurrentDeck;
@@ -313,9 +323,9 @@ public class ServerLogic {
 
         public void setClientId(int high, int low) {
             if (high == 0 && low == 0) {
-                mClientId = CRUtils.randomHashTag();
+                mClientId = HashTag.randomHashTag();
             } else {
-                mClientId = new CRUtils.HashTag(high, low);
+                mClientId = new HashTag(high, low);
             }
 
             mPlayerName = mClientId.toString();
@@ -345,7 +355,7 @@ public class ServerLogic {
             return mPlayerName;
         }
 
-        public CRUtils.HashTag getClientId() {
+        public HashTag getClientId() {
             return mClientId;
         }
 

@@ -1494,9 +1494,9 @@ public class OwnHomeData extends ServerMessage {
         b.writeRrsInt(52540);
         b.writeRrsInt(9);
 
-        b.writeRrsInt(0);
-        b.writeRrsInt(0);
-        b.writeString("Cronus");
+        b.writeRrsInt(ServerLogic.getInstance().getCronusClanInfo().getHashTag().high());
+        b.writeRrsInt(ServerLogic.getInstance().getCronusClanInfo().getHashTag().low());
+        b.writeString(ServerLogic.getInstance().getCronusClanInfo().getName());
 
         b.writeRrsInt(153);
         b.writeRrsInt(4);
