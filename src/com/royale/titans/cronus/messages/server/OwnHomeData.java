@@ -19,7 +19,7 @@ public class OwnHomeData extends ServerMessage {
 
     @Override
     public int getId() {
-        return 28502;
+        return 28337;
     }
 
     @Override

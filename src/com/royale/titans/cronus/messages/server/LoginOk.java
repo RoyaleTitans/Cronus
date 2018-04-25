@@ -13,7 +13,7 @@ public class LoginOk extends ServerMessage {
 
     @Override
     public int getId() {
-        return 22280;
+        return 22194;
     }
 
     @Override

@@ -14,7 +14,7 @@ public class BattleLogic {
     private static BattleLogic sInstance;
 
     private final ConcurrentHashMap<Integer, BattleInfo> mBattleInfos = new ConcurrentHashMap<>();
-    private final ConcurrentHashMap<String, Integer> mBattleInfosSessionMap = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<String, Integer> mBattleInfosHashMap = new ConcurrentHashMap<>();
 
     private final ExecutorService mExecutor;
 
@@ -36,7 +36,7 @@ public class BattleLogic {
             if (mBattleInfos.get(slotId) == null) {
                 BattleInfo battleInfo = new BattleInfo(slotId, clientInfo);
                 mBattleInfos.put(slotId, battleInfo);
-                mBattleInfosSessionMap.put(clientInfo.getClientId().toString(), slotId);
+                mBattleInfosHashMap.put(clientInfo.getClientId().toString(), slotId);
                 return slotId;
             }
 
@@ -45,7 +45,7 @@ public class BattleLogic {
     }
 
     public void cancelBattle(String hashTag) {
-        Integer slot = mBattleInfosSessionMap.remove(hashTag);
+        Integer slot = mBattleInfosHashMap.remove(hashTag);
         if (slot != null && slot > 0) {
             mBattleInfos.remove(slot);
         }
@@ -57,14 +57,20 @@ public class BattleLogic {
 
     public void startBattle(BattleInfo battleInfo) {
         for (ServerLogic.ClientInfo clientInfo : battleInfo.getPlayers()) {
-            mBattleInfosSessionMap.put(clientInfo.getClientId().toString(), battleInfo.getSlotId());
+            mBattleInfosHashMap.put(clientInfo.getClientId().toString(), battleInfo.getSlotId());
         }
 
         scheduleTask(new BattleTask(BattleTask.TASK.START_BATTLE, battleInfo));
     }
 
     public void onClientBattleEvent(ClientBattleEvent clientBattleEvent, ServerLogic.ClientInfo clientInfo) {
-        // wip this
+        Integer slotId = mBattleInfosHashMap.get(clientInfo.getClientId().toString());
+        if (slotId != null && slotId > 0) {
+            BattleInfo battleInfo = mBattleInfos.get(slotId);
+            if (battleInfo != null) {
+                battleInfo.getBattleEvents().add(clientBattleEvent);
+            }
+        }
     }
 
     public void scheduleTask(BattleTask task) {
@@ -89,6 +95,9 @@ public class BattleLogic {
             switch (mTask) {
                 case START_BATTLE: {
                     BattleInfo battleInfo = (BattleInfo) mData[0];
+
+                    battleInfo.startGame();
+
                     for (ServerLogic.ClientInfo clientInfo : battleInfo.getPlayers()) {
                         SectorState sectorState = new SectorState(battleInfo, clientInfo);
                         ServerLogic.getInstance().postMessage(clientInfo, sectorState);
@@ -100,11 +109,14 @@ public class BattleLogic {
                         e.printStackTrace();
                     }
 
-                    int i = 1;
                     while (true) {
-                        ServerBattleEvent battleEvent;
+                        ServerBattleEvent battleEvent = new ServerBattleEvent(battleInfo);
 
-                        battleEvent = new ServerBattleEvent(i);
+                        if (battleInfo.getBattleEvents().size() > battleInfo.getEventIndex()) {
+                            ClientBattleEvent clientBattleEvent = battleInfo.getBattleEvents().get(battleInfo.getEventIndex());
+                            battleEvent.setClientEvent(clientBattleEvent);
+                            battleInfo.incrementEventIndex();
+                        }
 
                         for (ServerLogic.ClientInfo clientInfo : battleInfo.getPlayers()) {
                             ServerLogic.getInstance().postMessage(clientInfo, battleEvent);
@@ -117,7 +129,7 @@ public class BattleLogic {
                             break;
                         }
 
-                        i++;
+                        battleInfo.incrementSequence();
                     }
                 }
 
@@ -130,14 +142,42 @@ public class BattleLogic {
         private final int mSlotId;
 
         private final ArrayList<ServerLogic.ClientInfo> mPlayersInfo = new ArrayList<>();
+        private final ArrayList<ClientBattleEvent> mBattleEvents = new ArrayList<>();
+
+        private int mSequence;
+        private int mEventIndex;
+
+        private long mGameStartTimestamp;
 
         public BattleInfo(int slotId, ServerLogic.ClientInfo clientInfo) {
             mSlotId = slotId;
             mPlayersInfo.add(clientInfo);
+            mSequence = 1;
+            mEventIndex = 0;
+        }
+
+        public void startGame() {
+            mGameStartTimestamp = System.currentTimeMillis() / 1000;
+        }
+
+        public void incrementSequence() {
+            mSequence++;
+        }
+
+        public void incrementEventIndex() {
+            mSequence++;
         }
 
         public int getSlotId() {
             return mSlotId;
+        }
+
+        public int getSequence() {
+            return mSequence;
+        }
+
+        public int getEventIndex() {
+            return mEventIndex;
         }
 
         public String getHostTag() {
@@ -146,6 +186,14 @@ public class BattleLogic {
 
         public ArrayList<ServerLogic.ClientInfo> getPlayers() {
             return mPlayersInfo;
+        }
+
+        public ArrayList<ClientBattleEvent> getBattleEvents() {
+            return mBattleEvents;
+        }
+
+        public long getGameStartTimestamp() {
+            return mGameStartTimestamp;
         }
     }
 }

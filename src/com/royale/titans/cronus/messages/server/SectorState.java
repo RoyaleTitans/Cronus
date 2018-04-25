@@ -81,7 +81,8 @@ public class SectorState extends ServerMessage  {
         outBuffer.writeRrsInt(43);
         outBuffer.write((byte) 0);
         outBuffer.writeRrsInt(33);
-        outBuffer.writeRrsInt(System.currentTimeMillis() / 1000);
+        System.out.println("GAME START: " + String.valueOf(mBattleInfo.getGameStartTimestamp() / 1000));
+        outBuffer.writeRrsInt(mBattleInfo.getGameStartTimestamp() / 1000);
 
         outBuffer.writeRrsInt(11);
         outBuffer.writeRrsInt(0);
@@ -115,7 +116,6 @@ public class SectorState extends ServerMessage  {
 
         outBuffer.writeRrsInt(4);
         outBuffer.writeRrsInt(1);
-
         outBuffer.write((byte) 0);
         outBuffer.write((byte) 0);
 
@@ -404,10 +404,8 @@ public class SectorState extends ServerMessage  {
         outBuffer.write((byte) 0);
         outBuffer.writeRrsInt(2534);
         outBuffer.write((byte) 0);
-
         outBuffer.writeRrsInt(4008);
         outBuffer.write((byte) 0);
-
         outBuffer.writeRrsInt(4008);
         outBuffer.write((byte) 0);
 

@@ -16,7 +16,7 @@ public class Crypto {
         }
 
         if (id == 10101) {
-            Buffer loginDecrypted = Buffer.wrap(TweetNaCl.crypto_box_open(
+            Buffer loginDecrypted = Buffer.wrap(SCNaCl.crypto_box_open(
                     Arrays.copyOfRange(buffer.array(), 32, buffer.capacity()),
                     Configs.MAGIC_NONCE,
                     Configs.MAGIC_KEY));
@@ -29,7 +29,7 @@ public class Crypto {
             if (buffer.capacity() == 0) {
                 return buffer;
             }
-            return Buffer.wrap(TweetNaCl.crypto_box_open(buffer.array(),
+            return Buffer.wrap(SCNaCl.crypto_box_open(buffer.array(),
                     info.sNonce().getBytes(), NULL));
         }
     }
@@ -37,7 +37,7 @@ public class Crypto {
     public static Buffer encrypt(ServerLogic.ClientInfo info, int messageId, Buffer buffer) {
         if (messageId == 20100 || messageId == 20103) {
             return buffer;
-        } else if (messageId == 22280) {
+        } else if (messageId == 22194) {
             try {
                 Nonce nonce = new Nonce(NULL, Configs.PUBLIC_SERVER_KEY,
                         info.sNonce().getBytes());
@@ -46,7 +46,7 @@ public class Crypto {
                 byteArrayOutputStream.write(NULL);
                 byteArrayOutputStream.write(buffer.array());
                 byte[] p = byteArrayOutputStream.toByteArray();
-                return Buffer.wrap(TweetNaCl.crypto_box(p,
+                return Buffer.wrap(SCNaCl.crypto_box(p,
                         nonce.getBytes(),
                         Configs.MAGIC_KEY));
             } catch (IOException ignored) {
@@ -54,7 +54,7 @@ public class Crypto {
             }
         } else {
             info.rNonce().increment();
-            return Buffer.wrap(TweetNaCl.crypto_box(buffer.array(),
+            return Buffer.wrap(SCNaCl.crypto_box(buffer.array(),
                     info.rNonce().getBytes(), NULL));
         }
     }

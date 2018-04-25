@@ -24,7 +24,7 @@ public class CronusChat extends ServerMessage {
         OutBuffer outBuffer = OutBuffer.newBuffer();
 
         List<CronusChatEvent> chatEvents = new ArrayList<>(ServerLogic.getInstance().getChatEvents());
-        chatEvents.addAll(ServerLogic.getInstance().getBattleChatEvents());
+        //chatEvents.addAll(ServerLogic.getInstance().getBattleChatEvents());
         chatEvents.sort((o1, o2) -> Long.compare(o2.getTimestamp(), o1.getTimestamp()));
 
         outBuffer.writeRrsInt(chatEvents.size());

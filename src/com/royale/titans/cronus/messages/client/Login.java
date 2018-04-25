@@ -20,8 +20,7 @@ public class Login extends ClientMessage {
     public ServerMessage[] handle(ServerLogic.ClientInfo clientInfo) {
         return new ServerMessage[] {
                 new LoginOk(clientInfo.getClientId().lon()),
-                new OwnHomeData(clientInfo),
-                new CronusChat()
+                new OwnHomeData(clientInfo)
         };
     }
 }

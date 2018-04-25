@@ -21,7 +21,7 @@ public class CronusBattleAccepted extends ClientMessage {
         BattleLogic.BattleInfo battleInfo = BattleLogic.getInstance().getBattleInfo(mSlotId);
         if (battleInfo != null) {
             CronusChatBattleEvent cronusChatBattleEvent = ServerLogic.getInstance()
-                    .getBattleChatEventsSessionMap().get(battleInfo.getHostSessionKey());
+                    .getBattleChatEventsTagMap().get(battleInfo.getHostTag());
             if (cronusChatBattleEvent != null) {
                 cronusChatBattleEvent.setOpponentInfo(clientInfo);
                 battleInfo.getPlayers().add(clientInfo);

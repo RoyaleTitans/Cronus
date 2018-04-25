@@ -30,7 +30,7 @@ public class ServerLogic {
     private final List<CronusChatEvent> mChatEvents;
 
     private final List<CronusChatBattleEvent> mBattleChatEvents;
-    private final LinkedHashMap<String, CronusChatBattleEvent> mBattleChatEventsSessionMap;
+    private final LinkedHashMap<String, CronusChatBattleEvent> mBattleChatEventsTagMap;
 
     private final SecureRandom mSecureRandom;
 
@@ -51,7 +51,7 @@ public class ServerLogic {
         mChatEvents = new ArrayList<>();
 
         mBattleChatEvents = new ArrayList<>();
-        mBattleChatEventsSessionMap = new LinkedHashMap<>();
+        mBattleChatEventsTagMap = new LinkedHashMap<>();
 
         mCronusClanInfo = new CronusClanInfo(HashTag.randomHashTag());
 
@@ -74,7 +74,7 @@ public class ServerLogic {
         ClientInfo info = mSessions.remove(sessionKey);
 
         // Check for pending matches
-        if (mBattleChatEventsSessionMap.get(sessionKey) != null) {
+        if (info.getClientId() != null && mBattleChatEventsTagMap.get(info.getClientId().toString()) != null) {
             mWorker.scheduleTask(new ServerWorker.WorkerTask(
                     ServerWorker.TASK.POST_CRONUS_CHAT_GAME_QUEUE_CANCELLED,
                     info));
@@ -101,8 +101,8 @@ public class ServerLogic {
         return mBattleChatEvents;
     }
 
-    public LinkedHashMap<String, CronusChatBattleEvent> getBattleChatEventsSessionMap() {
-        return mBattleChatEventsSessionMap;
+    public LinkedHashMap<String, CronusChatBattleEvent> getBattleChatEventsTagMap() {
+        return mBattleChatEventsTagMap;
     }
 
     public CronusClanInfo getCronusClanInfo() {
@@ -132,7 +132,7 @@ public class ServerLogic {
         socket.write(headers.toBuffer().getByteBuffer());
 
         if (Configs.DEBUG) {
-            //System.out.println("[SERVER] [OUT] msgId: " + headers.getId() + " - len: " + headers.getLength());
+            System.out.println("[SERVER] [OUT] msgId: " + headers.getId() + " - len: " + headers.getLength());
         }
 
         socket.write(b.getByteBuffer());
@@ -229,10 +229,10 @@ public class ServerLogic {
                             List<CronusChatBattleEvent> battleChatEvents =
                                     ServerLogic.getInstance().getBattleChatEvents();
                             LinkedHashMap<String, CronusChatBattleEvent> battleChatEventsSessionMap =
-                                    ServerLogic.getInstance().getBattleChatEventsSessionMap();
+                                    ServerLogic.getInstance().getBattleChatEventsTagMap();
 
                             battleChatEvents.add(gameQueueEvent);
-                            battleChatEventsSessionMap.put(info.getSessionKey(), gameQueueEvent);
+                            battleChatEventsSessionMap.put(info.getClientId().toString(), gameQueueEvent);
 
                             for (ClientInfo clientInfo : ServerLogic.getInstance().getSessions()) {
                                 ServerLogic.getInstance().postMessage(clientInfo, gameQueueEvent);
@@ -243,7 +243,7 @@ public class ServerLogic {
                             ClientInfo info = (ClientInfo) workerTask.getData()[0];
 
                             LinkedHashMap<String, CronusChatBattleEvent> battleChatEventsSessionMap =
-                                    ServerLogic.getInstance().getBattleChatEventsSessionMap();
+                                    ServerLogic.getInstance().getBattleChatEventsTagMap();
                             CronusChatBattleEvent battleChatEvent = battleChatEventsSessionMap.remove(info.getSessionKey());
                             if (battleChatEvent != null) {
                                 ServerLogic.getInstance().getBattleChatEvents().remove(battleChatEvent);

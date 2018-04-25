@@ -1,21 +1,20 @@
 package com.royale.titans.cronus.messages.server;
 
+import com.royale.titans.cronus.BattleLogic;
 import com.royale.titans.cronus.lib.Buffer;
 import com.royale.titans.cronus.lib.OutBuffer;
 import com.royale.titans.cronus.messages.ServerMessage;
+import com.royale.titans.cronus.messages.client.ClientBattleEvent;
 
 public class ServerBattleEvent extends ServerMessage {
-    private final int mSequence;
-    private final int mEventId;
+    private final BattleLogic.BattleInfo mBattleInfo;
 
-    public ServerBattleEvent(int sequence) {
-        mSequence = sequence;
+    private int mEventId;
+    private ClientBattleEvent mClientEvent;
+
+    public ServerBattleEvent(BattleLogic.BattleInfo battleInfo) {
+        mBattleInfo = battleInfo;
         mEventId = 0;
-    }
-
-    public ServerBattleEvent(int sequence, int eventId) {
-        mSequence = sequence;
-        mEventId = eventId;
     }
 
     @Override
@@ -31,27 +30,31 @@ public class ServerBattleEvent extends ServerMessage {
     @Override
     public Buffer getBuffer() {
         OutBuffer outBuffer = OutBuffer.newBuffer();
-        outBuffer.writeRrsInt(mSequence);
-        outBuffer.writeRrsInt(0);
+        outBuffer.writeRrsInt(mBattleInfo.getSequence());
+        outBuffer.writeRrsInt(0xDEAD);
         outBuffer.writeRrsInt(mEventId);
 
         if (mEventId > 0) {
-            outBuffer.writeRrsInt(51);
-            outBuffer.writeRrsInt(201);
-            outBuffer.writeRrsInt(-64);
-            outBuffer.writeRrsInt(13);
-            outBuffer.writeRrsInt(8032449);
-            outBuffer.writeRrsInt(0);
-            outBuffer.writeRrsInt(26);
-            outBuffer.writeRrsInt(9);
-            outBuffer.writeRrsInt(-64);
-            outBuffer.writeRrsInt(1);
-            outBuffer.writeRrsInt(10);
-            outBuffer.writeRrsInt(3);
-            outBuffer.writeRrsInt(9500);
-            outBuffer.writeRrsInt(500);
+            outBuffer.writeRrsInt(mClientEvent.getBuffer().readRrsInt().getValue());
+            mClientEvent.getBuffer().readRrsInt();
+            outBuffer.writeRrsInt(System.currentTimeMillis() - mBattleInfo.getGameStartTimestamp());
+            outBuffer.writeRrsInt(mClientEvent.getBuffer().readRrsInt().getValue());
+            outBuffer.writeRrsInt(mClientEvent.getBuffer().readRrsInt().getValue());
+            outBuffer.writeRrsInt(mClientEvent.getBuffer().readRrsInt().getValue());
+            outBuffer.writeRrsInt(mClientEvent.getBuffer().readRrsInt().getValue());
+            outBuffer.writeRrsInt(mClientEvent.getBuffer().readRrsInt().getValue());
+            outBuffer.writeRrsInt(mClientEvent.getBuffer().readRrsInt().getValue());
+            outBuffer.writeRrsInt(mClientEvent.getBuffer().readRrsInt().getValue());
+            outBuffer.writeRrsInt(mClientEvent.getBuffer().readRrsInt().getValue());
+            outBuffer.writeRrsInt(mClientEvent.getBuffer().readRrsInt().getValue());
+            outBuffer.writeRrsInt(mClientEvent.getBuffer().readRrsInt().getValue());
         }
 
         return outBuffer.obtain();
+    }
+
+    public void setClientEvent(ClientBattleEvent clientBattleEvent) {
+        mEventId = 1;
+        mClientEvent = clientBattleEvent;
     }
 }

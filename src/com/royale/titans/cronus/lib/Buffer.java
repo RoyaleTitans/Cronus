@@ -108,7 +108,8 @@ public class Buffer {
         return new String(b);
     }
 
-    public void rewind() {
+    public Buffer rewind() {
         mBuffer.rewind();
+        return this;
     }
 }
