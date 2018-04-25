@@ -1,8 +1,8 @@
 package com.royale.titans.cronus;
 
 import com.royale.titans.cronus.messages.client.ClientBattleEvent;
-import com.royale.titans.cronus.messages.server.ServerBattleEvent;
 import com.royale.titans.cronus.messages.server.SectorState;
+import com.royale.titans.cronus.messages.server.ServerBattleEvent;
 
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;

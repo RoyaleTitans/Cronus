@@ -1,7 +1,5 @@
 package com.royale.titans.cronus.lib;
 
-import com.royale.titans.cronus.ServerLogic;
-
 import java.nio.ByteBuffer;
 import java.security.SecureRandom;
 

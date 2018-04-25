@@ -22,9 +22,9 @@ class Server {
 
         final AsynchronousServerSocketChannel listener =
                 AsynchronousServerSocketChannel.open().bind(new InetSocketAddress(9339));
-        listener.accept(null, new CompletionHandler<>() {
+        listener.accept(null, new CompletionHandler<AsynchronousSocketChannel, Void>() {
             @Override
-            public void completed(AsynchronousSocketChannel channel, Object attachment) {
+            public void completed(AsynchronousSocketChannel channel, Void attachment) {
                 listener.accept(null, this);
 
                 ServerLogic.ClientInfo clientInfo = null;
@@ -111,8 +111,8 @@ class Server {
             }
 
             @Override
-            public void failed(Throwable exc, Object attachment) {
-                System.out.println("[SERVER] err: " + exc.toString());
+            public void failed(Throwable exc, Void attachment) {
+                exc.printStackTrace();
             }
         });
     }

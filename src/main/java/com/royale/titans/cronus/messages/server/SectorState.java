@@ -2,7 +2,6 @@ package com.royale.titans.cronus.messages.server;
 
 import com.royale.titans.cronus.BattleLogic;
 import com.royale.titans.cronus.ServerLogic;
-import com.royale.titans.cronus.Utils;
 import com.royale.titans.cronus.lib.Buffer;
 import com.royale.titans.cronus.lib.OutBuffer;
 import com.royale.titans.cronus.messages.ServerMessage;
