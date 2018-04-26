@@ -6,7 +6,7 @@ import com.royale.titans.cronus.messages.ServerMessage;
 public class ServerKeepAlive extends ServerMessage {
     @Override
     public int getId() {
-        return 24135;
+        return 22700;
     }
 
     @Override
