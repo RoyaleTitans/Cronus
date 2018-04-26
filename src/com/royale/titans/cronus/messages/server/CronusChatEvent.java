@@ -54,7 +54,7 @@ public class CronusChatEvent extends ServerMessage {
 
     @Override
     public int getId() {
-        return 21075;
+        return 21747;
     }
 
     @Override
@@ -80,6 +80,8 @@ public class CronusChatEvent extends ServerMessage {
 
         b.writeString(mInfo.getPlayerName());
         b.writeRrsInt(10);
+        b.write((byte) 0);
+        b.write((byte) 0);
         b.write((byte) 0);
         b.write((byte) 0);
         b.write((byte) 0);

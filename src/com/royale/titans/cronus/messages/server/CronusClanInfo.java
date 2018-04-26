@@ -8,7 +8,7 @@ import com.royale.titans.cronus.messages.ServerMessage;
 public class CronusClanInfo extends ServerMessage {
     @Override
     public int getId() {
-        return 26550;
+        return 20582;
     }
 
     @Override
@@ -38,6 +38,7 @@ public class CronusClanInfo extends ServerMessage {
         b.writeRrsInt(4);
         b.writeRrsInt(57);
         b.writeRrsInt(120);
+        b.writeRrsInt(0);
         b.writeRrsInt(0);
         b.writeString("Cronus OS Server");
 
