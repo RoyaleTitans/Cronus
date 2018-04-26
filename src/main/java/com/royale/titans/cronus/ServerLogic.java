@@ -153,7 +153,7 @@ public class ServerLogic {
                 return new ClientBattleEvent(info, buffer);
             case 10554:
                 return new SendChatMessageEvent(info, buffer);
-            case 10609:
+            case 15083:
                 return new GetClanInfo(info, buffer);
             case 11688:
                 return new ClientStatus(info, buffer);
@@ -169,7 +169,7 @@ public class ServerLogic {
                 return new AskForAvatarStreamMessage(info, buffer);
             case 18688:
                 return new AskForGameRoom(info, buffer);
-            case 19911:
+            case 12337:
                 return new ClientKeepAlive(info, buffer);
         }
 
