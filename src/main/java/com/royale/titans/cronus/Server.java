@@ -17,7 +17,6 @@ class Server {
     private boolean mRunning = true;
 
     void connect() throws IOException {
-
         ServerLogic.getInstance().initialize();
 
         final AsynchronousServerSocketChannel listener =
