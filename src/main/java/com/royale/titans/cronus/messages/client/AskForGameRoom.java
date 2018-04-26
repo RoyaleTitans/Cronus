@@ -2,10 +2,12 @@ package com.royale.titans.cronus.messages.client;
 
 import com.royale.titans.cronus.ServerLogic;
 import com.royale.titans.cronus.lib.Buffer;
+import com.royale.titans.cronus.lib.OutBuffer;
 import com.royale.titans.cronus.messages.ClientMessage;
 import com.royale.titans.cronus.messages.ServerMessage;
 import com.royale.titans.cronus.messages.server.BattleQueueLeave;
 import com.royale.titans.cronus.messages.server.BattleQueueLeaveConfirm;
+import com.royale.titans.cronus.messages.server.CustomBufferMessage;
 
 public class AskForGameRoom extends ClientMessage {
     private final boolean mHaveCommand;
@@ -20,7 +22,7 @@ public class AskForGameRoom extends ClientMessage {
         mHaveCommand = t > 0;
         if (t == 1) {
             t = buffer.readRrsInt().getValue();
-            mClanFriendlyMatch = t == 509;
+            mClanFriendlyMatch = t == 529;
         } else {
             mClanFriendlyMatch = false;
         }
@@ -35,7 +37,7 @@ public class AskForGameRoom extends ClientMessage {
         } else {
             if (mHaveCommand) {
                 return new ServerMessage[] {
-                        new BattleQueueLeave(false),
+                        //new BattleQueueLeave(false),
                         new BattleQueueLeaveConfirm()
                 };
             }

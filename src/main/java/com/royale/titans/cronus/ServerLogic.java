@@ -151,26 +151,27 @@ public class ServerLogic {
                 return new Login(info, buffer);
             case 10541:
                 return new ClientBattleEvent(info, buffer);
-            case 10554:
+            case 10644:
                 return new SendChatMessageEvent(info, buffer);
-            case 15083:
-                return new GetClanInfo(info, buffer);
             case 11688:
                 return new ClientStatus(info, buffer);
-            case 12269:
-                return new AskBattleQueueLeave(info, buffer);
-            case 11339:
-                return new CronusBattleAccepted(info, buffer);
-            case 15827:
-                return new AskForBattleReplayStream(info, buffer);
-            case 15860:
-                return new AskCronusBattleQueueLeave(info, buffer);
-            case 17101:
-                return new AskForAvatarStreamMessage(info, buffer);
-            case 18688:
-                return new AskForGameRoom(info, buffer);
             case 12337:
                 return new ClientKeepAlive(info, buffer);
+            case 13793:
+                return new AskCronusBattleQueueLeave(info, buffer);
+            case 14361:
+                return new AskForGameRoom(info, buffer);
+            case 15083:
+                return new GetClanInfo(info, buffer);
+            case 15827:
+                return new AskForBattleReplayStream(info, buffer);
+            case 17101:
+                return new AskForAvatarStreamMessage(info, buffer);
+            case 19939:
+                return new CronusBattleAccepted(info, buffer);
+            case 9999:
+                // todo (find this id)
+                return new AskBattleQueueLeave(info, buffer);
         }
 
         return null;
@@ -244,7 +245,8 @@ public class ServerLogic {
 
                             LinkedHashMap<String, CronusChatBattleEvent> battleChatEventsSessionMap =
                                     ServerLogic.getInstance().getBattleChatEventsTagMap();
-                            CronusChatBattleEvent battleChatEvent = battleChatEventsSessionMap.remove(info.getSessionKey());
+                            CronusChatBattleEvent battleChatEvent = battleChatEventsSessionMap.remove(
+                                    info.getClientId().toString());
                             if (battleChatEvent != null) {
                                 ServerLogic.getInstance().getBattleChatEvents().remove(battleChatEvent);
 

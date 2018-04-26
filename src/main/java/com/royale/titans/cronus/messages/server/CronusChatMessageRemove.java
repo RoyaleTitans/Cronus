@@ -13,7 +13,7 @@ public class CronusChatMessageRemove extends ServerMessage {
 
     @Override
     public int getId() {
-        return 25643;
+        return 28962;
     }
 
     @Override
@@ -32,6 +32,7 @@ public class CronusChatMessageRemove extends ServerMessage {
         outBuffer.write((byte) 0);
         outBuffer.write((byte) 0);
         outBuffer.write((byte) mSlotId);
+        outBuffer.write((byte) 0);
         return outBuffer.obtain();
     }
 }

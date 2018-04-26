@@ -6,7 +6,7 @@ import com.royale.titans.cronus.messages.ServerMessage;
 public class CronusBattleLeaveConfirm extends ServerMessage {
     @Override
     public int getId() {
-        return 20416;
+        return 27919;
     }
 
     @Override

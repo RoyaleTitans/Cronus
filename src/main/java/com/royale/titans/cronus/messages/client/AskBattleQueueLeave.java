@@ -15,7 +15,6 @@ public class AskBattleQueueLeave extends ClientMessage {
     @Override
     public ServerMessage[] handle(ServerLogic.ClientInfo clientInfo) {
         return new ServerMessage[] {
-                new BattleQueueLeave(false),
                 new BattleQueueLeaveConfirm()
         };
     }

@@ -1,10 +1,11 @@
-package com.royale.titans.cronus.messages.server;
+package com.royale.titans.cronus.messages.client;
 
 import com.royale.titans.cronus.BattleLogic;
 import com.royale.titans.cronus.ServerLogic;
 import com.royale.titans.cronus.lib.Buffer;
 import com.royale.titans.cronus.messages.ClientMessage;
 import com.royale.titans.cronus.messages.ServerMessage;
+import com.royale.titans.cronus.messages.server.CronusChatBattleEvent;
 
 public class CronusBattleAccepted extends ClientMessage {
     private final int mSlotId;

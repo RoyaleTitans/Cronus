@@ -17,7 +17,7 @@ public class SectorState extends ServerMessage  {
 
     @Override
     public int getId() {
-        return 21873;
+        return 23876;
     }
 
     @Override
@@ -44,6 +44,7 @@ public class SectorState extends ServerMessage  {
         outBuffer.write((byte) 0);
         outBuffer.writeString("TID_LADDER_QUEST_2V2_WIN");
         outBuffer.write((byte) 0);
+        outBuffer.write((byte) 0);
         outBuffer.writeInt(5);
         outBuffer.writeRrsInt(1);
         outBuffer.writeRrsInt(1);
@@ -53,22 +54,57 @@ public class SectorState extends ServerMessage  {
         outBuffer.writeRrsInt(1);
         outBuffer.writeRrsInt(2);
         outBuffer.writeRrsInt(0);
-        outBuffer.writeRrsInt(4);
-        outBuffer.writeRrsInt(279);
+        outBuffer.writeRrsInt(2);
+        outBuffer.writeRrsInt(288);
         outBuffer.write((byte) 0);
-        outBuffer.writeString("TID_CAST_QUEST_RARITY");
-        outBuffer.write((byte) 0);
-        outBuffer.writeInt(60);
+        outBuffer.writeString("TID_LADDER_QUEST_PLAY");
         outBuffer.write((byte) 0);
         outBuffer.write((byte) 0);
+        outBuffer.writeInt(10);
+        outBuffer.write((byte) 5);
+        outBuffer.write((byte) 5);
         outBuffer.write((byte) 0);
-        outBuffer.writeRrsInt(1);
+        outBuffer.write((byte) 0);
 
-        outBuffer.writeInt(1);
-
-        outBuffer.writeRrsInt(1);
+        outBuffer.write((byte) 1);
+        outBuffer.write((byte) 1);
         outBuffer.write((byte) 0);
-        outBuffer.writeRrsInt(1);
+        outBuffer.write((byte) 4);
+        outBuffer.writeRrsInt(289);
+        outBuffer.write((byte) 0);
+        outBuffer.writeString("TID_CAST_QUEST_SPELL");
+        outBuffer.write((byte) 0);
+        outBuffer.write((byte) 0);
+        outBuffer.write((byte) 0);
+        outBuffer.write((byte) 0);
+        outBuffer.write((byte) 0);
+        outBuffer.writeRrsInt(50);
+        outBuffer.write((byte) 4);
+        outBuffer.write((byte) 4);
+        outBuffer.write((byte) 0);
+        outBuffer.write((byte) 0);
+        outBuffer.writeRrsInt(28);
+        outBuffer.write((byte) 0);
+        outBuffer.write((byte) 0);
+
+        outBuffer.write((byte) 1);
+        outBuffer.write((byte) 1);
+        outBuffer.write((byte) 0);
+        outBuffer.write((byte) 2);
+        outBuffer.writeRrsInt(1369);
+        outBuffer.write((byte) 1);
+        outBuffer.writeString("Clan Wars Quest");
+        outBuffer.writeString("icon_quest_type_specialevent");
+        outBuffer.write((byte) 1);
+        outBuffer.writeRrsInt(20);
+        outBuffer.writeRrsInt(3);
+        outBuffer.writeRrsInt(3);
+        outBuffer.write((byte) 0);
+        outBuffer.write((byte) 0);
+        outBuffer.writeRrsInt(64);
+        outBuffer.write((byte) 0);
+        outBuffer.write((byte) 0);
+        outBuffer.writeRrsInt(2);
 
         for (ServerLogic.ClientInfo player : mBattleInfo.getPlayers()) {
             if (!player.getClientId().equals(mThisPlayer.getClientId())) {
