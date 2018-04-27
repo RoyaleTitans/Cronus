@@ -19,7 +19,7 @@ public class ServerBattleEvent extends ServerMessage {
 
     @Override
     public int getId() {
-        return 21443;
+        return 27145;
     }
 
     @Override

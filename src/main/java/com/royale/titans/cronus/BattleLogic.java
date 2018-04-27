@@ -47,7 +47,10 @@ public class BattleLogic {
     public void cancelBattle(String hashTag) {
         Integer slot = mBattleInfosHashMap.remove(hashTag);
         if (slot != null && slot > 0) {
-            mBattleInfos.remove(slot);
+            BattleInfo battleInfo = mBattleInfos.remove(slot);
+            if (battleInfo != null) {
+
+            }
         }
     }
 

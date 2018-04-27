@@ -2,7 +2,6 @@ package com.royale.titans.cronus.messages.server;
 
 import com.royale.titans.cronus.BattleLogic;
 import com.royale.titans.cronus.ServerLogic;
-import com.royale.titans.cronus.Utils;
 import com.royale.titans.cronus.lib.Buffer;
 import com.royale.titans.cronus.lib.OutBuffer;
 import com.royale.titans.cronus.messages.ServerMessage;
@@ -118,7 +117,8 @@ public class SectorState extends ServerMessage  {
         outBuffer.write((byte) 0);
         outBuffer.writeRrsInt(33);
         System.out.println("GAME START: " + String.valueOf(mBattleInfo.getGameStartTimestamp() / 1000));
-        outBuffer.writeRrsInt(mBattleInfo.getGameStartTimestamp() / 1000);
+        //outBuffer.writeRrsInt(mBattleInfo.getGameStartTimestamp() / 1000);
+        outBuffer.writeRrsInt(1524864081);
 
         outBuffer.writeRrsInt(11);
         outBuffer.writeRrsInt(0);
@@ -718,5 +718,9 @@ public class SectorState extends ServerMessage  {
         } else {
             outBuffer.write((byte) 0);
         }
+    }
+
+    public BattleLogic.BattleInfo getBattleInfo() {
+        return mBattleInfo;
     }
 }
