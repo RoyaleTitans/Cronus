@@ -2,6 +2,7 @@ package com.royale.titans.cronus.messages.server;
 
 import com.royale.titans.cronus.BattleLogic;
 import com.royale.titans.cronus.ServerLogic;
+import com.royale.titans.cronus.Utils;
 import com.royale.titans.cronus.lib.Buffer;
 import com.royale.titans.cronus.lib.OutBuffer;
 import com.royale.titans.cronus.messages.ServerMessage;
@@ -36,9 +37,9 @@ public class SectorState extends ServerMessage  {
 
         outBuffer.writeRrsInt(2);
         outBuffer.writeRrsInt(2);
-        outBuffer.writeRrsInt(1);
 
-        outBuffer.writeRrsInt(2);
+        outBuffer.writeRrsInt(1);
+        outBuffer.writeRrsInt(4);
         outBuffer.writeRrsInt(2);
         outBuffer.writeRrsInt(261);
         outBuffer.write((byte) 0);
@@ -108,10 +109,10 @@ public class SectorState extends ServerMessage  {
 
         for (ServerLogic.ClientInfo player : mBattleInfo.getPlayers()) {
             if (!player.getClientId().equals(mThisPlayer.getClientId())) {
-                writePlayerInfo(outBuffer, player, 0);
+                writePlayerInfo(outBuffer, player);
             }
         }
-        writePlayerInfo(outBuffer, mThisPlayer, 1);
+        writePlayerInfo(outBuffer, mThisPlayer);
 
         outBuffer.writeRrsInt(43);
         outBuffer.write((byte) 0);
@@ -151,6 +152,7 @@ public class SectorState extends ServerMessage  {
 
         outBuffer.writeRrsInt(4);
         outBuffer.writeRrsInt(1);
+
         outBuffer.write((byte) 0);
         outBuffer.write((byte) 0);
 
@@ -163,6 +165,7 @@ public class SectorState extends ServerMessage  {
         outBuffer.write((byte) 0);
         outBuffer.write((byte) 0);
         outBuffer.write((byte) 0);
+
         outBuffer.writeRrsInt(116);
         outBuffer.writeRrsInt(-8077);
 
@@ -230,6 +233,7 @@ public class SectorState extends ServerMessage  {
         outBuffer.write((byte) 0);
         outBuffer.write((byte) 0);
         outBuffer.write((byte) 0);
+        outBuffer.write((byte) 0);
 
         outBuffer.writeRrsInt(8);
         outBuffer.writeRrsInt(13);
@@ -243,6 +247,7 @@ public class SectorState extends ServerMessage  {
         outBuffer.write((byte) 0);
         outBuffer.write((byte) 0);
         outBuffer.writeRrsInt(1);
+        outBuffer.write((byte) 0);
         outBuffer.write((byte) 0);
         outBuffer.write((byte) 0);
         outBuffer.write((byte) 0);
@@ -268,6 +273,7 @@ public class SectorState extends ServerMessage  {
         outBuffer.write((byte) 0);
         outBuffer.write((byte) 0);
         outBuffer.write((byte) 0);
+        outBuffer.write((byte) 0);
 
         outBuffer.writeRrsInt(8);
         outBuffer.writeRrsInt(13);
@@ -287,6 +293,7 @@ public class SectorState extends ServerMessage  {
         outBuffer.write((byte) 0);
         outBuffer.write((byte) 0);
         outBuffer.write((byte) 0);
+        outBuffer.write((byte) 0);
 
         outBuffer.writeRrsInt(8);
         outBuffer.writeRrsInt(13);
@@ -297,6 +304,7 @@ public class SectorState extends ServerMessage  {
         outBuffer.writeRrsInt(-64);
         outBuffer.write((byte) 0);
         outBuffer.writeRrsInt(256);
+        outBuffer.write((byte) 0);
         outBuffer.write((byte) 0);
         outBuffer.write((byte) 0);
         outBuffer.write((byte) 0);
@@ -344,17 +352,18 @@ public class SectorState extends ServerMessage  {
         outBuffer.write((byte) 0);
         outBuffer.write((byte) 0);
         outBuffer.write((byte) 0);
+        outBuffer.write((byte) 0);
         outBuffer.writeRrsInt(26);
         outBuffer.writeRrsInt(4);
         outBuffer.writeRrsInt(3);
         outBuffer.writeRrsInt(4);
-        outBuffer.writeRrsInt(-60);
-        outBuffer.writeRrsInt(4);
+        outBuffer.writeRrsInt(-59);
+        outBuffer.writeRrsInt(5);
         outBuffer.writeRrsInt(4);
         outBuffer.writeRrsInt(5);
-        outBuffer.writeRrsInt(1);
-        outBuffer.writeRrsInt(4);
+        outBuffer.writeRrsInt(2);
         outBuffer.write((byte) 0);
+        outBuffer.writeRrsInt(4);
         outBuffer.write((byte) 0);
         outBuffer.writeRrsInt(-64);
         outBuffer.writeRrsInt(-64);
@@ -432,18 +441,24 @@ public class SectorState extends ServerMessage  {
         outBuffer.write((byte) 0);
 
         outBuffer.writeRrsInt(2534);
+        outBuffer.writeRrsInt(100);
         outBuffer.write((byte) 0);
         outBuffer.writeRrsInt(2534);
+        outBuffer.writeRrsInt(100);
         outBuffer.write((byte) 0);
         outBuffer.writeRrsInt(2534);
+        outBuffer.writeRrsInt(100);
         outBuffer.write((byte) 0);
         outBuffer.writeRrsInt(2534);
+        outBuffer.writeRrsInt(100);
         outBuffer.write((byte) 0);
         outBuffer.writeRrsInt(4008);
+        outBuffer.writeRrsInt(100);
         outBuffer.write((byte) 0);
         outBuffer.writeRrsInt(4008);
-        outBuffer.write((byte) 0);
+        outBuffer.writeRrsInt(100);
 
+        outBuffer.write((byte) 0);
         outBuffer.write((byte) 0);
         outBuffer.write((byte) 0);
         outBuffer.write((byte) 0);
@@ -454,20 +469,10 @@ public class SectorState extends ServerMessage  {
         outBuffer.write((byte) 0);
         outBuffer.write((byte) 0);
         outBuffer.write((byte) 0);
-        outBuffer.writeRrsInt(100);
-
-        outBuffer.write((byte) 0);
-        outBuffer.write((byte) 0);
-        outBuffer.write((byte) 0);
         outBuffer.write((byte) 0);
         outBuffer.writeRrsInt(100);
 
         outBuffer.write((byte) 0);
-        outBuffer.write((byte) 0);
-        outBuffer.write((byte) 0);
-        outBuffer.write((byte) 0);
-        outBuffer.writeRrsInt(100);
-
         outBuffer.write((byte) 0);
         outBuffer.write((byte) 0);
         outBuffer.write((byte) 0);
@@ -478,8 +483,24 @@ public class SectorState extends ServerMessage  {
         outBuffer.write((byte) 0);
         outBuffer.write((byte) 0);
         outBuffer.write((byte) 0);
+        outBuffer.write((byte) 0);
         outBuffer.writeRrsInt(100);
 
+        outBuffer.write((byte) 0);
+        outBuffer.write((byte) 0);
+        outBuffer.write((byte) 0);
+        outBuffer.write((byte) 0);
+        outBuffer.write((byte) 0);
+        outBuffer.writeRrsInt(100);
+
+        outBuffer.write((byte) 0);
+        outBuffer.write((byte) 0);
+        outBuffer.write((byte) 0);
+        outBuffer.write((byte) 0);
+        outBuffer.write((byte) 0);
+        outBuffer.writeRrsInt(100);
+
+        outBuffer.write((byte) 0);
         outBuffer.writeRrsInt(-255);
 
         outBuffer.writeRrsInt(mThisPlayer.getCurrentDeck().get(0).getId());
@@ -506,7 +527,8 @@ public class SectorState extends ServerMessage  {
         outBuffer.writeRrsInt(mThisPlayer.getCurrentDeck().get(7).getId());
         outBuffer.writeRrsInt(mThisPlayer.getCurrentDeck().get(7).getMaxLevel());
 
-        outBuffer.writeRrsInt(0);
+        outBuffer.write((byte) 0);
+        outBuffer.write((byte) 0);
 
         outBuffer.writeRrsInt(5);
         outBuffer.writeRrsInt(6);
@@ -530,23 +552,23 @@ public class SectorState extends ServerMessage  {
         outBuffer.write((byte) 0);
         outBuffer.write((byte) 0);
 
-        outBuffer.writeRrsInt(2);
+        outBuffer.writeRrsInt(4);
         outBuffer.writeRrsInt(1);
-
-        outBuffer.write((byte) 0);
-
+        outBuffer.writeRrsInt(5);
+        outBuffer.writeRrsInt(4);
+        outBuffer.writeRrsInt(3);
         outBuffer.writeRrsInt(12);
 
         outBuffer.write((byte) 0);
         outBuffer.write((byte) 0);
         outBuffer.write((byte) 0);
-        outBuffer.writeRrsInt(-1014896741);
+        outBuffer.writeRrsInt(-1118102222);
         outBuffer.write((byte) 0);
 
         return outBuffer.obtain();
     }
 
-    private void writePlayerInfo(OutBuffer outBuffer, ServerLogic.ClientInfo clientInfo, int playerNum) {
+    private void writePlayerInfo(OutBuffer outBuffer, ServerLogic.ClientInfo clientInfo) {
         outBuffer.writeRrsInt(clientInfo.getClientId().high());
         outBuffer.writeRrsInt(clientInfo.getClientId().low());
         outBuffer.writeRrsInt(clientInfo.getClientId().high());
@@ -566,7 +588,7 @@ public class SectorState extends ServerMessage  {
         outBuffer.write((byte) 0);
         outBuffer.write((byte) 0);
 
-        outBuffer.write((byte) 42);
+        outBuffer.writeRrsInt(42);
 
         outBuffer.write((byte) 0);
         outBuffer.write((byte) 0);
@@ -575,24 +597,94 @@ public class SectorState extends ServerMessage  {
         outBuffer.write((byte) 0);
         outBuffer.write((byte) 8);
 
-        outBuffer.write((byte) 2);
-        outBuffer.write((byte) 5);
-        outBuffer.write((byte) 1);
-        outBuffer.write((byte) 0);
-        outBuffer.write((byte) 5);
-        outBuffer.write((byte) 14);
-        outBuffer.write((byte) 20);
+        outBuffer.writeRrsInt(19);
 
-        outBuffer.write((byte) 0);
-        outBuffer.write((byte) 0);
-        outBuffer.write((byte) 0);
-        outBuffer.write((byte) 0);
-        outBuffer.write((byte) 0);
-
-        outBuffer.write((byte) 0);
-        outBuffer.write((byte) 0);
-
+        outBuffer.writeRrsInt(5);
+        outBuffer.writeRrsInt(1);
+        outBuffer.writeRrsInt(20041);
+        outBuffer.writeRrsInt(5);
+        outBuffer.writeRrsInt(2);
+        outBuffer.writeRrsInt(1066);
+        outBuffer.writeRrsInt(5);
+        outBuffer.writeRrsInt(3);
+        outBuffer.writeRrsInt(4);
+        outBuffer.writeRrsInt(5);
+        outBuffer.writeRrsInt(4);
+        outBuffer.writeRrsInt(0);
+        outBuffer.writeRrsInt(5);
+        outBuffer.writeRrsInt(12);
+        outBuffer.writeRrsInt(1098);
+        outBuffer.writeRrsInt(5);
         outBuffer.writeRrsInt(13);
+        outBuffer.writeRrsInt(0);
+        outBuffer.writeRrsInt(5);
+        outBuffer.writeRrsInt(14);
+        outBuffer.writeRrsInt(5);
+        outBuffer.writeRrsInt(5);
+        outBuffer.writeRrsInt(15);
+        outBuffer.writeRrsInt(1170);
+        outBuffer.writeRrsInt(5);
+        outBuffer.writeRrsInt(22);
+        outBuffer.writeRrsInt(1188);
+        outBuffer.writeRrsInt(5);
+        outBuffer.writeRrsInt(25);
+        outBuffer.writeRrsInt(285998745);
+        outBuffer.writeRrsInt(5);
+        outBuffer.writeRrsInt(26);
+        outBuffer.writeRrsInt(9);
+        outBuffer.writeRrsInt(5);
+        outBuffer.writeRrsInt(28);
+        outBuffer.writeRrsInt(0);
+        outBuffer.writeRrsInt(5);
+        outBuffer.writeRrsInt(29);
+        outBuffer.writeRrsInt(72000023);
+        outBuffer.writeRrsInt(5);
+        outBuffer.writeRrsInt(33);
+        outBuffer.writeRrsInt(0);
+        outBuffer.writeRrsInt(5);
+        outBuffer.writeRrsInt(34);
+        outBuffer.writeRrsInt(0);
+        outBuffer.writeRrsInt(5);
+        outBuffer.writeRrsInt(35);
+        outBuffer.writeRrsInt(0);
+        outBuffer.writeRrsInt(5);
+        outBuffer.writeRrsInt(36);
+        outBuffer.writeRrsInt(0);
+        outBuffer.writeRrsInt(5);
+        outBuffer.writeRrsInt(38);
+        outBuffer.writeRrsInt(0);
+        outBuffer.writeRrsInt(5);
+        outBuffer.writeRrsInt(37);
+        outBuffer.writeRrsInt(0);
+
+        outBuffer.write((byte) 0);
+        outBuffer.write((byte) 0);
+        outBuffer.write((byte) 0);
+        outBuffer.write((byte) 5);
+
+        outBuffer.writeRrsInt(5);
+        outBuffer.writeRrsInt(6);
+        outBuffer.writeRrsInt(3905);
+        outBuffer.writeRrsInt(5);
+        outBuffer.writeRrsInt(7);
+        outBuffer.writeRrsInt(697);
+        outBuffer.writeRrsInt(5);
+        outBuffer.writeRrsInt(11);
+        outBuffer.writeRrsInt(42);
+        outBuffer.writeRrsInt(5);
+        outBuffer.writeRrsInt(20);
+        outBuffer.writeRrsInt(10);
+        outBuffer.writeRrsInt(5);
+        outBuffer.writeRrsInt(27);
+        outBuffer.writeRrsInt(12);
+
+        outBuffer.writeRrsInt(1);
+        outBuffer.writeRrsInt(26);
+        outBuffer.writeRrsInt(62);
+        outBuffer.writeRrsInt(52);
+        outBuffer.writeRrsInt(0);
+        outBuffer.writeRrsInt(0);
+        outBuffer.writeRrsInt(10);
         outBuffer.writeRrsInt(2);
 
         outBuffer.writeRrsInt(1);
@@ -602,17 +694,23 @@ public class SectorState extends ServerMessage  {
         outBuffer.writeRrsInt(153);
 
         outBuffer.write((byte) 0);
-        outBuffer.write((byte) 0);
-        outBuffer.write((byte) 0);
-        outBuffer.write((byte) 0);
-        outBuffer.write((byte) 0);
-
+        outBuffer.writeRrsInt(3576);
         outBuffer.writeRrsInt(2);
         outBuffer.write((byte) 0);
+        outBuffer.writeRrsInt(1193);
+        outBuffer.writeRrsInt(1113);
+
+        outBuffer.writeRrsInt(1);
+        outBuffer.writeRrsInt(7);
 
         outBuffer.write((byte) 0);
         outBuffer.write((byte) 0);
         outBuffer.write((byte) 0);
+        outBuffer.write((byte) 0);
+        outBuffer.write((byte) 0);
+        outBuffer.write((byte) 0);
+
+        outBuffer.writeRrsInt(-64);
         outBuffer.write((byte) 0);
 
         if (!clientInfo.getClientId().equals(mThisPlayer.getClientId())) {
