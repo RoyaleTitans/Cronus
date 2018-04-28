@@ -1,16 +1,16 @@
 package com.royale.titans.cronus.messages.server;
 
-import com.royale.titans.cronus.BattleLogic;
 import com.royale.titans.cronus.ServerLogic;
 import com.royale.titans.cronus.lib.Buffer;
 import com.royale.titans.cronus.lib.OutBuffer;
 import com.royale.titans.cronus.messages.ServerMessage;
+import com.royale.titans.cronus.models.BattleInfo;
 
 public class SectorState extends ServerMessage  {
-    private final BattleLogic.BattleInfo mBattleInfo;
+    private final BattleInfo mBattleInfo;
     private final ServerLogic.ClientInfo mThisPlayer;
 
-    public SectorState(BattleLogic.BattleInfo battleInfo, ServerLogic.ClientInfo thisPlayer) {
+    public SectorState(BattleInfo battleInfo, ServerLogic.ClientInfo thisPlayer) {
         mBattleInfo = battleInfo;
         mThisPlayer = thisPlayer;
     }
@@ -717,9 +717,5 @@ public class SectorState extends ServerMessage  {
         } else {
             outBuffer.write((byte) 0);
         }
-    }
-
-    public BattleLogic.BattleInfo getBattleInfo() {
-        return mBattleInfo;
     }
 }

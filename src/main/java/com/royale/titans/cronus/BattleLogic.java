@@ -1,10 +1,11 @@
 package com.royale.titans.cronus;
 
+import com.royale.titans.cronus.lib.BattleChecksumEncoder;
 import com.royale.titans.cronus.messages.client.ClientBattleEvent;
 import com.royale.titans.cronus.messages.server.SectorState;
 import com.royale.titans.cronus.messages.server.ServerBattleEvent;
+import com.royale.titans.cronus.models.BattleInfo;
 
-import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -112,17 +113,25 @@ public class BattleLogic {
                         e.printStackTrace();
                     }
 
+                    BattleChecksumEncoder battleChecksumEncoder = new BattleChecksumEncoder(battleInfo);
+
                     while (true) {
                         ServerBattleEvent battleEvent = new ServerBattleEvent(battleInfo);
-
-                        if (battleInfo.getBattleEvents().size() > battleInfo.getEventIndex()) {
-                            ClientBattleEvent clientBattleEvent = battleInfo.getBattleEvents().get(battleInfo.getEventIndex());
-                            battleEvent.setClientEvent(clientBattleEvent);
-                            battleInfo.incrementEventIndex();
-                        }
+                        boolean hasEvent = false;
 
                         for (ServerLogic.ClientInfo clientInfo : battleInfo.getPlayers()) {
+                            if (battleInfo.getBattleEvents().size() > battleInfo.getEventIndex()) {
+                                hasEvent = true;
+                                ClientBattleEvent clientBattleEvent = battleInfo.getBattleEvents().get(battleInfo.getEventIndex());
+                                battleEvent.setClientEvent(clientBattleEvent);
+                            }
+
+                            battleEvent.setChecksum(battleChecksumEncoder.encode(clientInfo));
                             ServerLogic.getInstance().postMessage(clientInfo, battleEvent);
+                        }
+
+                        if (hasEvent) {
+                            battleInfo.incrementEventIndex();
                         }
 
                         try {
@@ -138,65 +147,6 @@ public class BattleLogic {
 
                 break;
             }
-        }
-    }
-
-    public static class BattleInfo {
-        private final int mSlotId;
-
-        private final ArrayList<ServerLogic.ClientInfo> mPlayersInfo = new ArrayList<>();
-        private final ArrayList<ClientBattleEvent> mBattleEvents = new ArrayList<>();
-
-        private int mSequence;
-        private int mEventIndex;
-
-        private long mGameStartTimestamp;
-
-        public BattleInfo(int slotId, ServerLogic.ClientInfo clientInfo) {
-            mSlotId = slotId;
-            mPlayersInfo.add(clientInfo);
-            mSequence = 1;
-            mEventIndex = 0;
-        }
-
-        public void startGame() {
-            mGameStartTimestamp = System.currentTimeMillis() / 1000;
-        }
-
-        public void incrementSequence() {
-            mSequence++;
-        }
-
-        public void incrementEventIndex() {
-            mSequence++;
-        }
-
-        public int getSlotId() {
-            return mSlotId;
-        }
-
-        public int getSequence() {
-            return mSequence;
-        }
-
-        public int getEventIndex() {
-            return mEventIndex;
-        }
-
-        public String getHostTag() {
-            return mPlayersInfo.get(0).getClientId().toString();
-        }
-
-        public ArrayList<ServerLogic.ClientInfo> getPlayers() {
-            return mPlayersInfo;
-        }
-
-        public ArrayList<ClientBattleEvent> getBattleEvents() {
-            return mBattleEvents;
-        }
-
-        public long getGameStartTimestamp() {
-            return mGameStartTimestamp;
         }
     }
 }

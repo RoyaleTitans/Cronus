@@ -90,7 +90,13 @@ public class CRUtils {
     };
 
     public static CardInfo randomCard() {
-        return CARDS[new Random().nextInt(CARDS.length)];
+        //return CARDS[new Random().nextInt(CARDS.length)];
+        while (true) {
+            CardInfo cardInfo = CARDS[new Random().nextInt(CARDS.length)];
+            if (cardInfo.getScId() >= 27000000) {
+                return cardInfo;
+            }
+        }
     }
 
     public static class CardInfo {

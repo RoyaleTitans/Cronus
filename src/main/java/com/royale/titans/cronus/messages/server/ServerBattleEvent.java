@@ -1,18 +1,19 @@
 package com.royale.titans.cronus.messages.server;
 
-import com.royale.titans.cronus.BattleLogic;
 import com.royale.titans.cronus.lib.Buffer;
 import com.royale.titans.cronus.lib.OutBuffer;
 import com.royale.titans.cronus.messages.ServerMessage;
 import com.royale.titans.cronus.messages.client.ClientBattleEvent;
+import com.royale.titans.cronus.models.BattleInfo;
 
 public class ServerBattleEvent extends ServerMessage {
-    private final BattleLogic.BattleInfo mBattleInfo;
+    private final BattleInfo mBattleInfo;
 
     private int mEventId;
+    private int mChecksum = 0;
     private ClientBattleEvent mClientEvent;
 
-    public ServerBattleEvent(BattleLogic.BattleInfo battleInfo) {
+    public ServerBattleEvent(BattleInfo battleInfo) {
         mBattleInfo = battleInfo;
         mEventId = 0;
     }
@@ -31,7 +32,7 @@ public class ServerBattleEvent extends ServerMessage {
     public Buffer getBuffer() {
         OutBuffer outBuffer = OutBuffer.newBuffer();
         outBuffer.writeRrsInt(mBattleInfo.getSequence());
-        outBuffer.writeRrsInt(0xDEAD);
+        outBuffer.writeRrsInt(mChecksum);
         outBuffer.writeRrsInt(mEventId);
 
         if (mEventId > 0) {
@@ -56,5 +57,9 @@ public class ServerBattleEvent extends ServerMessage {
     public void setClientEvent(ClientBattleEvent clientBattleEvent) {
         mEventId = 1;
         mClientEvent = clientBattleEvent;
+    }
+
+    public void setChecksum(int checksum) {
+        mChecksum = checksum;
     }
 }

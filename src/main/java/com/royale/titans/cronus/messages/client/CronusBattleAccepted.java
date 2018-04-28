@@ -6,6 +6,7 @@ import com.royale.titans.cronus.lib.Buffer;
 import com.royale.titans.cronus.messages.ClientMessage;
 import com.royale.titans.cronus.messages.ServerMessage;
 import com.royale.titans.cronus.messages.server.CronusChatBattleEvent;
+import com.royale.titans.cronus.models.BattleInfo;
 
 public class CronusBattleAccepted extends ClientMessage {
     private final int mSlotId;
@@ -19,7 +20,7 @@ public class CronusBattleAccepted extends ClientMessage {
 
     @Override
     public ServerMessage[] handle(ServerLogic.ClientInfo clientInfo) {
-        BattleLogic.BattleInfo battleInfo = BattleLogic.getInstance().getBattleInfo(mSlotId);
+        BattleInfo battleInfo = BattleLogic.getInstance().getBattleInfo(mSlotId);
         if (battleInfo != null) {
             CronusChatBattleEvent cronusChatBattleEvent = ServerLogic.getInstance()
                     .getBattleChatEventsTagMap().get(battleInfo.getHostTag());

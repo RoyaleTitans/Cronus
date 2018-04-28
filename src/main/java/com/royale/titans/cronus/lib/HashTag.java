@@ -13,13 +13,16 @@ public class HashTag {
     private final int mLow;
 
     public static HashTag randomHashTag() {
-        StringBuilder s = new StringBuilder();
-        String[] p = TAG_CHARS.split("");
-        for (int i=0;i<5;i++) {
-            s.append(p[new SecureRandom().nextInt(i == 0 ? 4 : TAG_CHARS_LEN)]);
+        HashTag hashTag = null;
+        while (hashTag == null || hashTag.low() < 0) {
+            StringBuilder s = new StringBuilder();
+            String[] p = TAG_CHARS.split("");
+            for (int i = 0; i < 8; i++) {
+                s.append(p[new SecureRandom().nextInt(i == 0 ? 4 : TAG_CHARS_LEN)]);
+            }
+            hashTag = new HashTag(s.toString());
         }
-
-        return new HashTag(s.toString());
+        return hashTag;
     }
 
     public static long tagToLong(String tag) {
