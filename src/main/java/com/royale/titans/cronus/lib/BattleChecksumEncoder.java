@@ -40,6 +40,7 @@ public class BattleChecksumEncoder {
     }
 
     public int encode(int sequence, ServerLogic.ClientInfo clientInfo, SectorState sectorState) {
+        int x = 0;
         int magic = sequence * 10;
 
         // start from magic
@@ -171,6 +172,13 @@ public class BattleChecksumEncoder {
         updateChecksum(0);
         updateChecksum(0);
 
+        updateChecksum(0);
+        updateChecksum(0);
+        updateChecksumH(0);
+        updateChecksumH(0);
+        updateChecksum(0);
+        updateChecksumH(0);
+
         updateChecksum(8);
         updateChecksum(13);
         updateChecksum(3500);
@@ -183,6 +191,392 @@ public class BattleChecksumEncoder {
         updateChecksum(500 * sequence);
         updateChecksum(0);
         updateChecksum(1);
+        updateChecksum(0);
+        updateChecksum(0);
+
+        updateChecksum(0);
+        updateChecksum(0);
+        updateChecksumH(0);
+        updateChecksumH(0);
+        updateChecksum(0);
+        updateChecksumH(0);
+
+        updateChecksum(8);
+        updateChecksum(13);
+        updateChecksum(3500);
+        updateChecksum(25500);
+        updateChecksum(0);
+        updateChecksum(0);
+        updateChecksum(0xffffffff);
+        updateChecksum(0);
+        updateChecksum(0xffffff00);
+        updateChecksum(500 * sequence);
+        updateChecksum(0);
+        updateChecksum(1);
+        updateChecksum(0);
+        updateChecksum(0);
+
+        updateChecksum(0);
+        updateChecksum(0);
+        updateChecksumH(0);
+        updateChecksumH(0);
+        updateChecksum(0);
+        updateChecksumH(0);
+
+        updateChecksum(8);
+        updateChecksum(13);
+        updateChecksum(14500);
+        updateChecksum(6500);
+        updateChecksum(0);
+        updateChecksum(0);
+        updateChecksum(0xffffffff);
+        updateChecksum(0);
+        updateChecksum(256);
+        updateChecksum(500 * sequence);
+        updateChecksum(0);
+        updateChecksum(2);
+        updateChecksum(0);
+        updateChecksum(0);
+
+        updateChecksum(0);
+        updateChecksum(0);
+        updateChecksumH(0);
+        updateChecksumH(0);
+        updateChecksum(0);
+        updateChecksumH(0);
+
+        // king towers
+        updateChecksum(8);
+        updateChecksum(13 - 1);
+        updateChecksum(9000);
+        updateChecksum(3000);
+        updateChecksum(0);
+        updateChecksum(0);
+        updateChecksum(0xffffffff);
+        updateChecksum(0);
+        updateChecksum(256);
+        updateChecksum(500 * sequence);
+        updateChecksum(0);
+        updateChecksum(0);
+        updateChecksum(0);
+        updateChecksum(0);
+
+        updateChecksum(0);
+        updateChecksum(0);
+        updateChecksumH(0);
+        updateChecksumH(0);
+        updateChecksum(0);
+        updateChecksumH(0);
+        updateChecksumH(0);
+        updateChecksumH(0);
+        updateChecksumH(1);
+        updateChecksumH(1);
+
+        updateChecksum(50000 * sequence);
+        updateChecksum(0);
+        updateChecksum(5);
+        updateChecksum(0);
+        updateChecksum(0);
+        updateChecksum(0);
+        updateChecksum(0);
+        updateChecksum(0);
+        updateChecksum(0xffffffff);
+        updateChecksum(0xffffffff);
+        updateChecksum(0xffffffff);
+        updateChecksum(0xffffffff);
+        updateChecksum(0xffffffff);
+        updateChecksum(0xffffffff);
+        updateChecksum(0xffffffff);
+        updateChecksum(0xffffffff);
+
+        updateChecksum(8);
+        updateChecksum(13);
+        updateChecksum(9000);
+        updateChecksum(29000);
+        updateChecksum(0);
+        updateChecksum(0);
+        updateChecksum(0xffffffff);
+        updateChecksum(0);
+        updateChecksum(0xffffff00);
+        updateChecksum(500 * sequence);
+        updateChecksum(0);
+        updateChecksum(0);
+        updateChecksum(0);
+        updateChecksum(0);
+
+        updateChecksum(0);
+        updateChecksum(0);
+        updateChecksumH(0);
+        updateChecksumH(0);
+        updateChecksum(0);
+        updateChecksumH(0);
+        updateChecksumH(1);
+        updateChecksumH(0);
+        updateChecksumH(1);
+        updateChecksumH(1);
+
+        updateChecksum(4);
+        updateChecksum(3);
+        updateChecksum(4);
+        updateChecksum(0xfffffffa);
+        updateChecksum(5);
+        updateChecksum(4);
+        updateChecksum(5);
+        updateChecksum(2);
+        updateChecksum(0);
+        updateChecksum(4);
+        updateChecksum(0);
+        updateChecksum(0xffffffff);
+        updateChecksum(0xffffffff);
+        updateChecksum(0xffffffff);
+        updateChecksum(0);
+        updateChecksum(0xffffffff);
+        updateChecksum(50000 * sequence);
+        updateChecksum(0);
+        updateChecksum(5);
+        updateChecksum(0);
+        updateChecksum(0);
+        updateChecksum(0);
+        updateChecksum(0);
+        updateChecksum(0);
+        updateChecksum(0xffffffff);
+        updateChecksum(0xffffffff);
+        updateChecksum(0xffffffff);
+        updateChecksum(0xffffffff);
+        updateChecksum(0xffffffff);
+        updateChecksum(0xffffffff);
+        updateChecksum(0xffffffff);
+        updateChecksum(0xffffffff);
+
+        updateChecksumH(0);
+        updateChecksumH(0);
+        updateChecksum(0);
+        updateChecksum(0);
+        updateChecksum(0);
+        updateChecksumH(0);
+        updateChecksumH(0);
+        updateChecksum(0);
+
+        // some towers values again in reverse order
+        // t4
+        updateChecksum(14500);
+        updateChecksum(6500);
+        updateChecksum(0);
+        updateChecksum(0);
+        updateChecksum(0);
+        x = sc_x(5000003) + 1;
+        updateChecksum(x);
+        updateChecksum(3);
+        updateChecksumH(0);
+        updateChecksumH(0);
+        updateChecksum(0);
+
+        // t3
+        updateChecksum(3500);
+        updateChecksum(25500);
+        updateChecksum(0);
+        updateChecksum(0);
+        updateChecksum(0);
+        x = sc_x(5000002) + 2;
+        updateChecksum(x);
+        updateChecksum(2);
+        updateChecksumH(0);
+        updateChecksumH(0);
+        updateChecksum(0);
+
+        // t2
+        updateChecksum(3500);
+        updateChecksum(6500);
+        updateChecksum(0);
+        updateChecksum(0);
+        updateChecksum(0);
+        x = sc_x(5000001) + 3;
+        updateChecksum(x);
+        updateChecksum(1);
+        updateChecksumH(0);
+        updateChecksumH(0);
+        updateChecksum(0);
+
+        // t1
+        updateChecksum(14500);
+        updateChecksum(25500);
+        updateChecksum(0);
+        updateChecksum(0);
+        updateChecksum(0);
+        x = sc_x(5000000) + 4;
+        updateChecksum(x);
+        updateChecksum(0);
+        updateChecksumH(0);
+        updateChecksumH(0);
+        updateChecksum(0);
+
+        // king towers again in reverse order
+        // k2
+        updateChecksum(9000);
+        updateChecksum(29000);
+        updateChecksum(0);
+        updateChecksum(0);
+        updateChecksum(0);
+        updateChecksumX(5000004);
+        updateChecksum(5);
+        updateChecksumH(0);
+        updateChecksumH(0);
+        updateChecksum(0);
+
+        // k1
+        updateChecksum(9000);
+        updateChecksum(3000);
+        updateChecksum(0);
+        updateChecksum(0);
+        updateChecksum(0);
+        updateChecksumX(5000004);
+        updateChecksum(4);
+
+        // other things from sector state
+        updateChecksum(2534);
+        updateChecksum(100);
+        updateChecksum(0);
+        updateChecksum(2534);
+        updateChecksum(100);
+        updateChecksum(0);
+        updateChecksum(2534);
+        updateChecksum(100);
+        updateChecksum(0);
+        updateChecksum(2534);
+        updateChecksum(100);
+        updateChecksum(0);
+        updateChecksum(4008);
+        updateChecksum(100);
+        updateChecksum(0);
+        updateChecksum(4008);
+        updateChecksum(100);
+        updateChecksum(0);
+
+        updateChecksum(0);
+        updateChecksum(0);
+        updateChecksum(0);
+        updateChecksum(0);
+        updateChecksum(100);
+        updateChecksum(0);
+        updateChecksum(0);
+        updateChecksum(0);
+        updateChecksum(0);
+        updateChecksum(0);
+        updateChecksum(100);
+        updateChecksum(0);
+        updateChecksum(0);
+        updateChecksum(0);
+        updateChecksum(0);
+        updateChecksum(0);
+        updateChecksum(100);
+        updateChecksum(0);
+        updateChecksum(0);
+        updateChecksum(0);
+        updateChecksum(0);
+        updateChecksum(0);
+        updateChecksum(100);
+        updateChecksum(0);
+        updateChecksum(0);
+        updateChecksum(0);
+        updateChecksum(0);
+        updateChecksum(0);
+        updateChecksum(100);
+        updateChecksum(0);
+        updateChecksum(0);
+        updateChecksum(0);
+        updateChecksum(0);
+        updateChecksum(0);
+        updateChecksum(100);
+        updateChecksum(0);
+
+        updateChecksumH(0);
+        updateChecksumH(1);
+        updateChecksumH(1);
+        updateChecksumH(1);
+        updateChecksumH(1);
+        updateChecksumH(1);
+        updateChecksumH(1);
+        updateChecksumH(1);
+        updateChecksumH(1);
+        updateChecksumH(1);
+
+        // cards
+        // 1
+        x = sc_x(clientInfo.getCurrentDeck().get(0).getScId());
+        updateChecksum(x);
+        updateChecksum(clientInfo.getCurrentDeck().get(0).getMaxLevel());
+        // 2
+        x = sc_x(clientInfo.getCurrentDeck().get(1).getScId());
+        x = x * 10;
+        updateChecksum(x);
+        updateChecksum(clientInfo.getCurrentDeck().get(1).getMaxLevel());
+        // 3
+        x = sc_x(clientInfo.getCurrentDeck().get(2).getScId());
+        updateChecksum(x);
+        updateChecksum(clientInfo.getCurrentDeck().get(2).getMaxLevel());
+        // 4
+        x = sc_x(clientInfo.getCurrentDeck().get(3).getScId());
+        x = x + 0x4d;
+        updateChecksum(x);
+        updateChecksum(clientInfo.getCurrentDeck().get(3).getMaxLevel());
+        // 5
+        x = sc_x(clientInfo.getCurrentDeck().get(4).getScId());
+        updateChecksum(x);
+        updateChecksum(clientInfo.getCurrentDeck().get(4).getMaxLevel());
+        // 6
+        x = sc_x(clientInfo.getCurrentDeck().get(5).getScId());
+        x = x + 0x3f;
+        updateChecksum(x);
+        updateChecksum(clientInfo.getCurrentDeck().get(5).getMaxLevel());
+        // 7
+        x = sc_x(clientInfo.getCurrentDeck().get(6).getScId());
+        updateChecksum(x);
+        updateChecksum(clientInfo.getCurrentDeck().get(6).getMaxLevel());
+        // 8
+        x = sc_x(clientInfo.getCurrentDeck().get(7).getScId());
+        updateChecksum(x);
+        updateChecksum(clientInfo.getCurrentDeck().get(7).getMaxLevel());
+
+        // other stuffs
+        updateChecksum(0);
+        // another shit
+        x = sc_x(5000004);
+        updateChecksum(x);
+        mChecksum -= x;
+
+        x = sc_x(5000005) - 1;
+        updateChecksum(x);
+
+        updateChecksumX(5000005);
+
+        updateChecksum(2);
+        updateChecksumX(5000000);
+        updateChecksumX(5000002);
+
+        updateChecksum(0);
+        updateChecksum(0);
+        updateChecksum(0);
+        updateChecksum(0);
+        updateChecksum(0);
+        updateChecksum(0);
+
+        updateChecksumH(0);
+        updateChecksum(0);
+
+        updateChecksum(0);
+        updateChecksum(4);
+        updateChecksum(1);
+        updateChecksum(5);
+        updateChecksum(4);
+        updateChecksum(3);
+
+        if (sequence == 1) {
+            updateChecksum(0);
+        } else {
+            updateChecksum(12);
+        }
+
+        updateChecksum(0);
         updateChecksum(0);
         updateChecksum(0);
 
