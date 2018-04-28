@@ -291,9 +291,12 @@ public class BattleChecksumEncoder {
         updateChecksumH(1);
         updateChecksumH(1);
 
-        updateChecksum(50000 * sequence);
+        updateChecksum((50000 * sequence) % 280000);
         updateChecksum(0);
-        updateChecksum(5);
+        updateChecksum((int) (5 + (sequence >= 5 ? 0 : Math.floor(sequence / 6))));
+        if (sequence > 5) {
+            mChecksum += Math.floor(sequence / 6);
+        }
         updateChecksum(0);
         updateChecksum(0);
         updateChecksum(0);
@@ -356,9 +359,13 @@ public class BattleChecksumEncoder {
         updateChecksum(0xffffffff);
         updateChecksum(0);
         updateChecksum(0xffffffff);
-        updateChecksum(50000 * sequence);
+
+        updateChecksum((50000 * sequence) % 280000);
         updateChecksum(0);
-        updateChecksum(5);
+        updateChecksum((int) (5 + (sequence >= 5 ? 0 : Math.floor(sequence / 6))));
+        if (sequence > 5) {
+            mChecksum += Math.floor(sequence / 6);
+        }
         updateChecksum(0);
         updateChecksum(0);
         updateChecksum(0);
