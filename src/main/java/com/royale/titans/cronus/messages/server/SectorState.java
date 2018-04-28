@@ -117,8 +117,7 @@ public class SectorState extends ServerMessage  {
         outBuffer.write((byte) 0);
         outBuffer.writeRrsInt(33);
         System.out.println("GAME START: " + String.valueOf(mBattleInfo.getGameStartTimestamp() / 1000));
-        //outBuffer.writeRrsInt(mBattleInfo.getGameStartTimestamp() / 1000);
-        outBuffer.writeRrsInt(1524864081);
+        outBuffer.writeRrsInt(mBattleInfo.getGameStartTimestamp() / 1000);
 
         outBuffer.writeRrsInt(11);
         outBuffer.writeRrsInt(0);

@@ -66,9 +66,13 @@ public class BattleChecksumEncoder {
         // arena
         updateChecksumX(54000024);
 
-        // those 2 are dynamic.. i need to get the logic
-        updateChecksum(0x40);
-        updateChecksum(0x55000001);
+        // opponents
+        for (ServerLogic.ClientInfo player : sectorState.getBattleInfo().getPlayers()) {
+            if (!player.getClientId().equals(clientInfo.getClientId())) {
+                updateChecksum(player.getClientId().high());
+                updateChecksum(player.getClientId().low());
+            }
+        }
 
         updateChecksum(0);
 
