@@ -149,8 +149,6 @@ public class ServerLogic {
                 return new ClientHello(info, buffer);
             case 10101:
                 return new Login(info, buffer);
-            case 10541:
-                return new ClientBattleEvent(info, buffer);
             case 10644:
                 return new SendChatMessageEvent(info, buffer);
             case 11688:
@@ -167,6 +165,8 @@ public class ServerLogic {
                 return new AskForBattleReplayStream(info, buffer);
             case 17101:
                 return new AskForAvatarStreamMessage(info, buffer);
+            case 17509:
+                return new ClientBattleEvent(info, buffer);
             case 19234:
                 return new SectorCommand(info, buffer);
             case 19939:
@@ -205,7 +205,7 @@ public class ServerLogic {
                     switch (workerTask.getTask()) {
                         case POST_CRONUS_CHAT_MESSAGE: {
                             SendChatMessageEvent sendChatMessageEvent = (SendChatMessageEvent) workerTask.getData()[0];
-                            CronusChatEvent chatEvent = new CronusChatEvent(sendChatMessageEvent.getSenderInfo(),
+                            CronusChatEvent chatEvent = new CronusChatEvent(sendChatMessageEvent.getClientInfo(),
                                     CronusChatEvent.CHAT_EVENT_MESSAGE,
                                     sendChatMessageEvent.getContent());
 

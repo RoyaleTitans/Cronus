@@ -1,5 +1,6 @@
 package com.royale.titans.cronus;
 
+import java.util.LinkedHashMap;
 import java.util.Random;
 
 public class CRUtils {
@@ -88,6 +89,14 @@ public class CRUtils {
             new CardInfo("Barb Barrel", 93, 28000015),
             new CardInfo("Heal", 94, 28000016),
     };
+
+    public static LinkedHashMap<Integer, CardInfo> sCardsScIdMap = new LinkedHashMap<>();
+
+    static {
+        for (CardInfo cardInfo : CARDS) {
+            sCardsScIdMap.putIfAbsent(cardInfo.getScId(), cardInfo);
+        }
+    }
 
     public static CardInfo randomCard() {
         return CARDS[new Random().nextInt(CARDS.length)];

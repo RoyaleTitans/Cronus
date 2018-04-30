@@ -4,16 +4,16 @@ import com.royale.titans.cronus.ServerLogic;
 import com.royale.titans.cronus.lib.Buffer;
 
 public abstract class ClientMessage {
-    private final ServerLogic.ClientInfo mSenderInfo;
+    private final ServerLogic.ClientInfo mClientInfo;
     private final Buffer mBuffer;
 
     public ClientMessage(ServerLogic.ClientInfo clientInfo, Buffer buffer) {
-        mSenderInfo = clientInfo;
+        mClientInfo = clientInfo;
         mBuffer = buffer;
     }
 
-    public ServerLogic.ClientInfo getSenderInfo() {
-        return mSenderInfo;
+    public ServerLogic.ClientInfo getClientInfo() {
+        return mClientInfo;
     }
 
     public Buffer getBuffer() {
