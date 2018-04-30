@@ -10,7 +10,7 @@ public class ServerBattleEvent extends ServerMessage {
     private final BattleInfo mBattleInfo;
 
     private int mEventId;
-    private int mChecksum = 0;
+    private long mChecksum = 0;
     private ClientBattleEvent mClientEvent;
 
     public ServerBattleEvent(BattleInfo battleInfo) {
@@ -59,7 +59,7 @@ public class ServerBattleEvent extends ServerMessage {
         mClientEvent = clientBattleEvent;
     }
 
-    public void setChecksum(int checksum) {
+    public void setChecksum(long checksum) {
         mChecksum = checksum;
     }
 }

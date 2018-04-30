@@ -108,7 +108,7 @@ public class BattleLogic {
                     }
 
                     try {
-                        Thread.sleep(600);
+                        Thread.sleep(500);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -130,18 +130,17 @@ public class BattleLogic {
                             ServerLogic.getInstance().postMessage(clientInfo, battleEvent);
                         }
 
+                        battleInfo.incrementSequence();
                         if (hasEvent) {
                             battleInfo.incrementEventIndex();
                         }
 
                         try {
-                            Thread.sleep(600);
+                            Thread.sleep(500);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                             break;
                         }
-
-                        battleInfo.incrementSequence();
                     }
                 }
 

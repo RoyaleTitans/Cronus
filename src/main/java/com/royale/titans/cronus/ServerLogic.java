@@ -167,6 +167,8 @@ public class ServerLogic {
                 return new AskForBattleReplayStream(info, buffer);
             case 17101:
                 return new AskForAvatarStreamMessage(info, buffer);
+            case 19234:
+                return new SectorCommand(info, buffer);
             case 19939:
                 return new CronusBattleAccepted(info, buffer);
             case 9999:

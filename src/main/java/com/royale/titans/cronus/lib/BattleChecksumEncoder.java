@@ -8,30 +8,30 @@ public class BattleChecksumEncoder {
             0x431bde83, 0x3d09, 0x154ac8ce, 0xde68b267
     };
 
-    private int mChecksum = 0;
+    private long mChecksum = 0;
     private final BattleInfo mBattleInfo;
 
     public BattleChecksumEncoder(BattleInfo battleInfo) {
         mBattleInfo = battleInfo;
     }
 
-    private int __ror4__(int x) {
+    private long __ror4__(long x) {
         long e = (long) Math.pow(2, 32);
-        return (int) (((x & (e - 1)) >> 31 % 32) | (x << (32 - (31 % 32)) & (e - 1)));
+        return ((x & (e - 1)) >> 31 % 32) | (x << (32 - (31 % 32)) & (e - 1));
     }
 
-    private int sc_ror(int x, int a) {
+    private long sc_ror(long x, long a) {
         return ((x + __ror4__(a)) + 0x21);
     }
 
-    private int sc_x(int x) {
+    private long sc_x(long x) {
         int a = (int) ((((long) WEED_TABLE[0]) * x & 0xffffffff00000000L) >> 32);
         a = (a >> 18) + (a >> 31);
         return x - ((a * WEED_TABLE[1]) << 6) + 1;
     }
 
-    private int sc_card_x(int x) {
-        int a = sc_x(x);
+    private long sc_card_x(int x) {
+        long a = sc_x(x);
         if (x >= 28000000) {
             a += 77;
         } else if (x >= 27000000) {
@@ -40,11 +40,11 @@ public class BattleChecksumEncoder {
         return a;
     }
 
-    private void updateChecksum(int value) {
+    private void updateChecksum(long value) {
         mChecksum = sc_ror(value, mChecksum);
     }
 
-    private void updateChecksumX(int value) {
+    private void updateChecksumX(long value) {
         value = sc_x(value);
         updateChecksum(value);
     }
@@ -54,12 +54,12 @@ public class BattleChecksumEncoder {
         mChecksum = value + __ror4__(mChecksum);
     }
 
-    public int encode(ServerLogic.ClientInfo clientInfo) {
+    public long encode(ServerLogic.ClientInfo clientInfo) {
         // reset checksum, always start from magic
         mChecksum = 0;
 
+        long x;
         int sequence = mBattleInfo.getSequence();
-        int x;
         int magic = sequence * 10;
 
         // start from magic
@@ -606,6 +606,6 @@ public class BattleChecksumEncoder {
         updateChecksum(0);
         updateChecksum(0);
 
-        return mChecksum;
+        return mChecksum & 0xFFFFFFFFL;
     }
 }
