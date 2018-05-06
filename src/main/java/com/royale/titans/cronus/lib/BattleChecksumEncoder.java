@@ -1,7 +1,7 @@
 package com.royale.titans.cronus.lib;
 
-import com.royale.titans.cronus.ServerLogic;
 import com.royale.titans.cronus.models.BattleInfo;
+import com.royale.titans.cronus.models.PlayerInfo;
 
 public class BattleChecksumEncoder {
     private static final int[] WEED_TABLE = new int[] {
@@ -54,9 +54,11 @@ public class BattleChecksumEncoder {
         mChecksum = value + __ror4__(mChecksum);
     }
 
-    public long encode(ServerLogic.ClientInfo clientInfo) {
+    public long encode(PlayerInfo playerInfo) {
         // reset checksum, always start from magic
         mChecksum = 0;
+
+        System.out.println("starting checksum for " + mBattleInfo.getSequence());
 
         long x;
         int sequence = mBattleInfo.getSequence();
@@ -77,6 +79,8 @@ public class BattleChecksumEncoder {
         mChecksum = WEED_TABLE[2] + __ror4__(mChecksum) + 0x9;
         updateChecksum(WEED_TABLE[3]);
 
+        System.out.println(String.format("0x%08X", mChecksum));
+
         // todo get all values from sectorstate
         // unk
         updateChecksumX(15000029);
@@ -86,22 +90,16 @@ public class BattleChecksumEncoder {
         // arena
         updateChecksumX(54000024);
 
-        // opponents
-        for (ServerLogic.ClientInfo player : mBattleInfo.getPlayers()) {
-            if (!player.getClientId().equals(clientInfo.getClientId())) {
-                updateChecksum(player.getClientId().high());
-                updateChecksum(player.getClientId().low());
-            }
+        System.out.println(String.format("0x%08X", mChecksum));
+
+        // players
+        for (PlayerInfo player : mBattleInfo.getPlayers()) {
+            updateChecksum(player.getClientId().high());
+            updateChecksum(player.getClientId().low());
+            updateChecksum(0);
         }
 
         updateChecksum(0);
-
-        // own account id
-        updateChecksum(clientInfo.getClientId().high());
-        updateChecksum(clientInfo.getClientId().low());
-
-        updateChecksum(0);
-        updateChecksum(0);
         updateChecksum(0);
         updateChecksum(0);
         updateChecksum(0);
@@ -110,7 +108,7 @@ public class BattleChecksumEncoder {
         updateChecksum(0);
         updateChecksum(0);
 
-        updateChecksum(4);
+        updateChecksum(3);
         updateChecksum(1);
         updateChecksum(0);
         updateChecksum(0);
@@ -128,18 +126,25 @@ public class BattleChecksumEncoder {
         updateChecksumH(0);
         updateChecksumH(0);
 
+        System.out.println(String.format("0x%08X", mChecksum));
+
         updateChecksum(0);
         updateChecksum(0);
         updateChecksum(0);
         updateChecksum(0);
 
-        updateChecksum(116);
-        updateChecksum(0 - 116);
-        updateChecksum(0);
-        updateChecksum(0);
-        updateChecksum(6);
-        updateChecksum(0 - 6);
-        updateChecksum(6);
+        updateChecksum(28);
+        updateChecksum(0 - 28);
+
+        System.out.println("Spells: " + playerInfo.getSpellsDeployed());
+        updateChecksum(playerInfo.getSpellsDeployed());
+        updateChecksum(0 - playerInfo.getSpellsDeployed());
+        System.out.println(String.format("0x%08X", mChecksum));
+        System.out.println("Unit: " + playerInfo.getUnitDeployed());
+        updateChecksum(playerInfo.getUnitDeployed());
+        updateChecksum(0 - playerInfo.getUnitDeployed());
+        updateChecksum(playerInfo.getTotalDeployed());
+        System.out.println(String.format("0x%08X", mChecksum));
 
         for (int i=0;i<4;i++) {
             updateChecksumX(35000001);
@@ -153,6 +158,15 @@ public class BattleChecksumEncoder {
             updateChecksum(0);
         }
 
+        System.out.println(String.format("0x%08X", mChecksum));
+
+        for (Integer maskId : playerInfo.getMasksDeployed()) {
+            updateChecksum(34);
+            updateChecksum(maskId);
+        }
+
+        System.out.println(String.format("0x%08X", mChecksum));
+
         updateChecksum(1);
         updateChecksum(0);
         updateChecksum(1);
@@ -160,8 +174,15 @@ public class BattleChecksumEncoder {
         updateChecksum(0);
         updateChecksum(1);
 
+        for (int i=0;i<playerInfo.getMasksDeployed().size();i++) {
+            updateChecksum(1);
+        }
+
+        System.out.println(String.format("0x%08X", mChecksum));
+
         for (int i=0;i<6;i++) {
             updateChecksumX(5000000 + i);
+            System.out.println("iter " + String.format("0x%08X", mChecksum));
             mChecksum += 2;
             if (i == 1) {
                 mChecksum += 9;
@@ -213,6 +234,8 @@ public class BattleChecksumEncoder {
         updateChecksum(0);
         updateChecksum(0);
 
+        System.out.println(String.format("0x%08X", mChecksum));
+
         updateChecksum(0);
         updateChecksum(0);
         updateChecksumH(0);
@@ -263,6 +286,8 @@ public class BattleChecksumEncoder {
         updateChecksumH(0);
         updateChecksum(0);
         updateChecksumH(0);
+
+        System.out.println(String.format("0x%08X", mChecksum));
 
         // king towers
         updateChecksum(8);
@@ -338,6 +363,8 @@ public class BattleChecksumEncoder {
         updateChecksum(0);
         updateChecksum(0);
 
+        System.out.println(String.format("0x%08X", mChecksum));
+
         updateChecksum(0);
         updateChecksum(0);
         updateChecksumH(0);
@@ -349,22 +376,26 @@ public class BattleChecksumEncoder {
         updateChecksumH(1);
         updateChecksumH(1);
 
+        System.out.println(String.format("0x%08X", mChecksum));
+
         updateChecksum(4);
-        updateChecksum(3);
-        updateChecksum(4);
-        updateChecksum(0xfffffffa);
-        updateChecksum(5);
-        updateChecksum(4);
-        updateChecksum(5);
+        updateChecksum(0);
+        updateChecksum(6);
+        updateChecksum(0xfffffffc);
         updateChecksum(2);
-        updateChecksum(0);
         updateChecksum(4);
+        updateChecksum(5);
+        updateChecksum(3);
+        updateChecksum(7);
+        updateChecksum(1);
         updateChecksum(0);
         updateChecksum(0xffffffff);
         updateChecksum(0xffffffff);
         updateChecksum(0xffffffff);
         updateChecksum(0);
         updateChecksum(0xffffffff);
+
+        System.out.println(String.format("0x%08X", mChecksum));
 
         if (sequence == 28) {
             updateChecksum(0);
@@ -376,6 +407,8 @@ public class BattleChecksumEncoder {
         updateChecksum(0);
         updateChecksum(Math.min((int) n + 5, 10));
 
+        System.out.println(String.format("0x%08X", mChecksum));
+
         updateChecksum(0);
         updateChecksum(0);
         updateChecksum(0);
@@ -398,6 +431,8 @@ public class BattleChecksumEncoder {
         updateChecksumH(0);
         updateChecksumH(0);
         updateChecksum(0);
+
+        System.out.println(String.format("0x%08X", mChecksum));
 
         // some towers values again in reverse order
         // t4
@@ -412,6 +447,8 @@ public class BattleChecksumEncoder {
         updateChecksumH(0);
         updateChecksumH(0);
         updateChecksum(0);
+
+        System.out.println(String.format("0x%08X", mChecksum));
 
         // t3
         updateChecksum(3500);
@@ -439,6 +476,8 @@ public class BattleChecksumEncoder {
         updateChecksumH(0);
         updateChecksum(0);
 
+        System.out.println(String.format("0x%08X", mChecksum));
+
         // t1
         updateChecksum(14500);
         updateChecksum(25500);
@@ -451,6 +490,8 @@ public class BattleChecksumEncoder {
         updateChecksumH(0);
         updateChecksumH(0);
         updateChecksum(0);
+
+        System.out.println(String.format("0x%08X", mChecksum));
 
         // king towers again in reverse order
         // k2
@@ -542,39 +583,41 @@ public class BattleChecksumEncoder {
         updateChecksumH(1);
         updateChecksumH(1);
 
+        System.out.println(String.format("0x%08X", mChecksum));
+
         // cards
         // 1
-        x = sc_card_x(clientInfo.getCurrentDeck().get(0).getScId());
+        x = sc_card_x(playerInfo.getClientInfo().getCurrentDeck().get(0).getScId());
         updateChecksum(x);
-        updateChecksum(clientInfo.getCurrentDeck().get(0).getMaxLevel());
+        updateChecksum(playerInfo.getClientInfo().getCurrentDeck().get(0).getMaxLevel());
         // 2
-        x = sc_card_x(clientInfo.getCurrentDeck().get(1).getScId());
+        x = sc_card_x(playerInfo.getClientInfo().getCurrentDeck().get(1).getScId());
         updateChecksum(x);
-        updateChecksum(clientInfo.getCurrentDeck().get(1).getMaxLevel());
+        updateChecksum(playerInfo.getClientInfo().getCurrentDeck().get(1).getMaxLevel());
         // 3
-        x = sc_card_x(clientInfo.getCurrentDeck().get(2).getScId());
+        x = sc_card_x(playerInfo.getClientInfo().getCurrentDeck().get(2).getScId());
         updateChecksum(x);
-        updateChecksum(clientInfo.getCurrentDeck().get(2).getMaxLevel());
+        updateChecksum(playerInfo.getClientInfo().getCurrentDeck().get(2).getMaxLevel());
         // 4
-        x = sc_card_x(clientInfo.getCurrentDeck().get(3).getScId());
+        x = sc_card_x(playerInfo.getClientInfo().getCurrentDeck().get(3).getScId());
         updateChecksum(x);
-        updateChecksum(clientInfo.getCurrentDeck().get(3).getMaxLevel());
+        updateChecksum(playerInfo.getClientInfo().getCurrentDeck().get(3).getMaxLevel());
         // 5
-        x = sc_card_x(clientInfo.getCurrentDeck().get(4).getScId());
+        x = sc_card_x(playerInfo.getClientInfo().getCurrentDeck().get(4).getScId());
         updateChecksum(x);
-        updateChecksum(clientInfo.getCurrentDeck().get(4).getMaxLevel());
+        updateChecksum(playerInfo.getClientInfo().getCurrentDeck().get(4).getMaxLevel());
         // 6
-        x = sc_card_x(clientInfo.getCurrentDeck().get(5).getScId());
+        x = sc_card_x(playerInfo.getClientInfo().getCurrentDeck().get(5).getScId());
         updateChecksum(x);
-        updateChecksum(clientInfo.getCurrentDeck().get(5).getMaxLevel());
+        updateChecksum(playerInfo.getClientInfo().getCurrentDeck().get(5).getMaxLevel());
         // 7
-        x = sc_card_x(clientInfo.getCurrentDeck().get(6).getScId());
+        x = sc_card_x(playerInfo.getClientInfo().getCurrentDeck().get(6).getScId());
         updateChecksum(x);
-        updateChecksum(clientInfo.getCurrentDeck().get(6).getMaxLevel());
+        updateChecksum(playerInfo.getClientInfo().getCurrentDeck().get(6).getMaxLevel());
         // 8
-        x = sc_card_x(clientInfo.getCurrentDeck().get(7).getScId());
+        x = sc_card_x(playerInfo.getClientInfo().getCurrentDeck().get(7).getScId());
         updateChecksum(x);
-        updateChecksum(clientInfo.getCurrentDeck().get(7).getMaxLevel());
+        updateChecksum(playerInfo.getClientInfo().getCurrentDeck().get(7).getMaxLevel());
 
         // other stuffs
         updateChecksum(0);
@@ -595,6 +638,8 @@ public class BattleChecksumEncoder {
         updateChecksumX(5000000);
         updateChecksumX(5000002);
 
+        System.out.println(String.format("0x%08X", mChecksum));
+
         updateChecksum(0);
         updateChecksum(0);
         updateChecksum(0);
@@ -604,17 +649,20 @@ public class BattleChecksumEncoder {
 
         updateChecksumH(0);
         updateChecksum(0);
-
         updateChecksum(0);
+
         updateChecksum(4);
-        updateChecksum(1);
         updateChecksum(5);
         updateChecksum(4);
-        updateChecksum(3);
+        updateChecksum(0);
+        updateChecksum(12);
         updateChecksum(12);
         updateChecksum(0);
         updateChecksum(0);
         updateChecksum(0);
+
+        System.out.println("result");
+        System.out.println(String.format("0x%08X", (mChecksum & 0xFFFFFFFFL)));
 
         return mChecksum & 0xFFFFFFFFL;
     }

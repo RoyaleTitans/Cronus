@@ -5,6 +5,8 @@ import com.royale.titans.cronus.messages.client.ClientBattleEvent;
 import com.royale.titans.cronus.messages.server.SectorState;
 import com.royale.titans.cronus.messages.server.ServerBattleEvent;
 import com.royale.titans.cronus.models.BattleInfo;
+import com.royale.titans.cronus.models.ClientInfo;
+import com.royale.titans.cronus.models.PlayerInfo;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
@@ -31,7 +33,7 @@ public class BattleLogic {
         mExecutor = Executors.newScheduledThreadPool(8);
     }
 
-    public int queueBattle(ServerLogic.ClientInfo clientInfo) {
+    public int queueBattle(ClientInfo clientInfo) {
         int slotId = 1;
         while (true) {
             if (mBattleInfos.get(slotId) == null) {
@@ -60,14 +62,14 @@ public class BattleLogic {
     }
 
     public void startBattle(BattleInfo battleInfo) {
-        for (ServerLogic.ClientInfo clientInfo : battleInfo.getPlayers()) {
-            mBattleInfosHashMap.put(clientInfo.getClientId().toString(), battleInfo.getSlotId());
+        for (PlayerInfo playerInfo : battleInfo.getPlayers()) {
+            mBattleInfosHashMap.put(playerInfo.getClientId().toString(), battleInfo.getSlotId());
         }
 
         scheduleTask(new BattleTask(BattleTask.TASK.START_BATTLE, battleInfo));
     }
 
-    public void onClientBattleEvent(ClientBattleEvent clientBattleEvent, ServerLogic.ClientInfo clientInfo) {
+    public void onClientBattleEvent(ClientBattleEvent clientBattleEvent, ClientInfo clientInfo) {
         Integer slotId = mBattleInfosHashMap.get(clientInfo.getClientId().toString());
         if (slotId != null && slotId > 0) {
             BattleInfo battleInfo = mBattleInfos.get(slotId);
@@ -102,9 +104,9 @@ public class BattleLogic {
 
                     battleInfo.startGame();
 
-                    for (ServerLogic.ClientInfo clientInfo : battleInfo.getPlayers()) {
-                        SectorState sectorState = new SectorState(battleInfo, clientInfo);
-                        ServerLogic.getInstance().postMessage(clientInfo, sectorState);
+                    for (PlayerInfo playerInfo : battleInfo.getPlayers()) {
+                        SectorState sectorState = new SectorState(battleInfo, playerInfo);
+                        ServerLogic.getInstance().postMessage(playerInfo.getClientInfo(), sectorState);
                     }
 
                     try {
@@ -117,26 +119,38 @@ public class BattleLogic {
 
                     while (true) {
                         ServerBattleEvent battleEvent = new ServerBattleEvent(battleInfo);
-                        boolean hasEvent = false;
+                        boolean hasEvent = battleInfo.getBattleEvents().size() > battleInfo.getEventIndex();
+                        if (hasEvent) {
+                            System.out.println("CARD DEPLOYED ON SEQ: " + battleInfo.getSequence());
+                        }
 
-                        for (ServerLogic.ClientInfo clientInfo : battleInfo.getPlayers()) {
-                            if (battleInfo.getBattleEvents().size() > battleInfo.getEventIndex()) {
-                                hasEvent = true;
-                                ClientBattleEvent clientBattleEvent = battleInfo.getBattleEvents().get(battleInfo.getEventIndex());
+                        ClientBattleEvent clientBattleEvent = null;
+                        for (PlayerInfo playerInfo : battleInfo.getPlayers()) {
+                            if (hasEvent) {
+                                clientBattleEvent = battleInfo.getBattleEvents().get(battleInfo.getEventIndex());
                                 battleEvent.setClientEvent(clientBattleEvent);
                             }
 
-                            battleEvent.setChecksum(battleChecksumEncoder.encode(clientInfo));
-                            ServerLogic.getInstance().postMessage(clientInfo, battleEvent);
+                            battleEvent.setChecksum(battleChecksumEncoder.encode(playerInfo));
+                            ServerLogic.getInstance().postMessage(playerInfo.getClientInfo(), battleEvent);
+
+                            if (clientBattleEvent != null && clientBattleEvent.getClientInfo().equals(playerInfo.getClientInfo())) {
+                                CRUtils.CardInfo cardInfo = CRUtils.sCardsScIdMap.get(
+                                        clientBattleEvent.getCardScId()[0] * 1000000 + clientBattleEvent.getCardScId()[1]);
+                                playerInfo.onCardDeployed(cardInfo);
+                            }
+
+                            playerInfo.incrementAvailableElixir();
                         }
 
                         battleInfo.incrementSequence();
+
                         if (hasEvent) {
                             battleInfo.incrementEventIndex();
                         }
 
                         try {
-                            Thread.sleep(500);
+                            Thread.sleep(700);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                             break;

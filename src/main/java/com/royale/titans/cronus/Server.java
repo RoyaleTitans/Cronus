@@ -3,6 +3,7 @@ package com.royale.titans.cronus;
 import com.royale.titans.cronus.lib.Buffer;
 import com.royale.titans.cronus.messages.*;
 import com.royale.titans.cronus.messages.server.ServerHello;
+import com.royale.titans.cronus.models.ClientInfo;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -26,7 +27,7 @@ class Server {
             public void completed(AsynchronousSocketChannel channel, Void attachment) {
                 listener.accept(null, this);
 
-                ServerLogic.ClientInfo clientInfo = null;
+                ClientInfo clientInfo = null;
                 boolean running = true;
 
                 try {

@@ -4,6 +4,7 @@ import com.royale.titans.cronus.ServerLogic;
 import com.royale.titans.cronus.lib.Buffer;
 import com.royale.titans.cronus.lib.OutBuffer;
 import com.royale.titans.cronus.messages.ServerMessage;
+import com.royale.titans.cronus.models.ClientInfo;
 
 public class CronusChatEvent extends ServerMessage {
     public static final int CHAT_EVENT_JOIN = 0;
@@ -17,7 +18,7 @@ public class CronusChatEvent extends ServerMessage {
     protected final byte mCrEventId;
 
     // Player involved in the event
-    private final ServerLogic.ClientInfo mInfo;
+    private final ClientInfo mInfo;
 
     private String mContent;
 
@@ -26,7 +27,7 @@ public class CronusChatEvent extends ServerMessage {
     /**
      * chat messages
      */
-    public CronusChatEvent(ServerLogic.ClientInfo info, int eventId, String content) {
+    public CronusChatEvent(ClientInfo info, int eventId, String content) {
         mUId = ServerLogic.getInstance().getRandom().nextInt();
         mEventId = eventId;
 
@@ -105,7 +106,7 @@ public class CronusChatEvent extends ServerMessage {
         return mUId;
     }
 
-    ServerLogic.ClientInfo getClientInfo() {
+    ClientInfo getClientInfo() {
         return mInfo;
     }
 

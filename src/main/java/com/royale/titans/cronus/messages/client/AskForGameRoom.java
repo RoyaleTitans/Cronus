@@ -2,18 +2,16 @@ package com.royale.titans.cronus.messages.client;
 
 import com.royale.titans.cronus.ServerLogic;
 import com.royale.titans.cronus.lib.Buffer;
-import com.royale.titans.cronus.lib.OutBuffer;
 import com.royale.titans.cronus.messages.ClientMessage;
 import com.royale.titans.cronus.messages.ServerMessage;
-import com.royale.titans.cronus.messages.server.BattleQueueLeave;
 import com.royale.titans.cronus.messages.server.BattleQueueLeaveConfirm;
-import com.royale.titans.cronus.messages.server.CustomBufferMessage;
+import com.royale.titans.cronus.models.ClientInfo;
 
 public class AskForGameRoom extends ClientMessage {
     private final boolean mHaveCommand;
     private final boolean mClanFriendlyMatch;
 
-    public AskForGameRoom(ServerLogic.ClientInfo clientInfo, Buffer buffer) {
+    public AskForGameRoom(ClientInfo clientInfo, Buffer buffer) {
         super(clientInfo, buffer);
 
         buffer.readRrsInt();
@@ -29,7 +27,7 @@ public class AskForGameRoom extends ClientMessage {
     }
 
     @Override
-    public ServerMessage[] handle(ServerLogic.ClientInfo clientInfo) {
+    public ServerMessage[] handle(ClientInfo clientInfo) {
         if (mClanFriendlyMatch) {
             ServerLogic.getInstance().scheduleTask(new ServerLogic.ServerWorker.WorkerTask(
                     ServerLogic.ServerWorker.TASK.POST_CRONUS_CHAT_GAME_QUEUE_START,

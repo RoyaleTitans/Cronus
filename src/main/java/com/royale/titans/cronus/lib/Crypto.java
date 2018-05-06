@@ -1,7 +1,7 @@
 package com.royale.titans.cronus.lib;
 
-import com.royale.titans.cronus.ServerLogic;
 import com.royale.titans.cronus.Configs;
+import com.royale.titans.cronus.models.ClientInfo;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -10,7 +10,7 @@ import java.util.Arrays;
 public class Crypto {
     private static final byte[] NULL = new byte[32];
 
-    public static Buffer decrypt(ServerLogic.ClientInfo info, int id, Buffer buffer) {
+    public static Buffer decrypt(ClientInfo info, int id, Buffer buffer) {
         if (info == null) {
             return null;
         }
@@ -34,7 +34,7 @@ public class Crypto {
         }
     }
 
-    public static Buffer encrypt(ServerLogic.ClientInfo info, int messageId, Buffer buffer) {
+    public static Buffer encrypt(ClientInfo info, int messageId, Buffer buffer) {
         if (messageId == 20100 || messageId == 20103) {
             return buffer;
         } else if (messageId == 22194) {

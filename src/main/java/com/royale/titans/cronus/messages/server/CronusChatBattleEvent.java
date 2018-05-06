@@ -1,15 +1,15 @@
 package com.royale.titans.cronus.messages.server;
 
-import com.royale.titans.cronus.ServerLogic;
 import com.royale.titans.cronus.lib.Buffer;
 import com.royale.titans.cronus.lib.OutBuffer;
+import com.royale.titans.cronus.models.ClientInfo;
 
 public class CronusChatBattleEvent extends CronusChatEvent {
     private final int mSlotId;
 
-    private ServerLogic.ClientInfo mOpponentInfo;
+    private ClientInfo mOpponentInfo;
 
-    public CronusChatBattleEvent(ServerLogic.ClientInfo info, int slotId) {
+    public CronusChatBattleEvent(ClientInfo info, int slotId) {
         super(info, CHAT_EVENT_BATTLE_MESSAGE, "");
         mSlotId = slotId;
     }
@@ -22,7 +22,7 @@ public class CronusChatBattleEvent extends CronusChatEvent {
         return b.obtain();
     }
 
-    public void setOpponentInfo(ServerLogic.ClientInfo opponentInfo) {
+    public void setOpponentInfo(ClientInfo opponentInfo) {
         mOpponentInfo = opponentInfo;
     }
 

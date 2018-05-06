@@ -1,6 +1,5 @@
 package com.royale.titans.cronus.models;
 
-import com.royale.titans.cronus.ServerLogic;
 import com.royale.titans.cronus.messages.client.ClientBattleEvent;
 
 import java.util.ArrayList;
@@ -8,7 +7,7 @@ import java.util.ArrayList;
 public class BattleInfo {
     private final int mSlotId;
 
-    private final ArrayList<ServerLogic.ClientInfo> mPlayersInfo = new ArrayList<>();
+    private final ArrayList<PlayerInfo> mPlayersInfo = new ArrayList<>();
     private final ArrayList<ClientBattleEvent> mBattleEvents = new ArrayList<>();
 
     private int mSequence;
@@ -16,9 +15,9 @@ public class BattleInfo {
 
     private long mGameStartTimestamp;
 
-    public BattleInfo(int slotId, ServerLogic.ClientInfo clientInfo) {
+    public BattleInfo(int slotId, ClientInfo clientInfo) {
         mSlotId = slotId;
-        mPlayersInfo.add(clientInfo);
+        mPlayersInfo.add(new PlayerInfo(clientInfo));
         mSequence = 1;
         mEventIndex = 0;
     }
@@ -32,7 +31,7 @@ public class BattleInfo {
     }
 
     public void incrementEventIndex() {
-        mSequence++;
+        mEventIndex = mEventIndex + 1;
     }
 
     public int getSlotId() {
@@ -51,7 +50,7 @@ public class BattleInfo {
         return mPlayersInfo.get(0).getClientId().toString();
     }
 
-    public ArrayList<ServerLogic.ClientInfo> getPlayers() {
+    public ArrayList<PlayerInfo> getPlayers() {
         return mPlayersInfo;
     }
 

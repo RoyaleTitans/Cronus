@@ -6,15 +6,16 @@ import com.royale.titans.cronus.lib.Buffer;
 import com.royale.titans.cronus.CRUtils;
 import com.royale.titans.cronus.lib.OutBuffer;
 import com.royale.titans.cronus.messages.ServerMessage;
+import com.royale.titans.cronus.models.ClientInfo;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class OwnHomeData extends ServerMessage {
-    private final ServerLogic.ClientInfo mInfo;
+    private final ClientInfo mInfo;
 
-    public OwnHomeData(ServerLogic.ClientInfo info) {
+    public OwnHomeData(ClientInfo info) {
         mInfo = info;
     }
 

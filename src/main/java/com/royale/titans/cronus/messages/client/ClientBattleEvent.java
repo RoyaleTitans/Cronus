@@ -1,10 +1,11 @@
 package com.royale.titans.cronus.messages.client;
 
 import com.royale.titans.cronus.BattleLogic;
-import com.royale.titans.cronus.ServerLogic;
+import com.royale.titans.cronus.Utils;
 import com.royale.titans.cronus.lib.Buffer;
 import com.royale.titans.cronus.messages.ClientMessage;
 import com.royale.titans.cronus.messages.ServerMessage;
+import com.royale.titans.cronus.models.ClientInfo;
 
 public class ClientBattleEvent extends ClientMessage {
     private final int mCommand;
@@ -13,8 +14,12 @@ public class ClientBattleEvent extends ClientMessage {
     private final int mCardScId[] = new int[2];
     private final int mCoords[] = new int[2];
 
-    public ClientBattleEvent(ServerLogic.ClientInfo clientInfo, Buffer buffer) {
+    public ClientBattleEvent(ClientInfo clientInfo, Buffer buffer) {
         super(clientInfo, buffer);
+
+        System.out.println("CLIENT EVENT");
+        System.out.println(Utils.b2h(buffer.rewind().array()));
+        buffer.rewind();
 
         // checksum + tick
         buffer.readRrsInt();
@@ -58,7 +63,7 @@ public class ClientBattleEvent extends ClientMessage {
     }
 
     @Override
-    public ServerMessage[] handle(ServerLogic.ClientInfo clientInfo) {
+    public ServerMessage[] handle(ClientInfo clientInfo) {
         if (mCommand > 0) {
             BattleLogic.getInstance().onClientBattleEvent(this, clientInfo);
         }

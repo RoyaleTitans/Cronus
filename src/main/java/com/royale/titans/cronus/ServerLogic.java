@@ -11,6 +11,7 @@ import com.royale.titans.cronus.messages.ServerMessage;
 import com.royale.titans.cronus.messages.client.*;
 import com.royale.titans.cronus.messages.client.AskForAvatarStreamMessage;
 import com.royale.titans.cronus.messages.server.*;
+import com.royale.titans.cronus.models.ClientInfo;
 
 import java.nio.channels.AsynchronousSocketChannel;
 import java.security.SecureRandom;
@@ -306,75 +307,6 @@ public class ServerLogic {
             Object[] getData() {
                 return mData;
             }
-        }
-    }
-
-    public static class ClientInfo {
-        private final AsynchronousSocketChannel mSocket;
-        private final String mSessionKey;
-        private final Nonce mR;
-
-        private Nonce mS;
-
-        private HashTag mClientId;
-        private String mPlayerName;
-
-        private ArrayList<CRUtils.CardInfo> mCurrentDeck;
-
-        ClientInfo(AsynchronousSocketChannel socket, String sessionKey) {
-            mSocket = socket;
-            mSessionKey = sessionKey;
-            mR = new Nonce(new byte[24]);
-        }
-
-        public void setClientId(int high, int low) {
-            if (high == 0 && low == 0) {
-                mClientId = HashTag.randomHashTag();
-            } else {
-                mClientId = new HashTag(high, low);
-            }
-
-            mPlayerName = mClientId.toString();
-        }
-
-        public void setPlayerName(String playerName) {
-            mPlayerName = playerName;
-        }
-
-        public void setCurrentDeck(ArrayList<CRUtils.CardInfo> currentDeck) {
-            mCurrentDeck = currentDeck;
-        }
-
-        public void setNonce(Nonce sNonce) {
-            mS = sNonce;
-        }
-
-        AsynchronousSocketChannel getSocket() {
-            return mSocket;
-        }
-
-        public String getSessionKey() {
-            return mSessionKey;
-        }
-
-        public String getPlayerName() {
-            return mPlayerName;
-        }
-
-        public HashTag getClientId() {
-            return mClientId;
-        }
-
-        public ArrayList<CRUtils.CardInfo> getCurrentDeck() {
-            return mCurrentDeck;
-        }
-
-        public Nonce sNonce() {
-            return mS;
-        }
-
-        public Nonce rNonce() {
-            return mR;
         }
     }
 }
