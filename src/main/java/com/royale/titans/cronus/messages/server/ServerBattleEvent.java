@@ -11,7 +11,7 @@ import com.royale.titans.cronus.models.BattleInfo;
 public class ServerBattleEvent extends ServerMessage {
     private final BattleInfo mBattleInfo;
 
-    private long mChecksum = 0;
+    private long mChecksum = 0xdead;
     private ClientBattleEvent mClientEvent;
 
     public ServerBattleEvent(BattleInfo battleInfo) {
