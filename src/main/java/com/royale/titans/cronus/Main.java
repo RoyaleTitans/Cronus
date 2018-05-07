@@ -8,7 +8,7 @@ public class Main {
     };
 
     public static void main(String[] args) throws IOException {
-        System.out.println(sc_x(0x4c4b40));
+        System.out.println(sc_x(0x4c4b44));
         Server server = new Server();
         server.connect();
 

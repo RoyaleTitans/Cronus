@@ -1,6 +1,5 @@
 package com.royale.titans.cronus;
 
-import com.royale.titans.cronus.lib.BattleChecksumEncoder;
 import com.royale.titans.cronus.messages.client.ClientBattleEvent;
 import com.royale.titans.cronus.messages.server.SectorState;
 import com.royale.titans.cronus.messages.server.ServerBattleEvent;
@@ -115,8 +114,6 @@ public class BattleLogic {
                         e.printStackTrace();
                     }
 
-                    BattleChecksumEncoder battleChecksumEncoder = new BattleChecksumEncoder(battleInfo);
-
                     while (true) {
                         ServerBattleEvent battleEvent = new ServerBattleEvent(battleInfo);
                         boolean hasEvent = battleInfo.getBattleEvents().size() > battleInfo.getEventIndex();
@@ -131,16 +128,7 @@ public class BattleLogic {
                                 battleEvent.setClientEvent(clientBattleEvent);
                             }
 
-                            battleEvent.setChecksum(battleChecksumEncoder.encode(playerInfo));
                             ServerLogic.getInstance().postMessage(playerInfo.getClientInfo(), battleEvent);
-
-                            if (clientBattleEvent != null && clientBattleEvent.getClientInfo().equals(playerInfo.getClientInfo())) {
-                                CRUtils.CardInfo cardInfo = CRUtils.sCardsScIdMap.get(
-                                        clientBattleEvent.getCardScId()[0] * 1000000 + clientBattleEvent.getCardScId()[1]);
-                                playerInfo.onCardDeployed(cardInfo);
-                            }
-
-                            playerInfo.incrementAvailableElixir();
                         }
 
                         battleInfo.incrementSequence();
