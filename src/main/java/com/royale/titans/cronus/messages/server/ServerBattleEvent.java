@@ -66,8 +66,4 @@ public class ServerBattleEvent extends ServerMessage {
     public void setClientEvent(ClientBattleEvent clientBattleEvent) {
         mClientEvent = clientBattleEvent;
     }
-
-    public void setChecksum(long checksum) {
-        mChecksum = checksum;
-    }
 }

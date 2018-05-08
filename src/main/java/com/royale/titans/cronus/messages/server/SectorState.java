@@ -173,8 +173,6 @@ public class SectorState extends ServerMessage  {
             outBuffer.write(Utils.h2b(p2_5));
         }
 
-        System.out.println(Utils.b2h(outBuffer.obtain().array()));
-
         return outBuffer.obtain();
     }
 
