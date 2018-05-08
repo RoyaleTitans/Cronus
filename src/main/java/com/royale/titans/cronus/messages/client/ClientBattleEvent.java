@@ -1,7 +1,6 @@
 package com.royale.titans.cronus.messages.client;
 
 import com.royale.titans.cronus.BattleLogic;
-import com.royale.titans.cronus.Utils;
 import com.royale.titans.cronus.lib.Buffer;
 import com.royale.titans.cronus.messages.ClientMessage;
 import com.royale.titans.cronus.messages.ServerMessage;
@@ -17,8 +16,6 @@ public class ClientBattleEvent extends ClientMessage {
     public ClientBattleEvent(ClientInfo clientInfo, Buffer buffer) {
         super(clientInfo, buffer);
 
-        System.out.println("CLIENT EVENT");
-        System.out.println(Utils.b2h(buffer.rewind().array()));
         buffer.rewind();
 
         // checksum + tick
@@ -64,9 +61,7 @@ public class ClientBattleEvent extends ClientMessage {
 
     @Override
     public ServerMessage[] handle(ClientInfo clientInfo) {
-        if (mCommand > 0) {
-            BattleLogic.getInstance().onClientBattleEvent(this, clientInfo);
-        }
+        BattleLogic.getInstance().onClientBattleEvent(this, clientInfo);
         return new ServerMessage[0];
     }
 

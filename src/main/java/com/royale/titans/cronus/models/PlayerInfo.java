@@ -1,6 +1,9 @@
 package com.royale.titans.cronus.models;
 
 import com.royale.titans.cronus.lib.HashTag;
+import com.royale.titans.cronus.messages.client.ClientBattleEvent;
+
+import java.util.ArrayList;
 
 public class PlayerInfo {
 

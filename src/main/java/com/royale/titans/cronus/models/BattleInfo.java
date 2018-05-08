@@ -14,12 +14,14 @@ public class BattleInfo {
     private int mEventIndex;
 
     private long mGameStartTimestamp;
+    private long mLastBattleEvent;
 
     public BattleInfo(int slotId, ClientInfo clientInfo) {
         mSlotId = slotId;
         mPlayersInfo.add(new PlayerInfo(clientInfo));
         mSequence = 1;
         mEventIndex = 0;
+        mLastBattleEvent = 0;
     }
 
     public void startGame() {
@@ -30,10 +32,6 @@ public class BattleInfo {
         mSequence = mSequence + 1;
     }
 
-    public void incrementEventIndex() {
-        mEventIndex = mEventIndex + 1;
-    }
-
     public int getSlotId() {
         return mSlotId;
     }
@@ -42,9 +40,7 @@ public class BattleInfo {
         return mSequence;
     }
 
-    public int getEventIndex() {
-        return mEventIndex;
-    }
+    public long getLastBattleEvent() { return mLastBattleEvent; }
 
     public String getHostTag() {
         return mPlayersInfo.get(0).getClientId().toString();
@@ -60,5 +56,21 @@ public class BattleInfo {
 
     public long getGameStartTimestamp() {
         return mGameStartTimestamp;
+    }
+
+    public void onBattleEvent(ClientBattleEvent clientBattleEvent) {
+        System.out.println("BATTLEEVENT FROM " + clientBattleEvent.getClientInfo().getClientId().toString() + " " + System.currentTimeMillis());
+        if (clientBattleEvent.getCommand() > 0) {
+            mBattleEvents.add(clientBattleEvent);
+        }
+        mLastBattleEvent = System.currentTimeMillis();
+    }
+
+    public int getEventIndex() {
+        return mEventIndex;
+    }
+
+    public void incrementEventIndex() {
+        mEventIndex = mEventIndex + 1;
     }
 }

@@ -5,7 +5,6 @@ import com.royale.titans.cronus.lib.Buffer;
 import com.royale.titans.cronus.lib.OutBuffer;
 import com.royale.titans.cronus.messages.ServerMessage;
 import com.royale.titans.cronus.models.BattleInfo;
-import com.royale.titans.cronus.models.ClientInfo;
 import com.royale.titans.cronus.models.PlayerInfo;
 
 public class SectorState extends ServerMessage  {
@@ -144,28 +143,28 @@ public class SectorState extends ServerMessage  {
         }
 
         outBuffer.writeRrsInt(mThisPlayer.getClientInfo().getCurrentDeck().get(0).getId());
-        outBuffer.writeRrsInt(mThisPlayer.getClientInfo().getCurrentDeck().get(0).getMaxLevel());
+        outBuffer.writeRrsInt(mThisPlayer.getClientInfo().getCurrentDeck().get(0).getMaxLevel() - 1);
 
         outBuffer.writeRrsInt(mThisPlayer.getClientInfo().getCurrentDeck().get(1).getId());
-        outBuffer.writeRrsInt(mThisPlayer.getClientInfo().getCurrentDeck().get(1).getMaxLevel());
+        outBuffer.writeRrsInt(mThisPlayer.getClientInfo().getCurrentDeck().get(1).getMaxLevel() - 1);
 
         outBuffer.writeRrsInt(mThisPlayer.getClientInfo().getCurrentDeck().get(2).getId());
-        outBuffer.writeRrsInt(mThisPlayer.getClientInfo().getCurrentDeck().get(2).getMaxLevel());
+        outBuffer.writeRrsInt(mThisPlayer.getClientInfo().getCurrentDeck().get(2).getMaxLevel() - 1);
 
         outBuffer.writeRrsInt(mThisPlayer.getClientInfo().getCurrentDeck().get(3).getId());
-        outBuffer.writeRrsInt(mThisPlayer.getClientInfo().getCurrentDeck().get(3).getMaxLevel());
+        outBuffer.writeRrsInt(mThisPlayer.getClientInfo().getCurrentDeck().get(3).getMaxLevel() - 1);
 
         outBuffer.writeRrsInt(mThisPlayer.getClientInfo().getCurrentDeck().get(4).getId());
-        outBuffer.writeRrsInt(mThisPlayer.getClientInfo().getCurrentDeck().get(4).getMaxLevel());
+        outBuffer.writeRrsInt(mThisPlayer.getClientInfo().getCurrentDeck().get(4).getMaxLevel() - 1);
 
         outBuffer.writeRrsInt(mThisPlayer.getClientInfo().getCurrentDeck().get(5).getId());
-        outBuffer.writeRrsInt(mThisPlayer.getClientInfo().getCurrentDeck().get(5).getMaxLevel());
+        outBuffer.writeRrsInt(mThisPlayer.getClientInfo().getCurrentDeck().get(5).getMaxLevel() - 1);
 
         outBuffer.writeRrsInt(mThisPlayer.getClientInfo().getCurrentDeck().get(6).getId());
-        outBuffer.writeRrsInt(mThisPlayer.getClientInfo().getCurrentDeck().get(6).getMaxLevel());
+        outBuffer.writeRrsInt(mThisPlayer.getClientInfo().getCurrentDeck().get(6).getMaxLevel() - 1);
 
         outBuffer.writeRrsInt(mThisPlayer.getClientInfo().getCurrentDeck().get(7).getId());
-        outBuffer.writeRrsInt(mThisPlayer.getClientInfo().getCurrentDeck().get(7).getMaxLevel());
+        outBuffer.writeRrsInt(mThisPlayer.getClientInfo().getCurrentDeck().get(7).getMaxLevel() - 1);
 
         if (thisPlayerIndex == 0) {
             outBuffer.write(Utils.h2b(p1_5));

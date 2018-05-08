@@ -11,6 +11,10 @@ public class AskForGameRoom extends ClientMessage {
     private final boolean mHaveCommand;
     private final boolean mClanFriendlyMatch;
 
+    private boolean mTeamMatch = false;
+    private int mArena = 0;
+    private int mEventId = 0;
+
     public AskForGameRoom(ClientInfo clientInfo, Buffer buffer) {
         super(clientInfo, buffer);
 
@@ -21,6 +25,18 @@ public class AskForGameRoom extends ClientMessage {
         if (t == 1) {
             t = buffer.readRrsInt().getValue();
             mClanFriendlyMatch = t == 529;
+            if (mClanFriendlyMatch) {
+                buffer.read(4);
+
+                mTeamMatch = buffer.readRrsInt().getValue() == 2;
+                mArena = buffer.readRrsInt().getValue() * 1000000 + buffer.readRrsInt().getValue();
+
+                buffer.read(11);
+                mEventId = buffer.readRrsInt().getValue();
+                if (mEventId == -64) {
+                    mEventId = 0;
+                }
+            }
         } else {
             mClanFriendlyMatch = false;
         }

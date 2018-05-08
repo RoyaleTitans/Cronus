@@ -158,6 +158,8 @@ public class ServerLogic {
                 return new ClientKeepAlive(info, buffer);
             case 13793:
                 return new AskCronusBattleQueueLeave(info, buffer);
+            case 14041:
+                return new GoHome(info, buffer);
             case 14361:
                 return new AskForGameRoom(info, buffer);
             case 15083:
@@ -254,13 +256,6 @@ public class ServerLogic {
                                 ServerLogic.getInstance().getBattleChatEvents().remove(battleChatEvent);
 
                                 BattleLogic.getInstance().cancelBattle(info.getClientId().toString());
-
-                                CronusChatMessageRemove cronusChatMessageRemove =
-                                        new CronusChatMessageRemove(battleChatEvent.getSlotId());
-
-                                for (ClientInfo clientInfo : ServerLogic.getInstance().getSessions()) {
-                                    ServerLogic.getInstance().postMessage(clientInfo, cronusChatMessageRemove);
-                                }
                             }
                         }
                         break;

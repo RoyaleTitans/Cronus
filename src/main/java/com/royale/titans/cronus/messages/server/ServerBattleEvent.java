@@ -11,7 +11,6 @@ import com.royale.titans.cronus.models.BattleInfo;
 public class ServerBattleEvent extends ServerMessage {
     private final BattleInfo mBattleInfo;
 
-    private long mChecksum = 0xdead;
     private ClientBattleEvent mClientEvent;
 
     public ServerBattleEvent(BattleInfo battleInfo) {
@@ -32,7 +31,7 @@ public class ServerBattleEvent extends ServerMessage {
     public Buffer getBuffer() {
         OutBuffer outBuffer = OutBuffer.newBuffer();
         outBuffer.writeRrsInt(mBattleInfo.getSequence());
-        outBuffer.writeRrsInt(mChecksum);
+        outBuffer.writeRrsInt(0xdead);
 
         if (mClientEvent != null) {
             outBuffer.write((byte) 1);

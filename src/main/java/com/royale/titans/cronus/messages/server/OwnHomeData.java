@@ -222,9 +222,9 @@ public class OwnHomeData extends ServerMessage {
         b.writeInt(0);
         b.writeInt(2);
 
-        b.writeRrsInt(12);
+        b.writeRrsInt(13);
         b.writeRrsInt(54);
-        b.writeRrsInt(12);
+        b.writeRrsInt(20);
         b.writeRrsInt(5);
         b.writeRrsInt(482);
         b.writeRrsInt(5);
