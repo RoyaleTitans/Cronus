@@ -3,6 +3,7 @@ package com.royale.titans.cronus.lib;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 
 public class OutBuffer {
     private final ByteArrayOutputStream mOutStream = new ByteArrayOutputStream();
@@ -32,6 +33,15 @@ public class OutBuffer {
     public OutBuffer writeInt(int value) {
         try {
             mOutStream.write(ByteBuffer.allocate(4).putInt(value).array());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return this;
+    }
+
+    public OutBuffer writeIntLe(int value) {
+        try {
+            mOutStream.write(ByteBuffer.allocate(4).order(ByteOrder.LITTLE_ENDIAN).putInt(value).array());
         } catch (IOException e) {
             e.printStackTrace();
         }

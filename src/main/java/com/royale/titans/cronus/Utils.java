@@ -1,5 +1,9 @@
 package com.royale.titans.cronus;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.zip.Deflater;
+
 public class Utils {
     private static final String sRandomChars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
     private static final char[] sHexArray = "0123456789ABCDEF".toCharArray();
@@ -32,5 +36,20 @@ public class Utils {
                             .nextInt(sRandomChars.length())));
         }
         return sb.toString();
+    }
+
+
+    public static byte[] compress(byte[] data) throws IOException {
+        Deflater deflater = new Deflater();
+        deflater.setInput(data);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream(data.length);
+        deflater.finish();
+        byte[] buffer = new byte[1024];
+        while (!deflater.finished()) {
+            int count = deflater.deflate(buffer);
+            outputStream.write(buffer, 0, count);
+        }
+        outputStream.close();
+        return outputStream.toByteArray();
     }
 }
