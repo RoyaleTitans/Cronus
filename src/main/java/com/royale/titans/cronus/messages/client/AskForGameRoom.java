@@ -39,9 +39,6 @@ public class AskForGameRoom extends ClientMessage {
                 buffer.read(4);
 
                 mEventId = buffer.readRrsInt().getValue();
-                if (mEventId == -64) {
-                    mEventId = 0;
-                }
             }
         } else {
             mClanFriendlyMatch = false;
@@ -67,5 +64,9 @@ public class AskForGameRoom extends ClientMessage {
 
     public int getArena() {
         return mArena;
+    }
+
+    public int getEventId() {
+        return mEventId;
     }
 }

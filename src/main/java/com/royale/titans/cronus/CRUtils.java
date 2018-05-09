@@ -118,6 +118,8 @@ public class CRUtils {
                 return 8;
             case 11:
                 return 25;
+            case 12:
+                return 12;
         }
 
         return 1;

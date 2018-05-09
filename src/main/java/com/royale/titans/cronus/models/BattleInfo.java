@@ -13,6 +13,7 @@ public class BattleInfo {
     private final ArrayList<ClientBattleEvent> mBattleEvents = new ArrayList<>();
 
     private final int mArena;
+    private final int mEventId;
 
     private int mSequence;
     private int mEventIndex;
@@ -30,11 +31,8 @@ public class BattleInfo {
     public BattleInfo(int slotId, AskForGameRoom askForGameRoom) {
         mSlotId = slotId;
 
-        if (askForGameRoom.getArena() == -64) {
-            mArena = (int) (1 + Math.random() * (11 - 1));
-        } else {
-            mArena = askForGameRoom.getArena();
-        }
+        mArena = askForGameRoom.getArena();
+        mEventId = askForGameRoom.getEventId();
 
         mPlayersInfo.add(new PlayerInfo(askForGameRoom.getClientInfo()));
         mSequence = 1;
@@ -78,6 +76,10 @@ public class BattleInfo {
 
     public int getArena() {
         return mArena;
+    }
+
+    public int getEventId() {
+        return mEventId;
     }
 
     public void onBattleEvent(ClientBattleEvent clientBattleEvent) {

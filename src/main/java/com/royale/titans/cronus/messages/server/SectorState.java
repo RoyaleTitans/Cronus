@@ -1,6 +1,7 @@
 package com.royale.titans.cronus.messages.server;
 
 import com.royale.titans.cronus.CRUtils;
+import com.royale.titans.cronus.ServerLogic;
 import com.royale.titans.cronus.Utils;
 import com.royale.titans.cronus.lib.Buffer;
 import com.royale.titans.cronus.lib.OutBuffer;
@@ -71,11 +72,23 @@ public class SectorState extends ServerMessage  {
         outBuffer.write((byte) -38);
         outBuffer.write((byte) -23);
 
-        outBuffer.writeRrsInt(mBattleInfo.getArena());
+        int arena = mBattleInfo.getArena();
+        int arenaId;
 
-        outBuffer.writeRrsInt(CRUtils.arenaToId(mBattleInfo.getArena()) + 1);
+        if (mBattleInfo.getEventId() == 1385) {
+            arena = 27;
+            arenaId = 27;
+        } else {
+            if (arena == -64) {
+                arena = 1 + (12 - 1) * ServerLogic.getInstance().getRandom().nextInt();
+            }
+            arenaId = CRUtils.arenaToId(arena);
+        }
+
+        outBuffer.write((byte) arena);
+        outBuffer.write((byte) (arenaId + 1));
         outBuffer.write((byte) 0);
-        outBuffer.writeRrsInt(CRUtils.arenaToId(mBattleInfo.getArena()));
+        outBuffer.write((byte) arenaId);
 
         for (PlayerInfo playerInfo : mBattleInfo.getPlayers()) {
             outBuffer.writeRrsInt(playerInfo.getClientId().high());
@@ -113,6 +126,7 @@ public class SectorState extends ServerMessage  {
         outBuffer.writeRrsInt(-59);
 
         outBuffer.writeRrsInt(6);
+
         outBuffer.writeRrsInt(35);
         outBuffer.writeRrsInt(1);
         outBuffer.writeRrsInt(35);
