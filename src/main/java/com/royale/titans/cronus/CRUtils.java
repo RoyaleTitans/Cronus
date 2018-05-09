@@ -102,6 +102,27 @@ public class CRUtils {
         return CARDS[new Random().nextInt(CARDS.length)];
     }
 
+    public static int arenaToId(int arena) {
+        if (arena < 7) {
+            return arena + 1;
+        }
+
+        switch (arena) {
+            case 7:
+                return 9;
+            case 8:
+                return 10;
+            case 9:
+                return 11;
+            case 10:
+                return 8;
+            case 11:
+                return 25;
+        }
+
+        return 1;
+    }
+
     public static class CardInfo {
         // Knight
         private final String mName;

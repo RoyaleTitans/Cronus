@@ -1,6 +1,7 @@
 package com.royale.titans.cronus;
 
 import com.royale.titans.cronus.lib.Buffer;
+import com.royale.titans.cronus.messages.client.AskForGameRoom;
 import com.royale.titans.cronus.messages.client.ClientBattleEvent;
 import com.royale.titans.cronus.messages.server.*;
 import com.royale.titans.cronus.models.BattleInfo;
@@ -32,13 +33,17 @@ public class BattleLogic {
         mExecutor = Executors.newScheduledThreadPool(8);
     }
 
-    public int queueBattle(ClientInfo clientInfo) {
+    /**
+     * handle the creation of battle event taking the AskForGameRoom
+     * message as param for initial match informations
+     */
+    public int queueBattle(AskForGameRoom askForGameRoom) {
         int slotId = 1;
         while (true) {
             if (mBattleInfos.get(slotId) == null) {
-                BattleInfo battleInfo = new BattleInfo(slotId, clientInfo);
+                BattleInfo battleInfo = new BattleInfo(slotId, askForGameRoom);
                 mBattleInfos.put(slotId, battleInfo);
-                mBattleInfosHashMap.put(clientInfo.getClientId().toString(), slotId);
+                mBattleInfosHashMap.put(askForGameRoom.getClientInfo().getClientId().toString(), slotId);
                 return slotId;
             }
 

@@ -12,6 +12,7 @@ public class AskForGameRoom extends ClientMessage {
     private final boolean mClanFriendlyMatch;
 
     private boolean mTeamMatch = false;
+    private int mMode = 0;
     private int mArena = 0;
     private int mEventId = 0;
 
@@ -29,9 +30,14 @@ public class AskForGameRoom extends ClientMessage {
                 buffer.read(4);
 
                 mTeamMatch = buffer.readRrsInt().getValue() == 2;
-                mArena = buffer.readRrsInt().getValue() * 1000000 + buffer.readRrsInt().getValue();
+                mMode = buffer.readRrsInt().getValue() * 1000000 + buffer.readRrsInt().getValue();
 
-                buffer.read(11);
+                buffer.read(6);
+
+                mArena = buffer.readRrsInt().getValue();
+
+                buffer.read(4);
+
                 mEventId = buffer.readRrsInt().getValue();
                 if (mEventId == -64) {
                     mEventId = 0;
@@ -47,7 +53,7 @@ public class AskForGameRoom extends ClientMessage {
         if (mClanFriendlyMatch) {
             ServerLogic.getInstance().scheduleTask(new ServerLogic.ServerWorker.WorkerTask(
                     ServerLogic.ServerWorker.TASK.POST_CRONUS_CHAT_GAME_QUEUE_START,
-                    clientInfo));
+                    this));
         } else {
             if (mHaveCommand) {
                 return new ServerMessage[] {
@@ -57,5 +63,9 @@ public class AskForGameRoom extends ClientMessage {
             }
         }
         return new ServerMessage[0];
+    }
+
+    public int getArena() {
+        return mArena;
     }
 }

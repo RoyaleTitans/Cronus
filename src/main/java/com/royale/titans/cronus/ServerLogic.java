@@ -228,9 +228,10 @@ public class ServerLogic {
                         }
                         break;
                         case POST_CRONUS_CHAT_GAME_QUEUE_START: {
-                            ClientInfo info = (ClientInfo) workerTask.getData()[0];
-                            int roomSlotId = BattleLogic.getInstance().queueBattle(info);
-                            CronusChatBattleEvent gameQueueEvent = new CronusChatBattleEvent(info, roomSlotId);
+                            AskForGameRoom askForGameRoom = (AskForGameRoom) workerTask.getData()[0];
+                            int roomSlotId = BattleLogic.getInstance().queueBattle(askForGameRoom);
+                            CronusChatBattleEvent gameQueueEvent = new CronusChatBattleEvent(
+                                    askForGameRoom.getClientInfo(), roomSlotId);
 
                             List<CronusChatBattleEvent> battleChatEvents =
                                     ServerLogic.getInstance().getBattleChatEvents();
@@ -238,7 +239,8 @@ public class ServerLogic {
                                     ServerLogic.getInstance().getBattleChatEventsTagMap();
 
                             battleChatEvents.add(gameQueueEvent);
-                            battleChatEventsSessionMap.put(info.getClientId().toString(), gameQueueEvent);
+                            battleChatEventsSessionMap.put(askForGameRoom.getClientInfo()
+                                    .getClientId().toString(), gameQueueEvent);
 
                             for (ClientInfo clientInfo : ServerLogic.getInstance().getSessions()) {
                                 ServerLogic.getInstance().postMessage(clientInfo, gameQueueEvent);

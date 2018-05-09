@@ -1,5 +1,6 @@
 package com.royale.titans.cronus.messages.server;
 
+import com.royale.titans.cronus.CRUtils;
 import com.royale.titans.cronus.Utils;
 import com.royale.titans.cronus.lib.Buffer;
 import com.royale.titans.cronus.lib.OutBuffer;
@@ -28,8 +29,6 @@ public class SectorState extends ServerMessage  {
 
     @Override
     public Buffer getBuffer() {
-        String p1_4 = "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000a627a40100a627a40100a627a40100a627a40100a83ea40100a83ea4010000000000a4010000000000a4010000000000a4010000000000a4010000000000a4010000000000a40100ff01";
-        String p2_4 = "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000a627a40100a627a40100a627a40100a627a40100a83ea40100a83ea4010000000000a4010000000000a4010000000000a4010000000000a4010000000000a4010000000000a40100fe03";
         String p1_5 = "00000005060202040201030000000000000000040105000c000c000000c8e99c0b00";
         String p2_5 = "00000506020204020103000000000000000000031404000c000000f6f7f0f30600";
 
@@ -39,7 +38,17 @@ public class SectorState extends ServerMessage  {
 
         outBuffer.write((byte) 0);
 
-        writeEvents(outBuffer, thisPlayerIndex);
+        outBuffer.writeRrsInt(1);
+        outBuffer.writeRrsInt(42);
+        outBuffer.writeRrsInt(2);
+        outBuffer.writeRrsInt(2);
+        if (thisPlayerIndex == 0) {
+            outBuffer.write((byte) 0);
+        } else if (thisPlayerIndex == 1) {
+            outBuffer.writeRrsInt(1);
+        }
+
+        writeEvents(outBuffer);
 
         for (int i=0;i<mBattleInfo.getPlayers().size();i++) {
             writePlayerInfo(outBuffer, mBattleInfo.getPlayers().get(i), i);
@@ -53,13 +62,20 @@ public class SectorState extends ServerMessage  {
 
         outBuffer.writeRrsInt(0);
         outBuffer.writeRrsInt(21);
-        // ah... checksum seed
-        outBuffer.writeInt(1254674151);
-        outBuffer.writeRrsInt(-12374346);
 
-        outBuffer.writeRrsInt(30);
-        outBuffer.writeRrsInt(0);
-        outBuffer.writeRrsInt(25);
+        outBuffer.write((byte) -47);
+        outBuffer.write((byte) 18);
+        outBuffer.write((byte) -62);
+        outBuffer.write((byte) -111);
+        outBuffer.write((byte) -5);
+        outBuffer.write((byte) -38);
+        outBuffer.write((byte) -23);
+
+        outBuffer.writeRrsInt(mBattleInfo.getArena());
+
+        outBuffer.writeRrsInt(CRUtils.arenaToId(mBattleInfo.getArena()) + 1);
+        outBuffer.write((byte) 0);
+        outBuffer.writeRrsInt(CRUtils.arenaToId(mBattleInfo.getArena()));
 
         for (PlayerInfo playerInfo : mBattleInfo.getPlayers()) {
             outBuffer.writeRrsInt(playerInfo.getClientId().high());
@@ -136,10 +152,53 @@ public class SectorState extends ServerMessage  {
         writeKingTower(outBuffer, 0, 9000, 3000, thisPlayerIndex);
         writeKingTower(outBuffer, 1, 9000, 29000, thisPlayerIndex);
 
+        byte[] b = new byte[48];
+        outBuffer.write(b);
+
+        outBuffer.writeRrsInt(2534);
+        outBuffer.writeRrsInt(100);
+        outBuffer.write((byte) 0);
+        outBuffer.writeRrsInt(2534);
+        outBuffer.writeRrsInt(100);
+        outBuffer.write((byte) 0);
+        outBuffer.writeRrsInt(2534);
+        outBuffer.writeRrsInt(100);
+        outBuffer.write((byte) 0);
+        outBuffer.writeRrsInt(2534);
+        outBuffer.writeRrsInt(100);
+        outBuffer.write((byte) 0);
+        outBuffer.writeRrsInt(4008);
+        outBuffer.writeRrsInt(100);
+        outBuffer.write((byte) 0);
+        outBuffer.writeRrsInt(4008);
+        outBuffer.writeRrsInt(100);
+        outBuffer.write((byte) 0);
+
+        outBuffer.write((byte) 0);
+        outBuffer.writeInt(0);
+        outBuffer.writeRrsInt(100);
+        outBuffer.write((byte) 0);
+        outBuffer.writeInt(0);
+        outBuffer.writeRrsInt(100);
+        outBuffer.write((byte) 0);
+        outBuffer.writeInt(0);
+        outBuffer.writeRrsInt(100);
+        outBuffer.write((byte) 0);
+        outBuffer.writeInt(0);
+        outBuffer.writeRrsInt(100);
+        outBuffer.write((byte) 0);
+        outBuffer.writeInt(0);
+        outBuffer.writeRrsInt(100);
+        outBuffer.write((byte) 0);
+        outBuffer.writeInt(0);
+        outBuffer.writeRrsInt(100);
+
+        outBuffer.write((byte) 0);
+
         if (thisPlayerIndex == 0) {
-            outBuffer.write(Utils.h2b(p1_4));
+            outBuffer.writeRrsInt(-128);
         } else if (thisPlayerIndex == 1) {
-            outBuffer.write(Utils.h2b(p2_4));
+            outBuffer.writeRrsInt(-255);
         }
 
         outBuffer.writeRrsInt(mThisPlayer.getClientInfo().getCurrentDeck().get(0).getId());
@@ -175,16 +234,7 @@ public class SectorState extends ServerMessage  {
         return outBuffer.obtain();
     }
 
-    private void writeEvents(OutBuffer outBuffer, int playerIndex) {
-        outBuffer.writeRrsInt(1);
-        outBuffer.writeRrsInt(42);
-        outBuffer.writeRrsInt(2);
-        outBuffer.writeRrsInt(2);
-        if (playerIndex == 0) {
-            outBuffer.write((byte) 0);
-        } else if (playerIndex == 1) {
-            outBuffer.writeRrsInt(1);
-        }
+    private void writeEvents(OutBuffer outBuffer) {
         outBuffer.writeRrsInt(4);
 
         outBuffer.writeRrsInt(2);
@@ -263,18 +313,18 @@ public class SectorState extends ServerMessage  {
         // writing first player
         if (playerIndex == 0) {
             outBuffer.writeRrsInt(13);
-            outBuffer.writeRrsInt(4156);
+            outBuffer.writeRrsInt(6500);
             outBuffer.writeRrsInt(328);
-            outBuffer.writeRrsInt(2431);
-            outBuffer.writeRrsInt(4399);
+            outBuffer.writeRrsInt(6500);
+            outBuffer.writeRrsInt(6500);
             outBuffer.writeRrsInt(40);
             outBuffer.write((byte) 0);
-            outBuffer.writeRrsInt(4443);
+            outBuffer.writeRrsInt(6500);
             outBuffer.writeRrsInt(14);
             outBuffer.writeRrsInt(42);
             outBuffer.write((byte) 0);
-            outBuffer.writeRrsInt(4358);
-            outBuffer.writeRrsInt(4416);
+            outBuffer.writeRrsInt(6500);
+            outBuffer.writeRrsInt(6500);
             outBuffer.write((byte) 0);
             outBuffer.writeRrsInt(14);
             outBuffer.writeRrsInt(8);
@@ -343,7 +393,7 @@ public class SectorState extends ServerMessage  {
             outBuffer.writeRrsInt(5);
             outBuffer.writeRrsInt(5);
             outBuffer.writeRrsInt(6);
-            outBuffer.writeRrsInt(4473);
+            outBuffer.writeRrsInt(6500);
             outBuffer.writeRrsInt(5);
             outBuffer.writeRrsInt(7);
             outBuffer.writeRrsInt(1429);
@@ -401,7 +451,7 @@ public class SectorState extends ServerMessage  {
         } else if (playerIndex == 1) {
             // write second player
             outBuffer.writeRrsInt(5);
-            outBuffer.writeRrsInt(1237);
+            outBuffer.writeRrsInt(6500);
             outBuffer.writeRrsInt(72);
             outBuffer.writeRrsInt(1138);
             outBuffer.write((byte) 0);
@@ -463,7 +513,7 @@ public class SectorState extends ServerMessage  {
             outBuffer.writeRrsInt(4);
             outBuffer.writeRrsInt(5);
             outBuffer.writeRrsInt(6);
-            outBuffer.writeRrsInt(1257);
+            outBuffer.writeRrsInt(6500);
             outBuffer.writeRrsInt(5);
             outBuffer.writeRrsInt(7);
             outBuffer.writeRrsInt(53);

@@ -1,5 +1,7 @@
 package com.royale.titans.cronus.models;
 
+import com.royale.titans.cronus.Configs;
+import com.royale.titans.cronus.messages.client.AskForGameRoom;
 import com.royale.titans.cronus.messages.client.ClientBattleEvent;
 
 import java.util.ArrayList;
@@ -10,15 +12,31 @@ public class BattleInfo {
     private final ArrayList<PlayerInfo> mPlayersInfo = new ArrayList<>();
     private final ArrayList<ClientBattleEvent> mBattleEvents = new ArrayList<>();
 
+    private final int mArena;
+
     private int mSequence;
     private int mEventIndex;
 
     private long mGameStartTimestamp;
     private long mLastBattleEvent;
 
-    public BattleInfo(int slotId, ClientInfo clientInfo) {
+    /**
+     * Build battle info object.
+     * Takes slotId and askForGameRoom messages as param where
+     * slotId is a free slotIt on the BattleLogic map,
+     * askForGameRoom is the message which initialize the battle
+     * (a.k.a) message dispatched when we request a new friendly match in clan
+     */
+    public BattleInfo(int slotId, AskForGameRoom askForGameRoom) {
         mSlotId = slotId;
-        mPlayersInfo.add(new PlayerInfo(clientInfo));
+
+        if (askForGameRoom.getArena() == -64) {
+            mArena = (int) (1 + Math.random() * (11 - 1));
+        } else {
+            mArena = askForGameRoom.getArena();
+        }
+
+        mPlayersInfo.add(new PlayerInfo(askForGameRoom.getClientInfo()));
         mSequence = 1;
         mEventIndex = 0;
         mLastBattleEvent = 0;
@@ -56,6 +74,10 @@ public class BattleInfo {
 
     public long getGameStartTimestamp() {
         return mGameStartTimestamp;
+    }
+
+    public int getArena() {
+        return mArena;
     }
 
     public void onBattleEvent(ClientBattleEvent clientBattleEvent) {
