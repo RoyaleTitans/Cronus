@@ -1416,7 +1416,7 @@ public class OwnHomeData extends ServerMessage {
     }
 
     private void writeEvents(OutBuffer b) {
-        b.write((byte) 7);
+        b.write((byte) 8);
 
         b.writeRrsInt(1109);
         b.writeString("2v2 Button");
@@ -1548,6 +1548,25 @@ public class OwnHomeData extends ServerMessage {
         b.write((byte) 0);
         b.writeString("RampUp");
         b.writeString("{\"GameMode\":\"BlindDeck\",\"FixedArena\":\"All\",\"Title\":\"GG\",\"Subtitle\":\"Friendly Mode of the rcamdonna!\",\"Background\":{\"Path\":\"/d9ec5d1a-d886-4788-8aa4-a37d7ca86d92_friendly_rampup_royale.png\",\"Checksum\":\"checksum\",\"File\":\"file.png\"}}");
+        b.write((byte) 0);
+        b.write((byte) 0);
+
+        b.writeRrsInt(1390);
+        b.writeString("TripleTower");
+        b.writeRrsInt(5);
+        b.writeRrsInt(1522569600);
+        b.writeRrsInt(1525154400);
+        b.writeRrsInt(1522569600);
+        b.write((byte) 0);
+        b.write((byte) 0);
+        b.write((byte) 0);
+        b.write((byte) 0);
+        b.write((byte) 0);
+        b.write((byte) 0);
+        b.write((byte) 0);
+        b.write((byte) 0);
+        b.writeString("TripleTower");
+        b.writeString("{\"GameMode\":\"Friendly\",\"FixedArena\":\"All\",\"Title\":\"Triple Tower\",\"Subtitle\":\"Fight with 3 towers on each side!\",\"Background\":{\"Path\":\"/8374b90b-3900-4ef2-b28c-f7cf31edaa40_friend_suddendeath_01.png\",\"Checksum\":\"checksum\",\"File\":\"file.png\"}}");
         b.write((byte) 0);
         b.write((byte) 0);
     }

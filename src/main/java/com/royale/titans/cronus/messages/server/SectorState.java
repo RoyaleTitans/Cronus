@@ -79,7 +79,7 @@ public class SectorState extends ServerMessage  {
             arena = 27;
             arenaId = 27;
         } else {
-            if (arena == -64) {
+            if (arena < 1) {
                 arena = 1 + (12 - 1) * ServerLogic.getInstance().getRandom().nextInt();
             }
             arenaId = CRUtils.arenaToId(arena);
@@ -125,62 +125,52 @@ public class SectorState extends ServerMessage  {
         outBuffer.writeRrsInt(6);
         outBuffer.writeRrsInt(-59);
 
-        outBuffer.writeRrsInt(6);
+        outBuffer.writeRrsInt(mBattleInfo.getTowers().size() + 2);
+
+        for (int i=0;i<mBattleInfo.getTowers().size();i++) {
+            outBuffer.writeRrsInt(35);
+            outBuffer.writeRrsInt(1);
+        }
 
         outBuffer.writeRrsInt(35);
-        outBuffer.writeRrsInt(1);
-        outBuffer.writeRrsInt(35);
-        outBuffer.writeRrsInt(1);
-        outBuffer.writeRrsInt(35);
-        outBuffer.writeRrsInt(1);
-        outBuffer.writeRrsInt(35);
-        outBuffer.writeRrsInt(1);
-        outBuffer.writeRrsInt(35);
         outBuffer.write((byte) 0);
         outBuffer.writeRrsInt(35);
         outBuffer.write((byte) 0);
-        outBuffer.writeRrsInt(1);
+
+        for (int i=0;i<mBattleInfo.getTowers().size();i++) {
+            outBuffer.writeRrsInt(mBattleInfo.getTowers().get(i).getPlayerIndex());
+        }
+
         outBuffer.write((byte) 0);
         outBuffer.writeRrsInt(1);
-        outBuffer.write((byte) 0);
-        outBuffer.write((byte) 0);
-        outBuffer.writeRrsInt(1);
-        outBuffer.writeRrsInt(5);
-        outBuffer.write((byte) 0);
-        outBuffer.writeRrsInt(5);
-        outBuffer.writeRrsInt(1);
-        outBuffer.writeRrsInt(5);
-        outBuffer.writeRrsInt(2);
-        outBuffer.writeRrsInt(5);
-        outBuffer.writeRrsInt(3);
+
+        for (int i=0;i<mBattleInfo.getTowers().size();i++) {
+            outBuffer.writeRrsInt(5);
+            outBuffer.writeRrsInt(mBattleInfo.getTowers().get(i).getTowerScId());
+        }
+
         outBuffer.writeRrsInt(5);
         outBuffer.writeRrsInt(4);
         outBuffer.writeRrsInt(5);
         outBuffer.writeRrsInt(5);
 
-        writeTower(outBuffer, 0, 14500, 25500);
-        writeTower(outBuffer, 1, 3500, 6500);
-        writeTower(outBuffer, 2, 3500, 25500);
-        writeTower(outBuffer, 3, 14500, 6500);
+        for (int i=0;i<mBattleInfo.getTowers().size();i++) {
+            BattleInfo.Tower tower = mBattleInfo.getTowers().get(i);
+            writeTower(outBuffer, tower.getTowerIndex(), tower.getX(), tower.getY());
+        }
 
         writeKingTower(outBuffer, 0, 9000, 3000, thisPlayerIndex);
         writeKingTower(outBuffer, 1, 9000, 29000, thisPlayerIndex);
 
-        byte[] b = new byte[48];
+        byte[] b = new byte[8 * (mBattleInfo.getTowers().size() + 2)];
         outBuffer.write(b);
 
-        outBuffer.writeRrsInt(2534);
-        outBuffer.writeRrsInt(100);
-        outBuffer.write((byte) 0);
-        outBuffer.writeRrsInt(2534);
-        outBuffer.writeRrsInt(100);
-        outBuffer.write((byte) 0);
-        outBuffer.writeRrsInt(2534);
-        outBuffer.writeRrsInt(100);
-        outBuffer.write((byte) 0);
-        outBuffer.writeRrsInt(2534);
-        outBuffer.writeRrsInt(100);
-        outBuffer.write((byte) 0);
+        for (int i=0;i<mBattleInfo.getTowers().size();i++) {
+            outBuffer.writeRrsInt(2534);
+            outBuffer.writeRrsInt(100);
+            outBuffer.write((byte) 0);
+        }
+
         outBuffer.writeRrsInt(4008);
         outBuffer.writeRrsInt(100);
         outBuffer.write((byte) 0);
@@ -188,24 +178,11 @@ public class SectorState extends ServerMessage  {
         outBuffer.writeRrsInt(100);
         outBuffer.write((byte) 0);
 
-        outBuffer.write((byte) 0);
-        outBuffer.writeInt(0);
-        outBuffer.writeRrsInt(100);
-        outBuffer.write((byte) 0);
-        outBuffer.writeInt(0);
-        outBuffer.writeRrsInt(100);
-        outBuffer.write((byte) 0);
-        outBuffer.writeInt(0);
-        outBuffer.writeRrsInt(100);
-        outBuffer.write((byte) 0);
-        outBuffer.writeInt(0);
-        outBuffer.writeRrsInt(100);
-        outBuffer.write((byte) 0);
-        outBuffer.writeInt(0);
-        outBuffer.writeRrsInt(100);
-        outBuffer.write((byte) 0);
-        outBuffer.writeInt(0);
-        outBuffer.writeRrsInt(100);
+        for (int i=0;i<mBattleInfo.getTowers().size() + 2;i++) {
+            outBuffer.write((byte) 0);
+            outBuffer.writeInt(0);
+            outBuffer.writeRrsInt(100);
+        }
 
         outBuffer.write((byte) 0);
 
@@ -572,16 +549,16 @@ public class SectorState extends ServerMessage  {
         outBuffer.write((byte) 0);
         outBuffer.writeRrsInt(-64);
         outBuffer.write((byte) 0);
-        if (towerIndex == 0 || towerIndex == 2) {
+        if (towerIndex == 0 || towerIndex == 2 || towerIndex == 4) {
             outBuffer.writeRrsInt(-7937);
-        } else if (towerIndex == 1 || towerIndex == 3) {
+        } else if (towerIndex == 1 || towerIndex == 3 || towerIndex == 5) {
             outBuffer.writeRrsInt(256);
         }
         outBuffer.write((byte) 0);
         outBuffer.write((byte) 0);
-        if (towerIndex == 0 || towerIndex == 3) {
+        if (towerIndex == 0 || towerIndex == 3 || towerIndex == 5) {
             outBuffer.writeRrsInt(2);
-        } else if (towerIndex == 1 || towerIndex == 2) {
+        } else if (towerIndex == 1 || towerIndex == 2 || towerIndex == 4) {
             outBuffer.writeRrsInt(1);
         }
         outBuffer.write((byte) 0);

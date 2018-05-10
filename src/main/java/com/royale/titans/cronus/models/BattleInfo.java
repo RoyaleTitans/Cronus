@@ -1,6 +1,7 @@
 package com.royale.titans.cronus.models;
 
-import com.royale.titans.cronus.Configs;
+import com.royale.titans.cronus.CRUtils;
+import com.royale.titans.cronus.ServerLogic;
 import com.royale.titans.cronus.messages.client.AskForGameRoom;
 import com.royale.titans.cronus.messages.client.ClientBattleEvent;
 
@@ -13,7 +14,10 @@ public class BattleInfo {
     private final ArrayList<ClientBattleEvent> mBattleEvents = new ArrayList<>();
 
     private final int mArena;
+    private final int mArenaScId;
     private final int mEventId;
+
+    private final ArrayList<Tower> mTowers = new ArrayList<>();
 
     private int mSequence;
     private int mEventIndex;
@@ -31,8 +35,19 @@ public class BattleInfo {
     public BattleInfo(int slotId, AskForGameRoom askForGameRoom) {
         mSlotId = slotId;
 
-        mArena = askForGameRoom.getArena();
         mEventId = askForGameRoom.getEventId();
+
+        if (mEventId == 1385) {
+            mArena = 27;
+            mArenaScId = 27;
+        } else {
+            if (askForGameRoom.getArena() < 1) {
+                mArena = 1 + (12 - 1) * ServerLogic.getInstance().getRandom().nextInt();
+            } else {
+                mArena = askForGameRoom.getArena();
+            }
+            mArenaScId = CRUtils.arenaToId(mArena);
+        }
 
         mPlayersInfo.add(new PlayerInfo(askForGameRoom.getClientInfo()));
         mSequence = 1;
@@ -40,8 +55,22 @@ public class BattleInfo {
         mLastBattleEvent = 0;
     }
 
+    /**
+     * Invoked from battle logic before serializing sector state
+     */
     public void startGame() {
         mGameStartTimestamp = System.currentTimeMillis() / 1000;
+
+        // write towers
+        mTowers.add(new Tower(0, 0, 1, 14500, 25500));
+        mTowers.add(new Tower(1, 1, 0, 3500, 6500));
+        mTowers.add(new Tower(2, 2, 1, 3500, 25500));
+        mTowers.add(new Tower(3, 3, 0, 14500, 6500));
+
+        if (mEventId == 1390) {
+            mTowers.add(new Tower(4, 2, 1, 9000, 25500));
+            mTowers.add(new Tower(5, 3, 0, 9000, 6500));
+        }
     }
 
     public void incrementSequence() {
@@ -78,8 +107,16 @@ public class BattleInfo {
         return mArena;
     }
 
+    public int getArenaScId() {
+        return mArenaScId;
+    }
+
     public int getEventId() {
         return mEventId;
+    }
+
+    public ArrayList<Tower> getTowers() {
+        return mTowers;
     }
 
     public void onBattleEvent(ClientBattleEvent clientBattleEvent) {
@@ -96,5 +133,41 @@ public class BattleInfo {
 
     public void incrementEventIndex() {
         mEventIndex = mEventIndex + 1;
+    }
+
+    public static class Tower {
+        private final int mTowerIndex;
+        private final int mScId;
+        private final int mPlayerIndex;
+        private final int mX;
+        private final int mY;
+
+        Tower(int towerIndex, int scId, int playerIndex, int x, int y) {
+            mTowerIndex = towerIndex;
+            mScId = scId;
+            mPlayerIndex = playerIndex;
+            mX = x;
+            mY = y;
+        }
+
+        public int getTowerIndex() {
+            return mTowerIndex;
+        }
+
+        public int getTowerScId() {
+            return mScId;
+        }
+
+        public int getPlayerIndex() {
+            return mPlayerIndex;
+        }
+
+        public int getX() {
+            return mX;
+        }
+
+        public int getY() {
+            return mY;
+        }
     }
 }
