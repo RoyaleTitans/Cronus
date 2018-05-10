@@ -452,56 +452,7 @@ public class OwnHomeData extends ServerMessage {
 
         writeCardOffer(b);
 
-        b.writeRrsInt(3);
-        b.writeRrsInt(19);
-        b.writeRrsInt(317);
-        b.writeRrsInt(88);
-        b.writeRrsInt(0);
-
-        b.writeString("Lightning");
-        b.writeRrsInt(482);
-        b.writeRrsInt(0);
-
-        b.write((byte) 0);
-        b.writeRrsInt(-64);
-
-        b.write((byte) 0);
-        b.writeRrsInt(-64);
-
-        b.writeRrsInt(19);
-        b.writeRrsInt(329);
-        b.writeRrsInt(88);
-        b.writeRrsInt(2);
-        b.writeString("Fortune");
-        b.writeRrsInt(482);
-        b.writeRrsInt(1);
-        b.writeRrsInt(4);
-        b.writeRrsInt(26);
-        b.writeRrsInt(49);
-        b.writeRrsInt(27);
-        b.writeRrsInt(7);
-        b.writeRrsInt(26);
-        b.writeRrsInt(3);
-        b.writeRrsInt(26);
-        b.writeRrsInt(45);
-        b.writeRrsInt(90000003);
-
-        b.write((byte) 0);
-        b.writeRrsInt(-64);
-
-        b.writeRrsInt(19);
-        b.writeRrsInt(341);
-        b.writeRrsInt(88);
-        b.writeRrsInt(4);
-        b.writeString("Kings");
-        b.writeRrsInt(482);
-        b.writeRrsInt(2);
-
-        b.write((byte) 0);
-        b.writeRrsInt(-64);
-
-        b.write((byte) 0);
-        b.writeRrsInt(-64);
+        writeChestOffer(b);
 
         b.writeRrsInt(0);
         b.writeRrsInt(3);
@@ -1377,8 +1328,8 @@ public class OwnHomeData extends ServerMessage {
             b.writeRrsInt(6);
 
             b.writeRrsInt(1);
-            b.writeRrsInt(0);
-            b.writeRrsInt(0);
+            b.write((byte) 0);
+            b.write((byte) 0);
             b.writeRrsInt(482);
             b.writeRrsInt(200);
             b.writeRrsInt(5);
@@ -1386,14 +1337,14 @@ public class OwnHomeData extends ServerMessage {
             b.writeRrsInt(26);
             b.writeRrsInt(2);
             b.writeRrsInt(20);
-            b.writeRrsInt(0);
-            b.writeRrsInt(0);
+            b.write((byte) 0);
+            b.write((byte) 0);
             b.writeRrsInt(3000);
-            b.writeRrsInt(0);
-            b.writeRrsInt(0);
+            b.write((byte) 0);
+            b.write((byte) 0);
 
             b.writeRrsInt(1);
-            b.writeRrsInt(0);
+            b.write((byte) 0);
             b.writeRrsInt(1);
             b.writeRrsInt(482);
             b.writeRrsInt(400);
@@ -1402,14 +1353,14 @@ public class OwnHomeData extends ServerMessage {
             b.writeRrsInt(26);
             b.writeRrsInt(8);
             b.writeRrsInt(40);
-            b.writeRrsInt(0);
-            b.writeRrsInt(0);
+            b.write((byte) 0);
+            b.write((byte) 0);
             b.writeRrsInt(3000);
-            b.writeRrsInt(0);
-            b.writeRrsInt(0);
+            b.write((byte) 0);
+            b.write((byte) 0);
 
             b.writeRrsInt(1);
-            b.writeRrsInt(0);
+            b.write((byte) 0);
             b.writeRrsInt(2);
             b.writeRrsInt(482);
             b.writeRrsInt(600);
@@ -1418,14 +1369,14 @@ public class OwnHomeData extends ServerMessage {
             b.writeRrsInt(26);
             b.writeRrsInt(43);
             b.writeRrsInt(60);
-            b.writeRrsInt(0);
-            b.writeRrsInt(0);
+            b.write((byte) 0);
+            b.write((byte) 0);
             b.writeRrsInt(3000);
-            b.writeRrsInt(0);
-            b.writeRrsInt(0);
+            b.write((byte) 0);
+            b.write((byte) 0);
 
             b.writeRrsInt(1);
-            b.writeRrsInt(0);
+            b.write((byte) 0);
             b.writeRrsInt(3);
             b.writeRrsInt(482);
             b.writeRrsInt(1000);
@@ -1435,13 +1386,13 @@ public class OwnHomeData extends ServerMessage {
             b.writeRrsInt(3);
             b.writeRrsInt(10);
             b.writeRrsInt(1);
-            b.writeRrsInt(0);
+            b.write((byte) 0);
             b.writeRrsInt(3000);
-            b.writeRrsInt(0);
-            b.writeRrsInt(0);
+            b.write((byte) 0);
+            b.write((byte) 0);
 
             b.writeRrsInt(1);
-            b.writeRrsInt(0);
+            b.write((byte) 0);
             b.writeRrsInt(4);
             b.writeRrsInt(482);
             b.writeRrsInt(1500);
@@ -1451,13 +1402,13 @@ public class OwnHomeData extends ServerMessage {
             b.writeRrsInt(57);
             b.writeRrsInt(15);
             b.writeRrsInt(1);
-            b.writeRrsInt(0);
+            b.write((byte) 0);
             b.writeRrsInt(3000);
-            b.writeRrsInt(0);
-            b.writeRrsInt(0);
+            b.write((byte) 0);
+            b.write((byte) 0);
 
             b.writeRrsInt(1);
-            b.writeRrsInt(0);
+            b.write((byte) 0);
             b.writeRrsInt(5);
             b.writeRrsInt(482);
             b.writeRrsInt(2000);
@@ -1469,10 +1420,62 @@ public class OwnHomeData extends ServerMessage {
             b.writeRrsInt(1);
             b.writeRrsInt(0);
             b.writeRrsInt(3000);
-            b.writeRrsInt(0);
-            b.writeRrsInt(0);
+            b.write((byte) 0);
+            b.write((byte) 0);
         } else {
-            b.writeRrsInt(0);
+            b.write((byte) 0);
+        }
+    }
+
+    private void writeChestOffer(OutBuffer b) {
+        if (false) {
+            b.writeRrsInt(3);
+
+            b.writeRrsInt(19);
+            b.writeRrsInt(317);
+            b.writeRrsInt(88);
+            b.write((byte) 0);
+            b.writeString("Lightning");
+            b.writeRrsInt(482);
+            b.write((byte) 0);
+            b.write((byte) 0);
+            b.writeRrsInt(-64);
+            b.write((byte) 0);
+            b.writeRrsInt(-64);
+
+            b.writeRrsInt(19);
+            b.writeRrsInt(329);
+            b.writeRrsInt(88);
+            b.writeRrsInt(2);
+            b.writeString("Fortune");
+            b.writeRrsInt(482);
+            b.writeRrsInt(1);
+            b.writeRrsInt(4);
+            b.writeRrsInt(26);
+            b.writeRrsInt(49);
+            b.writeRrsInt(27);
+            b.writeRrsInt(7);
+            b.writeRrsInt(26);
+            b.writeRrsInt(3);
+            b.writeRrsInt(26);
+            b.writeRrsInt(45);
+            b.writeRrsInt(90000003);
+            b.write((byte) 0);
+            b.writeRrsInt(-64);
+
+            b.writeRrsInt(19);
+            b.writeRrsInt(341);
+            b.writeRrsInt(88);
+            b.writeRrsInt(4);
+            b.writeString("Kings");
+            b.writeRrsInt(482);
+            b.writeRrsInt(2);
+            b.write((byte) 0);
+            b.writeRrsInt(-64);
+            b.write((byte) 0);
+            b.writeRrsInt(-64);
+        } else {
+            b.write((byte) 0);
         }
     }
 }
