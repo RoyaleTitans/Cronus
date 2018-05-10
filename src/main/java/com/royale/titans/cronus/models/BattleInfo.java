@@ -68,8 +68,8 @@ public class BattleInfo {
         mTowers.add(new Tower(3, 3, 0, 14500, 6500));
 
         if (mEventId == 1390) {
-            mTowers.add(new Tower(4, 2, 1, 9000, 25500));
-            mTowers.add(new Tower(5, 3, 0, 9000, 6500));
+            mTowers.add(new Tower(4, 2, 1, 9000, 22000));
+            mTowers.add(new Tower(5, 3, 0, 9000, 9000));
         }
     }
 

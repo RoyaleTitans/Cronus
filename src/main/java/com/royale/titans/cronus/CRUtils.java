@@ -240,9 +240,5 @@ public class CRUtils {
 
             return 13;
         }
-
-        public int getMaskId() {
-            return mMaskId;
-        }
     }
 }
