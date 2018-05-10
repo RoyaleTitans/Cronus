@@ -49,7 +49,7 @@ public class ServerBattleEvent extends ServerMessage {
             CRUtils.CardInfo cardInfo = CRUtils.sCardsScIdMap.get(
                     mClientEvent.getCardScId()[0] * 1000000 + mClientEvent.getCardScId()[1]);
             outBuffer.writeRrsInt(cardInfo.getId());
-            outBuffer.writeRrsInt(cardInfo.getMaxLevel());
+            outBuffer.writeRrsInt(cardInfo.getMaxLevel() - 1);
             outBuffer.write((byte) 0);
             outBuffer.writeRrsInt(mClientEvent.getCoords()[0]);
             outBuffer.writeRrsInt(mClientEvent.getCoords()[1]);
