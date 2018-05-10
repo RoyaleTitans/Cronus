@@ -72,23 +72,10 @@ public class SectorState extends ServerMessage  {
         outBuffer.write((byte) -38);
         outBuffer.write((byte) -23);
 
-        int arena = mBattleInfo.getArena();
-        int arenaId;
-
-        if (mBattleInfo.getEventId() == 1385) {
-            arena = 27;
-            arenaId = 27;
-        } else {
-            if (arena < 1) {
-                arena = 1 + (12 - 1) * ServerLogic.getInstance().getRandom().nextInt();
-            }
-            arenaId = CRUtils.arenaToId(arena);
-        }
-
-        outBuffer.write((byte) arena);
-        outBuffer.write((byte) (arenaId + 1));
+        outBuffer.write((byte) mBattleInfo.getArena());
+        outBuffer.write((byte) (mBattleInfo.getArenaScId() + 1));
         outBuffer.write((byte) 0);
-        outBuffer.write((byte) arenaId);
+        outBuffer.write((byte) mBattleInfo.getArenaScId());
 
         for (PlayerInfo playerInfo : mBattleInfo.getPlayers()) {
             outBuffer.writeRrsInt(playerInfo.getClientId().high());
