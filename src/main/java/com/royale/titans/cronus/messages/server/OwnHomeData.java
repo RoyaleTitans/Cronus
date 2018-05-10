@@ -15,6 +15,8 @@ import java.util.Map;
 public class OwnHomeData extends ServerMessage {
     private final ClientInfo mInfo;
 
+    private final boolean mCardOffersEnabled = false;
+
     public OwnHomeData(ClientInfo info) {
         mInfo = info;
     }
@@ -447,97 +449,9 @@ public class OwnHomeData extends ServerMessage {
         b.writeRrsInt(0);
         b.writeRrsInt(1330);
         b.writeRrsInt(8);
-        b.writeRrsInt(6);
-        b.writeRrsInt(1);
-        b.writeRrsInt(0);
-        b.writeRrsInt(0);
-        b.writeRrsInt(482);
-        b.writeRrsInt(200);
-        b.writeRrsInt(5);
-        b.writeRrsInt(1);
-        b.writeRrsInt(26);
-        b.writeRrsInt(2);
-        b.writeRrsInt(20);
-        b.writeRrsInt(0);
-        b.writeRrsInt(0);
-        b.writeRrsInt(3000);
-        b.writeRrsInt(0);
-        b.writeRrsInt(0);
-        b.writeRrsInt(1);
-        b.writeRrsInt(0);
-        b.writeRrsInt(1);
-        b.writeRrsInt(482);
-        b.writeRrsInt(400);
-        b.writeRrsInt(5);
-        b.writeRrsInt(1);
-        b.writeRrsInt(26);
-        b.writeRrsInt(8);
-        b.writeRrsInt(40);
-        b.writeRrsInt(0);
-        b.writeRrsInt(0);
-        b.writeRrsInt(3000);
-        b.writeRrsInt(0);
-        b.writeRrsInt(0);
-        b.writeRrsInt(1);
-        b.writeRrsInt(0);
-        b.writeRrsInt(2);
-        b.writeRrsInt(482);
-        b.writeRrsInt(600);
-        b.writeRrsInt(5);
-        b.writeRrsInt(1);
-        b.writeRrsInt(26);
-        b.writeRrsInt(43);
-        b.writeRrsInt(60);
-        b.writeRrsInt(0);
-        b.writeRrsInt(0);
-        b.writeRrsInt(3000);
-        b.writeRrsInt(0);
-        b.writeRrsInt(0);
-        b.writeRrsInt(1);
-        b.writeRrsInt(0);
-        b.writeRrsInt(3);
-        b.writeRrsInt(482);
-        b.writeRrsInt(1000);
-        b.writeRrsInt(5);
-        b.writeRrsInt(1);
-        b.writeRrsInt(28);
-        b.writeRrsInt(3);
-        b.writeRrsInt(10);
-        b.writeRrsInt(1);
-        b.writeRrsInt(0);
-        b.writeRrsInt(3000);
-        b.writeRrsInt(0);
-        b.writeRrsInt(0);
-        b.writeRrsInt(1);
-        b.writeRrsInt(0);
-        b.writeRrsInt(4);
-        b.writeRrsInt(482);
-        b.writeRrsInt(1500);
-        b.writeRrsInt(5);
-        b.writeRrsInt(1);
-        b.writeRrsInt(26);
-        b.writeRrsInt(57);
-        b.writeRrsInt(15);
-        b.writeRrsInt(1);
-        b.writeRrsInt(0);
-        b.writeRrsInt(3000);
-        b.writeRrsInt(0);
-        b.writeRrsInt(0);
-        b.writeRrsInt(1);
-        b.writeRrsInt(0);
-        b.writeRrsInt(5);
-        b.writeRrsInt(482);
-        b.writeRrsInt(2000);
-        b.writeRrsInt(5);
-        b.writeRrsInt(1);
-        b.writeRrsInt(26);
-        b.writeRrsInt(52);
-        b.writeRrsInt(20);
-        b.writeRrsInt(1);
-        b.writeRrsInt(0);
-        b.writeRrsInt(3000);
-        b.writeRrsInt(0);
-        b.writeRrsInt(0);
+
+        writeCardOffer(b);
+
         b.writeRrsInt(3);
         b.writeRrsInt(19);
         b.writeRrsInt(317);
@@ -1455,5 +1369,110 @@ public class OwnHomeData extends ServerMessage {
         b.writeString("{\"GameMode\":\"Friendly\",\"FixedArena\":\"All\",\"Title\":\"Triple Tower\",\"Subtitle\":\"Fight with 3 towers on each side!\",\"Background\":{\"Path\":\"/8374b90b-3900-4ef2-b28c-f7cf31edaa40_friend_suddendeath_01.png\",\"Checksum\":\"checksum\",\"File\":\"file.png\"}}");
         b.write((byte) 0);
         b.write((byte) 0);
+    }
+
+    private void writeCardOffer(OutBuffer b) {
+        if (mCardOffersEnabled) {
+            // number of cards
+            b.writeRrsInt(6);
+
+            b.writeRrsInt(1);
+            b.writeRrsInt(0);
+            b.writeRrsInt(0);
+            b.writeRrsInt(482);
+            b.writeRrsInt(200);
+            b.writeRrsInt(5);
+            b.writeRrsInt(1);
+            b.writeRrsInt(26);
+            b.writeRrsInt(2);
+            b.writeRrsInt(20);
+            b.writeRrsInt(0);
+            b.writeRrsInt(0);
+            b.writeRrsInt(3000);
+            b.writeRrsInt(0);
+            b.writeRrsInt(0);
+
+            b.writeRrsInt(1);
+            b.writeRrsInt(0);
+            b.writeRrsInt(1);
+            b.writeRrsInt(482);
+            b.writeRrsInt(400);
+            b.writeRrsInt(5);
+            b.writeRrsInt(1);
+            b.writeRrsInt(26);
+            b.writeRrsInt(8);
+            b.writeRrsInt(40);
+            b.writeRrsInt(0);
+            b.writeRrsInt(0);
+            b.writeRrsInt(3000);
+            b.writeRrsInt(0);
+            b.writeRrsInt(0);
+
+            b.writeRrsInt(1);
+            b.writeRrsInt(0);
+            b.writeRrsInt(2);
+            b.writeRrsInt(482);
+            b.writeRrsInt(600);
+            b.writeRrsInt(5);
+            b.writeRrsInt(1);
+            b.writeRrsInt(26);
+            b.writeRrsInt(43);
+            b.writeRrsInt(60);
+            b.writeRrsInt(0);
+            b.writeRrsInt(0);
+            b.writeRrsInt(3000);
+            b.writeRrsInt(0);
+            b.writeRrsInt(0);
+
+            b.writeRrsInt(1);
+            b.writeRrsInt(0);
+            b.writeRrsInt(3);
+            b.writeRrsInt(482);
+            b.writeRrsInt(1000);
+            b.writeRrsInt(5);
+            b.writeRrsInt(1);
+            b.writeRrsInt(28);
+            b.writeRrsInt(3);
+            b.writeRrsInt(10);
+            b.writeRrsInt(1);
+            b.writeRrsInt(0);
+            b.writeRrsInt(3000);
+            b.writeRrsInt(0);
+            b.writeRrsInt(0);
+
+            b.writeRrsInt(1);
+            b.writeRrsInt(0);
+            b.writeRrsInt(4);
+            b.writeRrsInt(482);
+            b.writeRrsInt(1500);
+            b.writeRrsInt(5);
+            b.writeRrsInt(1);
+            b.writeRrsInt(26);
+            b.writeRrsInt(57);
+            b.writeRrsInt(15);
+            b.writeRrsInt(1);
+            b.writeRrsInt(0);
+            b.writeRrsInt(3000);
+            b.writeRrsInt(0);
+            b.writeRrsInt(0);
+
+            b.writeRrsInt(1);
+            b.writeRrsInt(0);
+            b.writeRrsInt(5);
+            b.writeRrsInt(482);
+            b.writeRrsInt(2000);
+            b.writeRrsInt(5);
+            b.writeRrsInt(1);
+            b.writeRrsInt(26);
+            b.writeRrsInt(52);
+            b.writeRrsInt(20);
+            b.writeRrsInt(1);
+            b.writeRrsInt(0);
+            b.writeRrsInt(3000);
+            b.writeRrsInt(0);
+            b.writeRrsInt(0);
+        } else {
+            b.writeRrsInt(0);
+        }
     }
 }
