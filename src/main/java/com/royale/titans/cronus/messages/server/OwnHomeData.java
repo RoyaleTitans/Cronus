@@ -174,7 +174,7 @@ public class OwnHomeData extends ServerMessage {
         b.write((byte) 4);
         b.writeString("{\"ID\":\"CLAN_CHEST\",\"Params\":{\"StartTime\":\"20170317T070000.000Z\",\"ActiveDuration\":\"P3dT0h\",\"InactiveDuration\":\"P4dT0h\",\"ChestType\":[\"ClanCrowns\"],\"Disable\":true}}");
         b.write((byte) 1);
-        b.writeString("{\"ID\":\"PERMANENT_GAME_MODES\",\"Params\":{\"FixedDeckOrderOptionEnabled\":true}}");
+        b.writeString("{\"ID\":\"PERMANENT_GAME_MODES\",\"Params\":{\"FixedDeckOrderOptionEnabled\":false}}");
 
         b.write((byte) 0);
         b.write((byte) 4);
@@ -389,108 +389,12 @@ public class OwnHomeData extends ServerMessage {
         b.writeInt(0);
 
         b.writeInt(1);
-        b.writeRrsInt(1);
 
-        b.writeRrsInt(3);
-
-        b.writeRrsInt(2);
-        b.writeRrsInt(261);
+        // this kill quests button (1 turn it on)
         b.writeRrsInt(0);
-        b.writeString("TID_LADDER_QUEST_2V2_WIN");
-        b.writeString("");
-        b.writeRrsInt(0);
-        b.writeRrsInt(5);
-        b.writeRrsInt(1);
-        b.writeRrsInt(0);
-        b.writeString("Play_Quest_Win_2v2Ladder_PvP");
-        b.writeString("TID_LADDER_QUEST_WIN_2V2_INFO");
-        b.writeString("sc/ui.sc");
-        b.writeString("quest_item_pvp");
-        b.writeRrsInt(20);
-        b.writeRrsInt(1);
-        b.writeRrsInt(14);
-        b.writeRrsInt(1);
-        b.writeRrsInt(10);
-        b.writeRrsInt(1);
-        b.writeRrsInt(0);
-        b.writeRrsInt(1);
-        b.writeRrsInt(2);
+        // number of quests. 0 will generate 3 random quests
         b.writeRrsInt(0);
 
-        b.writeRrsInt(2);
-        b.writeRrsInt(288);
-        b.writeRrsInt(0);
-        b.writeString("TID_LADDER_QUEST_PLAY");
-        b.writeString("");
-        b.writeRrsInt(0);
-        b.writeRrsInt(10);
-        b.writeRrsInt(5);
-        b.writeRrsInt(0);
-        b.writeString("Play_Quest_Play_Ladder_PvP");
-        b.writeString("TID_LADDER_QUEST_PLAY_INFO");
-        b.writeString("sc/ui.sc");
-        b.writeString("quest_item_pvp");
-        b.writeRrsInt(20);
-        b.writeRrsInt(1);
-        b.writeRrsInt(14);
-        b.writeRrsInt(0);
-        b.writeRrsInt(50);
-        b.writeRrsInt(0);
-        b.writeRrsInt(0);
-        b.writeRrsInt(1);
-        b.writeRrsInt(1);
-        b.writeRrsInt(0);
-
-        b.writeRrsInt(4);
-        b.writeRrsInt(289);
-        b.writeRrsInt(0);
-        b.writeString("TID_CAST_QUEST_SPELL");
-        b.writeString("");
-        b.writeRrsInt(0);
-        b.writeRrsInt(50);
-        b.writeRrsInt(4);
-        b.writeRrsInt(0);
-        b.writeString("Cast_Quest_Spell");
-        b.writeString("TID_CAST_QUEST_SPELL_INFO");
-        b.writeString("sc/ui.sc");
-        b.writeString("quest_item_pvp");
-        b.writeRrsInt(20);
-        b.writeRrsInt(1);
-        b.writeRrsInt(14);
-        b.writeRrsInt(1);
-        b.writeRrsInt(10);
-        b.writeRrsInt(0);
-        b.writeRrsInt(0);
-        b.writeRrsInt(28);
-        b.writeRrsInt(0);
-
-        b.writeRrsInt(0);
-        b.writeRrsInt(1);
-        b.writeRrsInt(1);
-        b.writeRrsInt(0);
-        b.writeRrsInt(1);
-        b.writeRrsInt(2);
-        b.writeRrsInt(1369);
-        b.writeRrsInt(1);
-        b.writeString("Clan Wars Quest");
-        b.writeString("icon_quest_type_specialevent");
-        b.writeRrsInt(1);
-        b.writeRrsInt(20);
-        b.writeRrsInt(3);
-        b.writeRrsInt(0);
-        b.writeString("");
-        b.writeString("Play 20 battles in Clan Wars");
-        b.writeString("sc/ui.sc");
-        b.writeString("quest_item_special_pvp");
-
-        b.writeRrsInt(40);
-        b.writeRrsInt(1);
-        b.writeRrsInt(5);
-        b.writeRrsInt(1);
-        b.writeRrsInt(20000);
-        b.writeRrsInt(0);
-        b.writeRrsInt(0);
-        b.writeRrsInt(64);
         b.writeRrsInt(0);
         b.writeRrsInt(0);
         b.writeRrsInt(130);
