@@ -56,6 +56,7 @@ public class CRUtils {
             new CardInfo("Bats", 50, 26000049, 2, 6, 50),
             new CardInfo("Ghost", 51, 26000050, 3, 1, 46),
             new CardInfo("Zappies", 53, 26000052, 4, 3, 47),
+            new CardInfo("Rascals", 54, 26000053, 5, 3, 48),
             new CardInfo("Cannon Cart", 55, 26000054, 5, 1, 53),
             new CardInfo("Mega Knight", 56, 26000055, 7, 1, 55),
             new CardInfo("Skeleton Barrel", 57, 26000056, 3, 1, 57),
