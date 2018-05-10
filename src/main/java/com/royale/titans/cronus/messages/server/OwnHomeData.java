@@ -16,6 +16,7 @@ public class OwnHomeData extends ServerMessage {
     private final ClientInfo mInfo;
 
     private final boolean mCardOffersEnabled = false;
+    private final boolean mChestOffersEnabled = false;
 
     public OwnHomeData(ClientInfo info) {
         mInfo = info;
@@ -1428,7 +1429,7 @@ public class OwnHomeData extends ServerMessage {
     }
 
     private void writeChestOffer(OutBuffer b) {
-        if (false) {
+        if (mChestOffersEnabled) {
             b.writeRrsInt(3);
 
             b.writeRrsInt(19);
