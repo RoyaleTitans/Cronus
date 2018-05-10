@@ -202,7 +202,8 @@ public class OwnHomeData extends ServerMessage {
         b.write((byte) 0);
         b.write((byte) 0);
 
-        b.write((byte) 7);
+        // clan chest crowns
+        b.write((byte) 0);
 
         b.write((byte) 0);
         b.write((byte) 0);
@@ -1279,7 +1280,7 @@ public class OwnHomeData extends ServerMessage {
         b.writeRrsInt(0);
 
         b.writeRrsInt(48365196);
-        b.writeRrsInt(1524761755);
+        b.writeRrsInt(System.currentTimeMillis() / 1000);
         b.writeRrsInt(918244);
         b.writeRrsInt(-64);
         b.writeRrsInt(486244);
@@ -1320,32 +1321,13 @@ public class OwnHomeData extends ServerMessage {
     }
 
     private void writeEvents(OutBuffer b) {
-        b.write((byte) 8);
-
-        b.writeRrsInt(1109);
-        b.writeString("2v2 Button");
-        b.writeRrsInt(8);
-        b.writeRrsInt(1503298800);
-        b.writeRrsInt(1566370800);
-        b.writeRrsInt(1502694000);
-        b.write((byte) 0);
-        b.write((byte) 0);
-        b.write((byte) 0);
-        b.write((byte) 0);
-        b.write((byte) 0);
-        b.write((byte) 0);
-        b.write((byte) 0);
-        b.write((byte) 0);
-        b.writeString("2v2 Button");
-        b.writeString("{\"HideTimer\":true,\"HidePopupTimer\":true,\"ExtraGameModeChance\":0,\"GameMode\":\"TeamVsTeamLadder\",\"ExtraGameMode\":\"None\"}");
-        b.write((byte) 0);
-        b.write((byte) 0);
+        b.write((byte) 7);
 
         b.writeRrsInt(1354);
         b.writeString("Triple Elixir Battle Friendly");
         b.writeRrsInt(5);
         b.writeRrsInt(1522569600);
-        b.writeRrsInt(1525154400);
+        b.writeRrsInt(1566370800);
         b.writeRrsInt(1522569600);
         b.write((byte) 0);
         b.write((byte) 0);
@@ -1364,7 +1346,7 @@ public class OwnHomeData extends ServerMessage {
         b.writeString("2v2 Touchdown Friendly");
         b.writeRrsInt(5);
         b.writeRrsInt(1522569600);
-        b.writeRrsInt(1525154400);
+        b.writeRrsInt(1566370800);
         b.writeRrsInt(1522569600);
         b.write((byte) 0);
         b.write((byte) 0);
@@ -1383,7 +1365,7 @@ public class OwnHomeData extends ServerMessage {
         b.writeString("Goblin");
         b.writeRrsInt(5);
         b.writeRrsInt(1522569600);
-        b.writeRrsInt(1525154400);
+        b.writeRrsInt(1566370800);
         b.writeRrsInt(1522569600);
         b.write((byte) 0);
         b.write((byte) 0);
@@ -1402,7 +1384,7 @@ public class OwnHomeData extends ServerMessage {
         b.writeString("Blind");
         b.writeRrsInt(5);
         b.writeRrsInt(1522569600);
-        b.writeRrsInt(1525154400);
+        b.writeRrsInt(1566370800);
         b.writeRrsInt(1522569600);
         b.write((byte) 0);
         b.write((byte) 0);
@@ -1421,7 +1403,7 @@ public class OwnHomeData extends ServerMessage {
         b.writeString("Draft");
         b.writeRrsInt(5);
         b.writeRrsInt(1522569600);
-        b.writeRrsInt(1525154400);
+        b.writeRrsInt(1566370800);
         b.writeRrsInt(1522569600);
         b.write((byte) 0);
         b.write((byte) 0);
@@ -1440,7 +1422,7 @@ public class OwnHomeData extends ServerMessage {
         b.writeString("RampUp");
         b.writeRrsInt(5);
         b.writeRrsInt(1522569600);
-        b.writeRrsInt(1525154400);
+        b.writeRrsInt(1566370800);
         b.writeRrsInt(1522569600);
         b.write((byte) 0);
         b.write((byte) 0);
@@ -1459,7 +1441,7 @@ public class OwnHomeData extends ServerMessage {
         b.writeString("TripleTower");
         b.writeRrsInt(5);
         b.writeRrsInt(1522569600);
-        b.writeRrsInt(1525154400);
+        b.writeRrsInt(1566370800);
         b.writeRrsInt(1522569600);
         b.write((byte) 0);
         b.write((byte) 0);
